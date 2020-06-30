@@ -14,8 +14,22 @@
 */
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
-const Route = use('Route')
+const Route = use('Route');
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+// API routes
+Route.group(() => {
+  Route.get('/', () => {
+    return {greeting: 'Hello world in JSON'}
+  })
+
+  Route.resource()
+
+}).prefix('api');
+
+// Authentication routes
+Route.group(() => {
+  Route.post('login', 'AuthController.login')
+}).prefix('auth').namespace('Auth');
+
+
+
