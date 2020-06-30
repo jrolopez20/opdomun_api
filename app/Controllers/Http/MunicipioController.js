@@ -5,30 +5,31 @@
 
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const Provincia = use('App/Models/Provincia')
+const Municipio = use('App/Models/Municipio');
 
 /**
- * Resourceful controller for interacting with provincias
+ * Resourceful controller for interacting with municipios
  */
-class ProvinciaController {
+class MunicipioController {
 
     /**
-     * Show a list of all provincias.
-     * GET provincias
+     * Show a list of all municipios.
+     * GET municipios
      *
      * @param {object} ctx
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      * @param {View} ctx.view
      */
-    async index({request, response}) {
+    async index({params, request, response}) {
+        const provinciaId = params.provinciaId;
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
-        const provincias = await Provincia.getProvincias(page, limit, filter);
-        return response.json(provincias)
+        const municipios = await Municipio.getMunicipios(provinciaId, page, limit, filter);
+        return response.json(municipios);
     }
 
 }
 
-module.exports = ProvinciaController;
+module.exports = MunicipioController;

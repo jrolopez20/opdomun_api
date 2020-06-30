@@ -6,8 +6,15 @@ const Database = use('Database')
 
 class Provincia extends Model {
 
-    static async getProvincias() {
-        return await Database.select('id', 'title', 'cod').from('provincias')
+    static async getProvincias(page = 1, limit = 20, filter) {
+        let query = this.query();
+        if (filter) {
+            const where = "(title like '%" + filter + "%') AND true = ?";
+            query.whereRaw(where, [true]);
+        }
+
+        const provincias = await query.paginate(page, limit);
+        return provincias;
     }
 
     municipios() {

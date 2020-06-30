@@ -18,15 +18,15 @@ const Route = use('Route');
 
 // API routes
 Route.group(() => {
-    Route.get('/', () => {
-        return {greeting: 'Hello world in JSON'}
-    })
+
+    Route.get('provincias', 'ProvinciaController.index');
+    Route.get('provincias/:provinciaId/municipios', 'MunicipioController.index');
 
     Route.resource('users', 'UserController').validator(new Map([
         [['users.store'], ['StoreUser']],
         [['users.update'], ['UpdateUser']]
     ])).apiOnly()
-    Route.post('users/:id/change-password', 'UserController.changePassword')
+    Route.post('users/:id/change-password', 'UserController.changePassword');
 
 }).prefix('api');
 
