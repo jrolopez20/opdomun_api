@@ -9,74 +9,96 @@ const Database = use('Database')
 const Provincia = use('App/Models/Provincia')
 
 class User extends Model {
-  static boot() {
-    super.boot()
+    static boot() {
+        super.boot()
+
+        /**
+         * A hook to hash the user password before saving
+         * it to the database.
+         */
+        this.addHook('beforeSave', async (userInstance) => {
+            if (userInstance.dirty.password) {
+                userInstance.password = await Hash.make(userInstance.password)
+            }
+        })
+    }
+
+    static async getUsers(page = 1, limit = 20, filter) {
+        const query = Database
+        .from('users');
+
+        if (filter) {
+            let where = "(fullname like '%" + filter + "%') OR (email like '%" + filter + "%')";
+            if (!isNaN(filter)) {
+                where = where + " OR (opnum = " + filter + ")"
+            }
+            where = where + " AND true = ?";
+            query.whereRaw(where, [true])
+        }
+
+        const users = await query.paginate(page, limit);
+        return users;
+    }
+
+    static async getUser(id) {
+        const user = await this.findOrFail(id);
+        return user;
+    }
+
+    static async getAgents(page, criteria, provincia) {
+        const query = Database
+        .select('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture')
+        .table('users')
+        .leftJoin('posts', 'users.id', 'posts.user_id')
+        .where('users.id', '<>', 3) // Don't show my own account as agent
+        .count('posts.id as total')
+        .orderBy('total', 'DESC')
+        .groupBy('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture');
+
+        if (criteria) {
+            let where = "(fullname like '%" + criteria + "%')";
+
+            where = where + " AND true = ?";
+            query.whereRaw(where, [true])
+        }
+        if (provincia) {
+            query.innerJoin('user_provincias', 'users.id', 'user_provincias.user_id')
+            .where('user_provincias.provincia_id', provincia)
+        }
+
+        const users = await query.paginate(page, 24);
+        return users;
+    }
 
     /**
-     * A hook to hash the user password before saving
-     * it to the database.
+     * A relationship on tokens is required for auth to
+     * work. Since features like `refreshTokens` or
+     * `rememberToken` will be saved inside the
+     * tokens table.
+     *
+     * @method tokens
+     *
+     * @return {Object}
      */
-    this.addHook('beforeSave', async (userInstance) => {
-      if (userInstance.dirty.password) {
-        userInstance.password = await Hash.make(userInstance.password)
-      }
-    })
-  }
-
-  static async getAgents(page, criteria, provincia) {
-    const query = Database
-      .select('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture')
-      .table('users')
-      .leftJoin('posts', 'users.id', 'posts.user_id')
-      .where('users.id', '<>', 3) // Don't show my own account as agent
-      .count('posts.id as total')
-      .orderBy('total', 'DESC')
-      .groupBy('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture');
-
-    if (criteria) {
-      let where = "(fullname like '%" + criteria + "%')";
-
-      where = where + " AND true = ?";
-      query.whereRaw(where, [true])
-    }
-    if (provincia) {
-      query.innerJoin('user_provincias', 'users.id', 'user_provincias.user_id')
-        .where('user_provincias.provincia_id', provincia)
+    tokens() {
+        return this.hasMany('App/Models/Token')
     }
 
-    const users = await query.paginate(page, 24);
-    return users;
-  }
+    bills() {
+        return this.hasMany('App/Models/Bill')
+    }
 
-  /**
-   * A relationship on tokens is required for auth to
-   * work. Since features like `refreshTokens` or
-   * `rememberToken` will be saved inside the
-   * tokens table.
-   *
-   * @method tokens
-   *
-   * @return {Object}
-   */
-  tokens() {
-    return this.hasMany('App/Models/Token')
-  }
+    alerts() {
+        return this.hasMany('App/Models/Alert')
+    }
 
-  bills() {
-    return this.hasMany('App/Models/Bill')
-  }
+    posts() {
+        return this.hasMany('App/Models/Post')
+    }
 
-  alerts() {
-    return this.hasMany('App/Models/Alert')
-  }
-
-  posts() {
-    return this.hasMany('App/Models/Post')
-  }
-
-  userProvincias() {
-    return this.hasMany('App/Models/UserProvincia')
-  }
+    userProvincias() {
+        return this.hasMany('App/Models/UserProvincia')
+    }
 }
 
 module.exports = User
