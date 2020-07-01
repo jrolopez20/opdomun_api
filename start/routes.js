@@ -22,10 +22,14 @@ Route.group(() => {
     Route.get('provincias', 'ProvinciaController.index');
     Route.get('provincias/:provinciaId/municipios', 'MunicipioController.index');
 
+    Route.resource('posts.images', 'ImageController').validator(new Map([
+        // [['users.store'], ['StoreUser']]
+    ])).apiOnly();
+
     Route.resource('users', 'UserController').validator(new Map([
         [['users.store'], ['StoreUser']],
         [['users.update'], ['UpdateUser']]
-    ])).apiOnly()
+    ])).apiOnly();
     Route.post('users/:id/change-password', 'UserController.changePassword');
 
 }).prefix('api');

@@ -23,47 +23,171 @@
 								"key": "X-Requested-With",
 								"value": "XMLHttpRequest",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"admin@domain.com\",\n\t\"password\": \"secret\",\n\t\"remember\": false\n}"
+							"raw": "{\n\t\"email\": \"admin@gmail.com\",\n\t\"password\": \"secret\",\n\t\"remember\": false\n}"
 						},
 						"url": {
-							"raw": "{{host}}/auth/login",
+							"raw": "{{auth_host}}/login",
+							"host": [
+								"{{auth_host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Post User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"numid\": \"567\",\n\t\"fullname\": \"Alejandro\",\n\t\"email\": \"admin@gmail.com\",\n\t\"telephone\": \"+78946546\",\n\t\"password\": \"123456\",\n\t\"repassword\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/users",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"auth",
-								"login"
+								"users"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Auth user",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Change password",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"type": "text"
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
 							},
 							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
 							},
 							{
 								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"123456\",\n}"
+						},
+						"url": {
+							"raw": "{{host}}/users/6/change-password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"6",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"numid\": \"1111\",\n\t\"fullname\": \"Alejandro\",\n\t\"email\": \"admin@gmail.com\",\n\t\"telephone\": \"+78946546\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/users/4",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
 							}
 						],
 						"body": {
@@ -71,28 +195,23 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/auth/user",
+							"raw": "{{host}}/users/5",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"auth",
-								"user"
+								"users",
+								"5"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Logout",
+					"name": "Get User",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"type": "text"
-							},
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
@@ -100,6 +219,11 @@
 								"type": "text"
 							},
 							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
 								"key": "X-Requested-With",
 								"value": "XMLHttpRequest",
 								"type": "text"
@@ -110,17 +234,327 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/auth/logout",
+							"raw": "{{host}}/users/4",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"auth",
-								"logout"
+								"users",
+								"4"
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Provincia",
+			"item": [
+				{
+					"name": "Get Provincias",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/provincias?page=1&limit=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"provincias"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Municipio",
+			"item": [
+				{
+					"name": "Municipios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/provincias/1/municipios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"provincias",
+								"1",
+								"municipios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Images",
+					"item": [
+						{
+							"name": "Get Images",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"type": "text",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/posts/140/images",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"posts",
+										"140",
+										"images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Image",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"type": "text",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/posts/140/images/80",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"posts",
+										"140",
+										"images",
+										"80"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Images",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"type": "text",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/posts/140/images/82",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"posts",
+										"140",
+										"images",
+										"82"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Image",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"type": "text",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/posts/140/images/80",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"posts",
+										"140",
+										"images",
+										"80"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		}

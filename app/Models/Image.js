@@ -30,10 +30,22 @@ class Image extends Model {
             .delete();
     }
 
-    static async getImages(postId) {
-        return await Database.select('id', 'url').from('images')
+    static async getImages(postId, page, limit) {
+        const query = Database
+            .from('images')
             .where('post_id', postId)
-            .orderBy('default', 'DESC')
+            .orderBy('default', 'DESC');
+
+        const images = await query.paginate(page, limit);
+        return images;
+    }
+
+    static async getImage(postId, imageId) {
+        const image = await Image.query()
+            .where('id', imageId)
+            .andWhere('post_id', postId)
+            .firstOrFail();
+        return image;
     }
 
     static async getTotalImagesFromPost(postId) {
