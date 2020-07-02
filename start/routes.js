@@ -22,9 +22,11 @@ Route.group(() => {
     Route.get('provincias', 'ProvinciaController.index');
     Route.get('provincias/:provinciaId/municipios', 'MunicipioController.index');
 
-    Route.resource('posts.images', 'ImageController').validator(new Map([
-        // [['users.store'], ['StoreUser']]
+    Route.resource('articles', 'ArticleController').validator(new Map([
+        [['articles.store', 'articles.update'], ['SaveArticle']]
     ])).apiOnly();
+
+    Route.resource('posts.images', 'ImageController').apiOnly();
 
     Route.resource('users', 'UserController').validator(new Map([
         [['users.store'], ['StoreUser']],

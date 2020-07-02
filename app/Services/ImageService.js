@@ -34,7 +34,6 @@ class ImageService {
                     }
                 });
 
-
                 if (postPictures.movedAll()) {
                     const images = await Image.createMany(pictures, trx);
                     await trx.commit();
@@ -43,9 +42,9 @@ class ImageService {
             } else {
                 throw new Error('You cannot add more than ' + maxUpPict + ' images.');
             }
+        }else{
+            throw new Error('You must provide images.');
         }
-
-        return response.redirect('back');
     }
 
     static async destroyImage(postId, imageId) {

@@ -6,42 +6,46 @@ const Database = use('Database')
 
 class Article extends Model {
 
-  static boot() {
-    super.boot()
-  }
-
-  static async getArticle(id) {
-    const article = await Database
-      .from('articles')
-      .select('articles.id', 'articles.title', 'articles.summary', 'articles.text', 'articles.picture',
-        'articles.created_at', 'users.fullname')
-      .innerJoin('users', 'users.id', 'articles.user_id')
-      .where('articles.id', id)
-      .first()
-    return article
-  }
-
-  static async getAll(pPage, auth) {
-    const page = pPage ? pPage : 1;
-    const query = Database
-      .from('articles')
-      .select('articles.id', 'articles.title', 'articles.summary', 'articles.text', 'articles.picture',
-        'articles.created_at', 'users.fullname')
-      .innerJoin('users', 'users.id', 'articles.user_id')
-      .orderBy('articles.created_at', 'ASC')
-
-    if (auth) {
-      auth.user.id
-      query.andWhere('articles.user_id', auth.user.id)
+    static boot() {
+        super.boot()
     }
 
-    const articles = await query.paginate(page, 5);
-    return articles
-  }
+    static async getArticles(page = 1, limit = 20, filter = null, authorId = null) {
+        const query = Database
+            .from('articles')
+            .select('articles.id', 'articles.title', 'articles.summary', 'articles.text', 'articles.picture',
+                'articles.created_at', 'users.fullname')
+            .innerJoin('users', 'users.id', 'articles.user_id')
+            .orderBy('articles.created_at', 'DESC')
 
-  user() {
-    return this.belongsTo('App/Models/User');
-  }
+        if (filter) {
+            let where = "(title like '%" + filter + "%') OR (summary like '%" + filter + "%') OR (text like '%" + filter + "%')";
+            where = where + " AND true = ?";
+            query.whereRaw(where, [true])
+        }
+
+        if (authorId) {
+            query.andWhere('articles.user_id', authorId)
+        }
+
+        const articles = await query.paginate(page, limit);
+        return articles;
+    }
+
+    static async getArticle(id) {
+        const article = await this.query()
+            .select('articles.id', 'articles.title', 'articles.summary', 'articles.text', 'articles.picture',
+                'articles.created_at', 'users.fullname')
+            .innerJoin('users', 'users.id', 'articles.user_id')
+            .where('articles.id', id)
+            .firstOrFail();
+
+        return article;
+    }
+
+    user() {
+        return this.belongsTo('App/Models/User');
+    }
 
 }
 

@@ -112,7 +112,6 @@ class UserService {
             .createMany(userProvincias);
         }
 
-
         if (userPicture) {
             const pictureName = new Date().getTime() + '.jpg';
             await userPicture.move(Helpers.publicPath('images/user_pictures'), {
