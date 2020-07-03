@@ -5,6 +5,9 @@
 
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Post = use('App/Models/Post');
+const PostService = use('App/Services/PostService');
+
 /**
  * Resourceful controller for interacting with posts
  */
@@ -18,6 +21,11 @@ class PostController {
      * @param {Response} ctx.response
      */
     async index({request, response}) {
+        const page = request.input('page');
+        const limit = request.input('limit');
+        const filter = request.input('filter');
+        const posts = await Post.getPosts(page, limit, filter);
+        return response.json(posts);
     }
 
     /**
@@ -28,7 +36,13 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async store({request, response}) {
+    async store({request, response, auth}) {
+        try {
+            const post = await PostService.addPost(request, auth.user.id);
+            return response.status(201).json(post)
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
     }
 
     /**
@@ -40,6 +54,12 @@ class PostController {
      * @param {Response} ctx.response
      */
     async show({params, request, response}) {
+        try {
+            const post = await Post.getPost(params.id);
+            return response.json(post);
+        } catch (e) {
+            return response.status(404).json({message: e.message});
+        }
     }
 
     /**
@@ -50,7 +70,13 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async update({params, request, response}) {
+    async update({params, request, response, auth}) {
+        try {
+            const post = await PostService.setPost(params.id, request);
+            return response.json(post);
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
     }
 
     /**
@@ -62,6 +88,16 @@ class PostController {
      * @param {Response} ctx.response
      */
     async destroy({params, response}) {
+        try {
+            const res = await PostService.destroyPost(params.id);
+            if (res) {
+                return response.status(204).json(null);
+            } else {
+                return response.status(400).json('Cannot delete post');
+            }
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
     }
 }
 
