@@ -5,6 +5,7 @@ const Model = use('Model')
 const Database = use('Database')
 
 class ServPublico extends Model {
+
     static async getServPublicos(postId) {
         return await Database.select('s.id', 's.value', 's.display_value', 's.title')
             .from('serv_publicos as s')
@@ -18,6 +19,10 @@ class ServPublico extends Model {
             .where('post_variable_id', postVariableId)
             .delete()
     }
+
+    postVariable() {
+        return this.belongsTo('App/Models/PostVariable');
+    }
 }
 
-module.exports = ServPublico
+module.exports = ServPublico;

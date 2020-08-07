@@ -20,6 +20,8 @@ class PostService {
         const bathrooms = request.input('bathrooms');
         const homeTypeId = request.input('home_type_id');
         const summary = request.input('summary');
+        const activeMonths = request.input('active_months');
+        const otherPlaces = request.input('other_places');
 
         let post = new Post();
         post.user_id = authorId;
@@ -35,7 +37,16 @@ class PostService {
 
         await post.save();
 
+        // Define post close date
+        await Database
+            .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
+                [post.id]);
+
         await this.initPostVariable(post);
+
+        await post
+            .postPlaces()
+            .createMany(otherPlaces);
 
         post = await post.calculateOpdo();
         return post;

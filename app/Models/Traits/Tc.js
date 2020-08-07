@@ -3,197 +3,161 @@ const Post = use('App/Models/Post');
 const EstConstructiva = use('App/Models/EstConstructiva');
 
 class Tc {
-  register(Model, customOptions = {}) {
-    const defaultOptions = {}
-    const options = Object.assign(defaultOptions, customOptions)
+    register(Model, customOptions = {}) {
+        const defaultOptions = {}
+        const options = Object.assign(defaultOptions, customOptions)
 
-    Model.prototype.getSolTecnicoConstructiva = function () {
-      const dicc = {
-        'muros': {
-          '100': 'Hormigón',
-          '80': 'Bloque / Ladrillo / Canto',
-          '60': 'Sistema ligero',
-          '40': 'Madera'
-        },
-        'cubierta': {
-          '100': 'Hormigón',
-          '80': 'Vigueta y Bovedilla',
-          '60': 'Cubierta Ligera (Cinc, Canelón, ect)',
-          '40': 'Tablazón y tejas',
-          '15': 'Guano',
-        },
-        'piso': {
-          '100': 'Porcelanato',
-          '90': 'Granito Integral',
-          '70': 'Gres cerámico',
-          '50': 'Losas Hidráulicas / Granito',
-          '30': 'Estuco Pulido',
-        },
-        'enchape': {
-          '100': 'Placas de Mármol o Granito',
-          '80': 'Gres cerámico',
-          '60': 'Losas Hidráulicas',
-          '40': 'Estuco'
-        },
-        'carpinteria': {
-          '100': 'Aluminio',
-          '90': 'Madera',
-          '80': 'Vidrio',
-          '70': 'Hierro',
-          '60': 'PVC'
-        },
-        'instalacion': {
-          '100-i1': 'Eléctrica 110',
-          '100-i2': 'Eléctrica 220',
-          '100-i3': 'Agua fría',
-          '100-i4': 'Agua caliente',
-          '100-i5': 'Teléfono',
-          '100-i6': 'Antena',
-          '100-i7': 'CCTV'
+        Model.prototype.getSolTecnicoConstructiva = function () {
+            const dicc = {
+                'muros': [
+                    {value: '100', label: 'Hormigón'},
+                    {value: '80', label: 'Bloque / Ladrillo / Canto'},
+                    {value: '60', label: 'Sistema ligero'},
+                    {value: '40', label: 'Madera'}
+                ],
+                'cubierta': [
+                    {value: '100', label: 'Hormigón'},
+                    {value: '80', label: 'Vigueta y Bovedilla'},
+                    {value: '60', label: 'Cubierta Ligera (Cinc, Canelón, ect)'},
+                    {value: '40', label: 'Tablazón y tejas'},
+                    {value: '15', label: 'Guano'}
+                ],
+                'piso': [
+                        {value: '100', label: 'Porcelanato'},
+                    {value: '90', label: 'Granito Integral'},
+                    {value: '70', label: 'Gres cerámico'},
+                    {value: '50', label: 'Losas Hidráulicas / Granito'},
+                    {value: '30', label: 'Estuco Pulido'}
+                ],
+                'enchape': [
+                    {value: '100', label: 'Placas de Mármol o Granito'},
+                    {value: '80', label: 'Gres cerámico'},
+                    {value: '60', label: 'Losas Hidráulicas'},
+                    {value: '40', label: 'Estuco'}
+                ],
+                'carpinteria': [
+                    {value: '100', label: 'Aluminio'},
+                    {value: '90', label: 'Madera'},
+                    {value: '80', label: 'Vidrio'},
+                    {value: '70', label: 'Hierro'},
+                    {value: '60', label: 'PVC'}
+                ],
+                'instalacion': [
+                    {value: '100-i1', label: 'Eléctrica 110'},
+                    {value: '100-i2', label: 'Eléctrica 220'},
+                    {value: '100-i3', label: 'Agua fría'},
+                    {value: '100-i4', label: 'Agua caliente'},
+                    {value: '100-i5', label: 'Teléfono'},
+                    {value: '100-i6', label: 'Antena'},
+                    {value: '100-i7', label: 'CCTV'}
+                ]
+            };
+            return dicc
         }
-      }
-      return dicc
+
+        Model.prototype.calculateTc = async function (pCarpinteria = [], pCubierta = [], pEnchape = [], pInstalacion = [], pMuros = [], pPiso = []) {
+            let carpinteria = 0;
+            let cubierta = 0;
+            let enchape = 0;
+            let instalacion = 0;
+            let muros = 0;
+            let piso = 0;
+
+            const items = [];
+            let displayValue = '';
+
+            if (pCarpinteria && pCarpinteria.length) {
+                displayValue = '';
+                pCarpinteria.map(item => {
+                    carpinteria += parseInt(item.value);
+                    displayValue += item.label + ', '
+                });
+                items.push({
+                    post_variable_id: this.id,
+                    display_value: displayValue,
+                    title: 'Carpinteria'
+                })
+            }
+
+            if (pCubierta && pCubierta.length) {
+                displayValue = '';
+                pCubierta.map(item => {
+                    cubierta += parseInt(item.value);
+                    displayValue += item.label + ', '
+                });
+                items.push({
+                    post_variable_id: this.id,
+                    display_value: displayValue,
+                    title: 'Cubierta'
+                })
+            }
+
+            if (pEnchape && pEnchape.length) {
+                displayValue = '';
+                pEnchape.map(item => {
+                    enchape += parseInt(item.value);
+                    displayValue += item.label + ', '
+                });
+                items.push({
+                    post_variable_id: this.id,
+                    display_value: displayValue,
+                    title: 'Enchape'
+                })
+            }
+
+            if (pInstalacion && pInstalacion.length) {
+                displayValue = '';
+                pInstalacion.map(item => {
+                    instalacion += parseInt(item.value.split('-')[0]);
+                    displayValue += item.label + ', '
+                });
+                items.push({
+                    post_variable_id: this.id,
+                    display_value: displayValue,
+                    title: 'Instalacion'
+                })
+            }
+
+            if (pMuros && pMuros.length) {
+                displayValue = '';
+                pMuros.map(item => {
+                    muros += parseInt(item.value);
+                    displayValue += item.label + ', '
+                });
+                items.push({
+                    post_variable_id: this.id,
+                    display_value: displayValue,
+                    title: 'Muros'
+                })
+            }
+
+            if (pPiso && pPiso.length) {
+                displayValue = '';
+                pPiso.map(item => {
+                    piso += parseInt(item.value);
+                    displayValue += item.label + ', '
+                });
+                items.push({
+                    post_variable_id: this.id,
+                    display_value: displayValue,
+                    title: 'Piso'
+                })
+            }
+
+            await EstConstructiva.removeEstConstructiva(this.id)
+            await EstConstructiva.createMany(items)
+
+            const result = (carpinteria + cubierta + enchape + instalacion + muros + piso) / 6;
+            await this.load('variable')
+            const variable = this.getRelated('variable');
+            this.result = result;
+            this.points = result * variable.influencia;
+            await this.save();
+
+            let post = await Post.find(this.post_id);
+            post.calculateOpdo();
+        }
     }
-
-    Model.prototype.calculateTc = async function (pCarpinteria, pCubierta, pEnchape, pInstalacion, pMuros, pPiso) {
-      let carpinteria = 0;
-      let cubierta = 0;
-      let enchape = 0;
-      let instalacion = 0;
-      let muros = 0;
-      let piso = 0;
-
-      const dicc = this.getSolTecnicoConstructiva()
-      const items = []
-      let displayValue = ''
-
-      if (pCarpinteria) {
-        if (typeof pCarpinteria == 'object') {
-          for (let i = 0; i < pCarpinteria.length; i++) {
-            carpinteria += parseInt(pCarpinteria[i]);
-            displayValue += dicc['carpinteria'][pCarpinteria[i]] + ', '
-          }
-          carpinteria = carpinteria / pCarpinteria.length;
-        } else {
-          carpinteria = pCarpinteria ? parseInt(pCarpinteria) : 0;
-          displayValue = dicc['carpinteria'][pCarpinteria]
-        }
-        items.push({
-          post_variable_id: this.id,
-          display_value: displayValue,
-          title: 'Carpintería'
-        })
-      }
-
-      if (pCubierta) {
-        if (typeof pCubierta == 'object') {
-          displayValue = ''
-          for (let i = 0; i < pCubierta.length; i++) {
-            cubierta += parseInt(pCubierta[i]);
-            displayValue += dicc['cubierta'][pCubierta[i]] + ', '
-          }
-          cubierta = cubierta / pCubierta.length;
-        } else {
-          cubierta = pCubierta ? parseInt(pCubierta) : 0;
-          displayValue = dicc['cubierta'][pCubierta]
-        }
-        items.push({
-          post_variable_id: this.id,
-          display_value: displayValue,
-          title: 'Cubierta'
-        })
-      }
-
-      if (pEnchape) {
-        if (pEnchape && typeof pEnchape == 'object') {
-          displayValue = ''
-          for (let i = 0; i < pEnchape.length; i++) {
-            enchape += parseInt(pEnchape[i]);
-            displayValue += dicc['enchape'][pEnchape[i]] + ', '
-          }
-          enchape = enchape / pEnchape.length;
-        } else {
-          enchape = pEnchape ? parseInt(pEnchape) : 0;
-          displayValue = dicc['enchape'][pEnchape]
-        }
-        items.push({
-          post_variable_id: this.id,
-          display_value: displayValue,
-          title: 'Enchape'
-        })
-      }
-
-      if (pInstalacion) {
-        if (typeof pInstalacion == 'object') {
-          displayValue = ''
-          for (let i = 0; i < pInstalacion.length; i++) {
-            instalacion += parseInt(pInstalacion[i].split('-')[0]);
-            displayValue += dicc['instalacion'][pInstalacion[i]] + ', '
-          }
-          instalacion = instalacion / pInstalacion.length;
-        } else {
-          instalacion = parseInt(pInstalacion.split('-')[0])
-          displayValue = dicc['instalacion'][pInstalacion]
-        }
-        items.push({
-          post_variable_id: this.id,
-          display_value: displayValue,
-          title: 'Instalación'
-        })
-      }
-
-      if (pMuros) {
-        if (typeof pMuros == 'object') {
-          displayValue = ''
-          for (let i = 0; i < pMuros.length; i++) {
-            muros += parseInt(pMuros[i]);
-            displayValue += dicc['muros'][pMuros[i]] + ', '
-          }
-          muros = muros / pMuros.length;
-        } else {
-          muros = pMuros ? parseInt(pMuros) : 0;
-          displayValue = dicc['muros'][pMuros]
-        }
-        items.push({
-          post_variable_id: this.id,
-          display_value: displayValue,
-          title: 'Muros'
-        })
-      }
-
-      if (pPiso) {
-        if (typeof pPiso == 'object') {
-          displayValue = ''
-          for (let i = 0; i < pPiso.length; i++) {
-            piso += parseInt(pPiso[i]);
-            displayValue += dicc['piso'][pPiso[i]] + ', '
-          }
-          piso = piso / pPiso.length;
-        } else {
-          piso = pPiso ? parseInt(pPiso) : 0;
-          displayValue = dicc['piso'][pPiso]
-        }
-        items.push({
-          post_variable_id: this.id,
-          display_value: displayValue,
-          title: 'Piso'
-        })
-      }
-
-      await EstConstructiva.removeEstConstructiva(this.id)
-      await EstConstructiva.createMany(items)
-
-      const result = (carpinteria + cubierta + enchape + instalacion + muros + piso) / 6;
-      await this.load('variable')
-      const variable = this.getRelated('variable');
-      this.result = result;
-      this.points = result * variable.influencia;
-      await this.save();
-
-      let post = await Post.find(this.post_id);
-      post.calculateOpdo();
-    }
-  }
 }
 
 module.exports = Tc

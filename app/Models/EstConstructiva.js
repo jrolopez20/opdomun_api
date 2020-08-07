@@ -5,6 +5,7 @@ const Model = use('Model')
 const Database = use('Database')
 
 class EstConstructiva extends Model {
+
     static async getEstConstructiva(postId) {
         return await Database.select('e.id', 'e.display_value', 'e.title')
             .from('est_constructivas as e')
@@ -17,6 +18,10 @@ class EstConstructiva extends Model {
             .query()
             .where('post_variable_id', postVariableId)
             .delete()
+    }
+
+    postVariable() {
+        return this.belongsTo('App/Models/PostVariable');
     }
 }
 

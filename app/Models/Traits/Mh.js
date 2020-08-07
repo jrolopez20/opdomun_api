@@ -11,7 +11,7 @@ class Mh {
       const post = await Post.find(this.post_id);
       let promedioMoviliario = 0;
       let promedioElectrodomestico = 0;
-      if (moviliario) {
+      if (moviliario && moviliario.length) {
         const moviliarioValues = await Database
           .select('nm.value')
           .from('nom_moviliarios as nm')
@@ -21,7 +21,7 @@ class Mh {
         }
         promedioMoviliario = promedioMoviliario / moviliarioValues.length
       }
-      if (electrodomesticos) {
+      if (electrodomesticos && electrodomesticos.length) {
         const electrodomesticoValues = await Database
           .select('nm.value')
           .from('nom_electrodomesticos as nm')

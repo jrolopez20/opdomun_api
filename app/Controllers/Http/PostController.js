@@ -21,10 +21,11 @@ class PostController {
      * @param {Response} ctx.response
      */
     async index({request, response}) {
+        const plan = request.input('plan');
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
-        const posts = await Post.getPosts(page, limit, filter);
+        const posts = await Post.getPosts(plan, page, limit, filter);
         return response.json(posts);
     }
 
@@ -95,6 +96,17 @@ class PostController {
             } else {
                 return response.status(400).json('Cannot delete post');
             }
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async getFeaturedPosts({request, response}) {
+        try {
+            const page = request.input('page');
+            const limit = request.input('limit');
+            const posts = await Post.getFeaturedPosts(page, limit);
+            return response.json(posts);
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

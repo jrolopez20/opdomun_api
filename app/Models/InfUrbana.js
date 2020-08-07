@@ -19,6 +19,10 @@ class InfUrbana extends Model {
             .where('post_variable_id', postVariableId)
             .delete()
     }
+
+    postVariable() {
+        return this.belongsTo('App/Models/PostVariable');
+    }
 }
 
 module.exports = InfUrbana

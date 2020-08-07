@@ -54,6 +54,26 @@ class PostVariable extends Model {
     riesgo() {
         return this.hasOne('App/Models/Riesgo');
     }
+
+    estConstructivas() {
+        return this.hasMany('App/Models/EstConstructiva')
+    }
+
+    colindanciaPrivacidads() {
+        return this.hasOne('App/Models/ColindanciaPrivacidad')
+    }
+
+    infUrbanas() {
+        return this.hasMany('App/Models/InfUrbana')
+    }
+
+    servPublicos() {
+        return this.hasMany('App/Models/ServPublico')
+    }
+
+    envElements() {
+        return this.hasMany('App/Models/EnvElement')
+    }
 }
 
 module.exports = PostVariable
