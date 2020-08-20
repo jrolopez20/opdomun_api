@@ -24,6 +24,10 @@ class Provincia extends Model {
     userProvincias() {
         return this.hasMany('App/Models/UserProvincia')
     }
+
+    offices() {
+        return this.hasMany('App/Models/Office')
+    }
 }
 
 module.exports = Provincia

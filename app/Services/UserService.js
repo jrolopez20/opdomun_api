@@ -1,10 +1,8 @@
 'use strict'
 
 const User = use('App/Models/User');
-const Database = use('Database');
 const Drive = use('Drive');
 const Helpers = use('Helpers');
-const Hash = use('Hash');
 
 class UserService {
 
@@ -15,7 +13,8 @@ class UserService {
         const password = request.input("password")
         const telephone = request.input("telephone")
         const address = request.input("address")
-        const provincias = request.input("provincias")
+        const office_id = request.input("office_id")
+        let role = request.input("role")
 
         const givenUser = await User.query().where('email', email).first();
 
@@ -29,6 +28,8 @@ class UserService {
         user.email = email;
         user.telephone = telephone;
         user.address = address;
+        user.office_id = office_id;
+        user.role = role;
 
         if (password === request.input("repassword")) {
             user.password = password;
@@ -37,26 +38,6 @@ class UserService {
         }
         await user.save();
 
-        if (provincias) {
-            let userProvincias = [];
-            if (!isNaN(provincias)) {
-                userProvincias.push({
-                    provincia_id: provincias,
-                    user_id: user.id
-                })
-            } else if (provincias.length > 0) {
-                for (let provincia of provincias) {
-                    userProvincias.push({
-                        provincia_id: provincia,
-                        user_id: user.id
-                    })
-                }
-            }
-
-            await user
-            .userProvincias()
-            .createMany(userProvincias);
-        }
 
         user.opnum = user.id;
         await user.save();
@@ -67,70 +48,20 @@ class UserService {
     static async setUser(userId, request) {
         const numid = request.input("numid")
         const fullname = request.input("fullname")
-        const email = request.input("email")
         const telephone = request.input("telephone")
         const address = request.input("address")
-        let provincias = request.input("provincias")
-
-        const userPicture = request.file('picture', {
-            types: ['image'],
-            extnames: ['jpg', 'jpeg', 'png'],
-            size: '1mb'
-        });
+        const office_id = request.input("office_id")
+        let role = request.input("role")
 
         let user = await User.find(userId)
-
         user.numid = numid;
         user.fullname = fullname;
-        user.email = email;
         user.telephone = telephone;
         user.address = address;
+        user.office_id = office_id;
 
-        await Database
-        .table('user_provincias')
-        .where('user_id', userId)
-        .delete()
-
-        if (provincias) {
-            let userProvincias = [];
-            if (!isNaN(provincias)) {
-                userProvincias.push({
-                    provincia_id: provincias,
-                    user_id: userId
-                })
-            } else if (provincias.length > 0) {
-                for (let provincia of provincias) {
-                    userProvincias.push({
-                        provincia_id: provincia,
-                        user_id: userId
-                    })
-                }
-            }
-
-            await user
-            .userProvincias()
-            .createMany(userProvincias);
-        }
-
-        if (userPicture) {
-            const pictureName = new Date().getTime() + '.jpg';
-            await userPicture.move(Helpers.publicPath('images/user_pictures'), {
-                name: pictureName
-            });
-
-            if (!userPicture.moved()) {
-                throw new Error(userPicture.error());
-            }
-
-            if (user.picture) {
-                const actualPicturePath = Helpers.publicPath('images/user_pictures/') + user.picture
-                const exists = await Drive.exists(actualPicturePath)
-                if (exists) {
-                    await Drive.delete(actualPicturePath)
-                }
-            }
-
-            user.picture = pictureName
+        if (role) {
+            user.role = role;
         }
 
         await user.save();
@@ -138,8 +69,13 @@ class UserService {
         return user;
     }
 
-    static async destroyUser(userId) {
+    static async destroyUser(userId, auth) {
         let user = await User.find(userId);
+
+        if ((user.id === auth.user.id)) {
+            throw new Error('The authenticated user cannot delete himself');
+        }
+
         if (user) {
             if (user.picture) {
                 const picPath = Helpers.publicPath('images/user_pictures/') + user.picture;
@@ -156,10 +92,17 @@ class UserService {
             const user = await User.find(userId);
             user.password = password;
             await user.save();
-            throw new NotFou
         } else {
             throw new Error('Password cannot be null')
         }
+    }
+
+    static async toggleEnable(userId) {
+        let user = await User.find(userId);
+        user.closed_at = user.closed_at === null ? new Date() : null;
+        await user.save();
+
+        return user;
     }
 
 }

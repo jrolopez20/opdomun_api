@@ -23,9 +23,21 @@ class User extends Model {
         })
     }
 
-    static async getUsers(page = 1, limit = 20, filter) {
+    static roles() {
+        return {
+            ADMIN: 'ADMIN',
+            MANAGER: 'MANAGER',
+            USER: 'USER'
+        }
+    }
+
+    static async getUsers(page = 1, limit = 20, filter, orderBy) {
         const query = Database
-        .from('users');
+            .from('users')
+            .select('users.*')
+            .select('provincias.title as office_title')
+            .leftJoin('offices', 'offices.id', 'users.office_id')
+            .leftJoin('provincias', 'provincias.id', 'offices.provincia_id');
 
         if (filter) {
             let where = "(fullname like '%" + filter + "%') OR (email like '%" + filter + "%')";
@@ -36,24 +48,35 @@ class User extends Model {
             query.whereRaw(where, [true])
         }
 
+        if (orderBy) {
+            query.orderBy(orderBy, 'DESC')
+        }
+
+        limit = limit > 0 ? limit : undefined;
         const users = await query.paginate(page, limit);
         return users;
     }
 
     static async getUser(id) {
-        const user = await this.findOrFail(id);
-        return user;
+        const query = User
+            .query()
+            .with('office.provincia')
+            .where('id', id)
+
+        return await query.first()
+        // const user = await this.findOrFail(id);
+        // return user;
     }
 
     static async getAgents(page, criteria, provincia) {
         const query = Database
-        .select('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture')
-        .table('users')
-        .leftJoin('posts', 'users.id', 'posts.user_id')
-        .where('users.id', '<>', 3) // Don't show my own account as agent
-        .count('posts.id as total')
-        .orderBy('total', 'DESC')
-        .groupBy('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture');
+            .select('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture')
+            .table('users')
+            .leftJoin('posts', 'users.id', 'posts.user_id')
+            .where('users.id', '<>', 3) // Don't show my own account as agent
+            .count('posts.id as total')
+            .orderBy('total', 'DESC')
+            .groupBy('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture');
 
         if (criteria) {
             let where = "(fullname like '%" + criteria + "%')";
@@ -63,7 +86,7 @@ class User extends Model {
         }
         if (provincia) {
             query.innerJoin('user_provincias', 'users.id', 'user_provincias.user_id')
-            .where('user_provincias.provincia_id', provincia)
+                .where('user_provincias.provincia_id', provincia)
         }
 
         const users = await query.paginate(page, 24);
@@ -98,6 +121,10 @@ class User extends Model {
 
     userProvincias() {
         return this.hasMany('App/Models/UserProvincia')
+    }
+
+    office() {
+        return this.belongsTo('App/Models/Office');
     }
 }
 

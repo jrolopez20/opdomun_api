@@ -27,6 +27,9 @@ Route.group(() => {
     // Municipios
     Route.get('provincias/:provinciaId/municipios', 'MunicipioController.index');
 
+    // Offices
+    Route.get('offices', 'OfficeController.index');
+
     // Images
     Route.resource('posts.images', 'ImageController').apiOnly();
 
@@ -44,7 +47,7 @@ Route.group(() => {
         //     [['articles.store', 'articles.update'], ['SaveArticle']]
         // ]))
         .middleware(new Map([
-            [['get', 'destroy'], ['auth']]
+            [['index', 'get', 'destroy'], ['auth']]
         ])).apiOnly();
 
     // Users
@@ -55,6 +58,7 @@ Route.group(() => {
         .middleware(['auth'])
         .apiOnly();
     Route.post('users/:id/password', 'UserController.changePassword').middleware(['auth']);
+    Route.put('users/:id/toggle_enable', 'UserController.toggleEnable').middleware(['auth']);
 
     Route.resource('posts/:postId/owner', 'OwnerController')
         .middleware(new Map([
@@ -69,6 +73,9 @@ Route.group(() => {
         .middleware(new Map([
             [['store', 'update', 'destroy'], ['auth']]
         ])).apiOnly();
+    Route.put('posts/:id/publish', 'PostController.publishPost').middleware(['auth']).validator('PublishPost');
+    Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice').middleware(['auth']).validator('PublishPost');
+    Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth']);
 
     Route.get('featured_posts', 'PostController.getFeaturedPosts');
 
@@ -98,6 +105,10 @@ Route.group(() => {
     Route.put('variables/:id/vs', 'VariableVsController.update').middleware(['auth']);
     Route.get('variables/:id/mh', 'VariableMhController.show').middleware(['auth']);
     Route.put('variables/:id/mh', 'VariableMhController.update').middleware(['auth']);
+
+    Route.get('services', 'StatisticsController.getServices').middleware(['auth']);
+    Route.get('services_by_office', 'StatisticsController.servicesByOffice').middleware(['auth']);
+    Route.get('services_by_user', 'StatisticsController.servicesByUser').middleware(['auth']);
 
     Route.get('seguridad_ciudadana_options', 'VariableScController.getSeguridadCiudadanaValues').middleware(['auth']);
     Route.get('sol_tecnico_constructiva_options', 'VariableTcController.getSolTecnicoConstructivaValues').middleware(['auth']);

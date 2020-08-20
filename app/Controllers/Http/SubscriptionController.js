@@ -1,6 +1,7 @@
 'use strict'
 
 const Subscription = use('App/Models/Subscription');
+const SubscriptionService = use('App/Services/SubscriptionService');
 
 /**
  * Resourceful controller for interacting with subscriptions
@@ -65,16 +66,16 @@ class SubscriptionController {
      * @param {Response} ctx.response
      */
     async destroy({params, response}) {
-        // try {
-        //     const res = await SubscriptionService.destroySubscription(params.id);
-        //     if (res) {
-        //         return response.status(204).json(null);
-        //     } else {
-        //         return response.status(400).json('Cannot delete subscription');
-        //     }
-        // } catch (e) {
-        //     return response.status(400).json({message: e.message})
-        // }
+        try {
+            const res = await SubscriptionService.destroySubscription(params.id);
+            if (res) {
+                return response.status(204).json(null);
+            } else {
+                return response.status(400).json('Cannot delete subscription');
+            }
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
     }
 
 }

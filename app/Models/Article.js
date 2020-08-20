@@ -10,13 +10,10 @@ class Article extends Model {
         super.boot()
     }
 
-    static async getArticles(page = 1, limit = 20, filter = null, authorId = null) {
-        const query = Database
-            .from('articles')
-            .select('articles.id', 'articles.title', 'articles.summary', 'articles.text', 'articles.picture',
-                'articles.created_at', 'users.fullname')
-            .innerJoin('users', 'users.id', 'articles.user_id')
-            .orderBy('articles.created_at', 'DESC')
+    static async getArticles(page = 1, limit = 20, filter = null, sortBy) {
+        const query = Article
+            .query()
+            .with('user')
 
         if (filter) {
             let where = "(title like '%" + filter + "%') OR (summary like '%" + filter + "%') OR (text like '%" + filter + "%')";
@@ -24,8 +21,8 @@ class Article extends Model {
             query.whereRaw(where, [true])
         }
 
-        if (authorId) {
-            query.andWhere('articles.user_id', authorId)
+        if (sortBy) {
+            query.orderBy(sortBy, 'DESC')
         }
 
         const articles = await query.paginate(page, limit);
@@ -33,14 +30,13 @@ class Article extends Model {
     }
 
     static async getArticle(id) {
-        const article = await this.query()
-            .select('articles.id', 'articles.title', 'articles.summary', 'articles.text', 'articles.picture',
-                'articles.created_at', 'users.fullname')
-            .innerJoin('users', 'users.id', 'articles.user_id')
-            .where('articles.id', id)
-            .firstOrFail();
+        const query = Article
+            .query()
+            .with('user')
+            .where('id', id)
 
-        return article;
+
+        return await query.first();
     }
 
     user() {

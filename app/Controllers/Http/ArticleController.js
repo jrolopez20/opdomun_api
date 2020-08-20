@@ -24,7 +24,8 @@ class ArticleController {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
-        const articles = await Article.getArticles(page, limit, filter);
+        const sortBy = request.input('sortBy');
+        const articles = await Article.getArticles(page, limit, filter, sortBy);
         return response.json(articles);
     }
 

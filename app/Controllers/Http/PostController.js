@@ -25,7 +25,8 @@ class PostController {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
-        const posts = await Post.getPosts(plan, page, limit, filter);
+        const orderBy = request.input('orderBy');
+        const posts = await Post.getPosts(plan, page, limit, filter, orderBy);
         return response.json(posts);
     }
 
@@ -107,6 +108,24 @@ class PostController {
             const limit = request.input('limit');
             const posts = await Post.getFeaturedPosts(page, limit);
             return response.json(posts);
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async publishPost({params, response}) {
+        try {
+            const post = await PostService.publishPost(params.id);
+            return response.json(post);
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async markAsSold({params, response}) {
+        try {
+            const post = await PostService.markAsSold(params.id);
+            return response.json(post);
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

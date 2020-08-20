@@ -14,6 +14,7 @@ database/*.sqlite
 # All images inside
 public/images/user_pictures/
 public/images/post_pictures/
+public/images/article_pictures/
 
 # VSCode & PhpStorm history directories
 .history

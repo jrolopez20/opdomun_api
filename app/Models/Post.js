@@ -78,15 +78,18 @@ class Post extends Model {
         return posts;
     }
 
-    static async getPosts(plan = null, page = 1, limit = 20, filter) {
+    static async getPosts(plan = null, page = 1, limit = 20, filter, orderBy) {
         const query = Post
             .query()
             .with('user')
             .with('municipio.provincia')
             .with('images', (builder) => {
                 builder.where('default', 1)
-            })
-            .orderBy('id', 'DESC');
+            });
+
+        if(orderBy) {
+            query.orderBy(orderBy, 'DESC');
+        }
 
         if (plan) {
             if (parseInt(plan) === -1) {

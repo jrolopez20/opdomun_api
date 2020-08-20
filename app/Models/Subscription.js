@@ -9,8 +9,9 @@ class Subscription extends Model {
     }
 
     static async getSubscriptions(page = 1, limit = 20, filter) {
-        const query = Database
-            .from('subscriptions');
+        const query = Subscription
+            .query()
+            .with('provincia');
 
         if (filter) {
             let where = "(fullname like '%" + filter + "%') OR (email like '%" + filter + "%') OR (telephone like '%" + filter + "%')";
@@ -42,6 +43,16 @@ class Subscription extends Model {
         subscription.home_types = homeTypes
 
         return subscription;
+    }
+
+    static async getTotalSubscriptions(startAt, endAt) {
+        const query = Subscription
+            .query()
+            .where('created_at', '>=', startAt)
+            .where('created_at', '<=', endAt)
+            .getCount()
+
+        return await query;
     }
 
     provincia() {

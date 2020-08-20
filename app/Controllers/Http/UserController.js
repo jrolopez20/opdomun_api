@@ -23,7 +23,8 @@ class UserController {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
-        const users = await User.getUsers(page, limit, filter);
+        const orderBy = request.input('orderBy');
+        const users = await User.getUsers(page, limit, filter, orderBy);
         return response.json(users)
     }
 
@@ -86,9 +87,9 @@ class UserController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async destroy({params, response}) {
+    async destroy({params, response, auth}) {
         try {
-            const res = await UserService.destroyUser(params.id);
+            const res = await UserService.destroyUser(params.id, auth);
             if (res) {
                 return response.status(204).json(null);
             } else {
@@ -103,6 +104,15 @@ class UserController {
         try {
             await UserService.changePassword(params.id, request.input('password'));
             return response.json('Password changed');
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async toggleEnable({params, response}) {
+        try {
+            const user = await UserService.toggleEnable(params.id);
+            return response.json(user);
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

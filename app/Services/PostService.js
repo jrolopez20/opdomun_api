@@ -5,8 +5,8 @@ const Image = use('App/Models/Image');
 const Variable = use('App/Models/Variable');
 const PostVariable = use('App/Models/PostVariable');
 const Database = use('Database');
-const Drive = use('Drive');
-const Helpers = use('Helpers');
+const HisPost = use('App/Models/HisPost')
+const PostPlace = use('App/Models/PostPlace')
 
 class PostService {
 
@@ -37,16 +37,15 @@ class PostService {
 
         await post.save();
 
-        // Define post close date
-        await Database
-            .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
-                [post.id]);
+        if (post.plan) {
+            // Define post close date
+            await Database
+                .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
+                    [post.id]);
+        }
 
         await this.initPostVariable(post);
-
-        await post
-            .postPlaces()
-            .createMany(otherPlaces);
+        await this.setAu(post, otherPlaces);
 
         post = await post.calculateOpdo();
         return post;
@@ -66,6 +65,8 @@ class PostService {
         const homeTypeId = request.input('home_type_id');
         const summary = request.input('summary');
         const sold = request.input('sold');
+        const inputOwner = request.input('owner');
+        const otherPlaces = request.input('other_places');
 
         post.address = address;
         post.price = price;
@@ -75,6 +76,15 @@ class PostService {
         post.home_type_id = homeTypeId;
         post.summary = summary;
         post.sold = sold;
+
+        await post.load('owner');
+        const owner = await post.getRelated('owner');
+        owner.fullname = inputOwner.fullname;
+        owner.telephone = inputOwner.telephone;
+        owner.email = inputOwner.email;
+        await owner.save()
+
+        await this.setAu(post, otherPlaces);
 
         post = await post.calculateOpdo();
         return post;
@@ -107,6 +117,73 @@ class PostService {
 
         // Calcula automaticamente la variable Pu
         await PostVariable.calculatePu(post.id, post.municipio_id)
+    }
+
+    static async setAu(post, otherPlaces) {
+        await PostPlace
+            .query()
+            .where('post_id', post.id)
+            .delete();
+
+        await post
+            .postPlaces()
+            .createMany(otherPlaces);
+
+        // Calcula automaticamente la variable Au
+        await PostVariable.calculateAu(post.id, post.bedrooms, post.bathrooms, otherPlaces);
+    }
+
+    static async publishPost(postId) {
+        let post = await Post.find(postId);
+        if (!post) {
+            throw new Error('Post not found');
+        }
+
+        const hisPost = new HisPost();
+        hisPost.post_id = postId;
+        hisPost.action = 1;
+        await hisPost.save();
+
+        post.published_at = new Date();
+
+        if (!post.plan) {
+            // Case when is an appraisal
+            post.plan = 1; // Set premium plan
+            const activeMonths = 3;
+            await Database
+                .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
+                    [post.id]);
+        }
+
+        await post.save();
+
+        return await Post.getPost(postId);
+    }
+
+    static async calculatePrice(postId) {
+        const post = await Post.find(postId);
+
+        if (!post) {
+            throw new Error('Post not found');
+        }
+
+        if (!post.plan) {
+            await post.calculatePrice();
+        }
+
+        return await Post.getPost(postId);
+    }
+
+    static async markAsSold(postId) {
+        let post = await Post.find(postId);
+        if (!post) {
+            throw new Error('Post not found');
+        }
+
+        post.sold = 1;
+        await post.save();
+
+        return await Post.getPost(postId);
     }
 
 }
