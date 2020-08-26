@@ -43,9 +43,9 @@ Route.group(() => {
 
     // Subscriptions
     Route.resource('subscriptions', 'SubscriptionController')
-        // .validator(new Map([
-        //     [['articles.store', 'articles.update'], ['SaveArticle']]
-        // ]))
+        .validator(new Map([
+            [['subscriptions.store'], ['StoreSubscription']]
+        ]))
         .middleware(new Map([
             [['index', 'get', 'destroy'], ['auth']]
         ])).apiOnly();

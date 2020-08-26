@@ -30,6 +30,7 @@ class Post extends Model {
             .with('homeType')
             .with('postPlaces')
             .with('owner')
+            .with('images')
             .where('id', id)
             .firstOrFail();
 

@@ -31,14 +31,14 @@ class SubscriptionController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    // async store({request, response}) {
-    //     try {
-    //         const subscription = await SubscriptionService.addSubscription(request);
-    //         return response.status(201).json(subscription)
-    //     } catch (e) {
-    //         return response.status(400).json({message: e.message})
-    //     }
-    // }
+    async store({request, response}) {
+        try {
+            const subscription = await SubscriptionService.addSubscription(request);
+            return response.status(201).json(subscription)
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
 
     /**
      * Display a single subscription.
