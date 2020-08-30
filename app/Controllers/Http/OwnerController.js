@@ -28,12 +28,12 @@ class OwnerController {
      */
     async store({request, response, params}) {
         try {
-            const owner = new Owner();
-            owner.post_id = params.postId;
-            owner.fullname = request.input('fullname');
-            owner.phone = request.input('phone');
-            owner.email = request.input('email');
-            await owner.save();
+            const owner = await Owner.addOwner({
+                postId: params.postId,
+                fullname: request.input('fullname'),
+                phone: request.input('phone'),
+                email: request.input('email'),
+            });
 
             return response.status(201).json(owner)
         } catch (e) {

@@ -30,7 +30,10 @@ class Post extends Model {
             .with('homeType')
             .with('postPlaces')
             .with('owner')
-            .with('images')
+            .with('images', (builder) => {
+                builder.orderBy('default', 'DESC')
+            })
+            .with('postVisit')
             .where('id', id)
             .firstOrFail();
 
@@ -79,33 +82,134 @@ class Post extends Model {
         return posts;
     }
 
-    static async getPosts(plan = null, page = 1, limit = 20, filter, orderBy) {
-        const query = Post
-            .query()
-            .with('user')
-            .with('municipio.provincia')
-            .with('images', (builder) => {
-                builder.where('default', 1)
-            });
-
-        if(orderBy) {
-            query.orderBy(orderBy, 'DESC');
-        }
+    static async getPosts(plan = null, page = 1, limit = 20, filter, orderBy = 'updated_at') {
+        const query = Database
+            .from('posts')
+            .select(
+                'posts.id', 'posts.plan', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
+                'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.sold', 'images.url as image',
+                'municipios.title as municipio', 'provincias.cod as provincia'
+            )
+            .innerJoin('owners', 'owners.post_id', 'posts.id')
+            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
+            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
+            .leftJoin('plans', 'plans.id', 'posts.plan')
+            .innerJoin('images', function () {
+                this
+                    .on('posts.id', 'images.post_id')
+                    .andOn('images.default', 1)
+            })
+            .whereNotNull('posts.published_at')
+            //.whereRaw('posts.closed_at >= now()')
+            .orderBy('plans.ranking', 'ASC')
+            .orderBy('posts.opdo', 'DESC')
+            .orderBy('posts.opdo', 'orderBy');
 
         if (plan) {
             if (parseInt(plan) === -1) {
-                query.andWhere('plan', null)
+                query.andWhere('posts.plan', null)
             } else {
-                query.andWhere('plan', plan)
+                query.andWhere('posts.plan', parseInt(plan));
             }
+        } else {
+            query.whereIn('posts.plan', [1, 4])
         }
+
         if (filter) {
-            let where = "(address like '%" + filter + "%')";
-            where = where + " AND true = ?";
-            query.whereRaw(where, [true])
+            if (filter.provincia) {
+                query.andWhere('provincias.id', filter.provincia)
+            }
+            if (filter.municipio) {
+                query.andWhere('municipios.id', filter.municipio)
+            }
+            if (filter.homeType) {
+                query.andWhere('posts.home_type_id', filter.homeType);
+            }
+            if (filter.bedrooms) {
+                query.andWhere('posts.bedrooms', filter.bedrooms);
+            }
+            if (filter.bathrooms) {
+                query.andWhere('posts.bathrooms', filter.bathrooms);
+            }
+            if (filter.minPrice) {
+                query.andWhere('posts.price', '>=', filter.minPrice);
+            }
+            if (filter.maxPrice) {
+                query.andWhere('posts.price', '<=', filter.maxPrice);
+            }
         }
 
         const posts = await query.paginate(page, limit);
+        return posts;
+    }
+
+    static async getAppraisals(page = 1, limit = 20, filter, orderBy = 'updated_at') {
+        const query = Database
+            .from('posts')
+            .select(
+                'posts.id', 'posts.plan', 'posts.opdo', 'posts.price', 'posts.area',
+                'posts.address', 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms',
+                'municipios.title as municipio', 'provincias.cod as provincia'
+            )
+            .leftJoin('owners', 'owners.post_id', 'posts.id')
+            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
+            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
+            .where('posts.plan', null)
+            .orderBy(`posts.${orderBy}`, 'DESC')
+
+        if (filter) {
+            if (filter.provincia) {
+                query.andWhere('provincias.id', filter.provincia)
+            }
+            if (filter.municipio) {
+                query.andWhere('municipios.id', filter.municipio)
+            }
+            if (filter.homeType) {
+                query.andWhere('posts.home_type_id', filter.homeType);
+            }
+            if (filter.bedrooms) {
+                query.andWhere('posts.bedrooms', filter.bedrooms);
+            }
+            if (filter.bathrooms) {
+                query.andWhere('posts.bathrooms', filter.bathrooms);
+            }
+            if (filter.minPrice) {
+                query.andWhere('posts.price', '>=', filter.minPrice);
+            }
+            if (filter.maxPrice) {
+                query.andWhere('posts.price', '<=', filter.maxPrice);
+            }
+        }
+
+        const posts = await query.paginate(page, limit);
+        return posts;
+    }
+
+    static async getRecommendedPost(limit = 6) {
+        const query = Database
+            .from('posts')
+            .select(
+                'posts.id', 'posts.plan', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area',
+                'posts.address', 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'images.url as image',
+                'municipios.title as municipio', 'provincias.cod as provincia'
+            )
+            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
+            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
+            .innerJoin('plans', 'plans.id', 'posts.plan')
+            .innerJoin('images', function () {
+                this
+                    .on('posts.id', 'images.post_id')
+                    .andOn('images.default', 1)
+            })
+            .whereNotNull('posts.published_at')
+            .andWhere('posts.plan', 1)
+            .andWhere('posts.sold', '<>', 1)
+            .whereRaw('month(posts.published_at) in (month(now()), month(now())-1)')
+            .orderBy(`posts.opdo`, 'DESC')
+            .limit(limit)
+
+        const posts = await query;
+        // const posts = await query.paginate(1, limit);
         return posts;
     }
 

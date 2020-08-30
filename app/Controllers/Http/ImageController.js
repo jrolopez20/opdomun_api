@@ -37,7 +37,12 @@ class ImageController {
      */
     async store({params, request, response}) {
         try {
-            const images = await ImageService.addImages(params.posts_id, request);
+            const postPictures = request.file('post_images', {
+                types: ['image'],
+                extnames: ['jpg', 'jpeg', 'png'],
+                size: '1mb'
+            });
+            const images = await ImageService.addImages(params.posts_id, postPictures);
             return response.status(201).json(images)
         } catch (e) {
             return response.status(400).json({message: e.message})

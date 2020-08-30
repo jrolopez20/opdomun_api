@@ -24,7 +24,15 @@ class PostController {
         const plan = request.input('plan');
         const page = request.input('page');
         const limit = request.input('limit');
-        const filter = request.input('filter');
+        const filter = {
+            provincia: request.input('provincia'),
+            municipio: request.input('municipio'),
+            minPrice: request.input('minPrice'),
+            maxPrice: request.input('maxPrice'),
+            bedrooms: request.input('bedrooms'),
+            bathrooms: request.input('bathrooms'),
+            homeType: request.input('homeType')
+        };
         const orderBy = request.input('orderBy');
         const posts = await Post.getPosts(plan, page, limit, filter, orderBy);
         return response.json(posts);
@@ -113,6 +121,16 @@ class PostController {
         }
     }
 
+    async getRecommendedPosts({request, response}) {
+        try {
+            const limit = request.input('limit');
+            const posts = await Post.getRecommendedPost(limit);
+            return response.json(posts);
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
     async publishPost({params, response}) {
         try {
             const post = await PostService.publishPost(params.id);
@@ -126,6 +144,15 @@ class PostController {
         try {
             const post = await PostService.markAsSold(params.id);
             return response.json(post);
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async addFreePost({request, response}) {
+        try {
+            const post = await PostService.addFreePost(request);
+            return response.status(201).json(post)
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

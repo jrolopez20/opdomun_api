@@ -7,15 +7,12 @@ const Helpers = use('Helpers');
 
 class ImageService {
 
-    static async addImages(postId, request) {
+    static async addImages(postId, postPictures) {
         const trx = await Database.beginTransaction();
-        const postPictures = request.file('post_images', {
-            types: ['image'],
-            extnames: ['jpg', 'jpeg', 'png'],
-            size: '1mb'
-        });
+
         const publicPath = Helpers.publicPath('images/post_pictures')
         let pictures = [];
+        let defaultImage = 1;
         if (postPictures) {
             const maxUpPict = 10;
 
@@ -27,8 +24,10 @@ class ImageService {
                         const picName = `${new Date().getTime()}_${file.clientName}`;
                         pictures.push({
                             'post_id': postId,
-                            'url': picName
+                            'url': picName,
+                            'default': defaultImage
                         });
+                        defaultImage = null;
 
                         return {
                             name: picName,

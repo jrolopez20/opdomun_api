@@ -7,6 +7,7 @@ const PostVariable = use('App/Models/PostVariable');
 const Database = use('Database');
 const HisPost = use('App/Models/HisPost')
 const PostPlace = use('App/Models/PostPlace')
+const Owner = use('App/Models/Owner')
 
 class PostService {
 
@@ -48,6 +49,46 @@ class PostService {
         await this.setAu(post, otherPlaces);
 
         post = await post.calculateOpdo();
+        return post;
+    }
+
+    static async addFreePost(request) {
+        const plan = 4;
+        const activeMonths = 1;
+        const otherPlaces = request.input('other_places');
+
+        let post = new Post();
+        post.plan = plan;
+        post.municipio_id = request.input('municipio');
+        post.address = request.input('address');
+        post.price = request.input('price');
+        post.area = request.input('area');
+        post.bedrooms = request.input('bedrooms');
+        post.bathrooms = request.input('bathrooms');
+        post.home_type_id = request.input('home_type');
+        post.summary = request.input('summary');
+        post.published_at = new Date();
+
+        await post.save();
+
+        // Define post close date
+        await Database
+            .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
+                [post.id]);
+
+        const owner = await Owner.addOwner({
+            postId: post.id,
+            fullname: request.input('fullname'),
+            phone: request.input('phone'),
+            email: request.input('email'),
+        });
+
+        await this.initPostVariable(post);
+        await this.setAu(post, otherPlaces);
+
+        post = await post.calculateOpdo();
+        post.owner = owner;
+
         return post;
     }
 
