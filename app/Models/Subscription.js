@@ -23,6 +23,33 @@ class Subscription extends Model {
         return subscriptions;
     }
 
+    static async getMatchedSubscriptions({provinciaId, municipioId, price, homeType, bedrooms, bathrooms}) {
+        const posts = Database
+            .from('subscriptions')
+            .select(
+                'id', 'email', 'telephone', 'fullname', 'subscriptions.municipio'
+            );
+
+        if (provinciaId) {
+            posts.where('provincia_id', provinciaId);
+        }
+
+        if (municipioId) {
+            posts.whereRaw(`FIND_IN_SET(${municipioId}, municipio)`);
+        }
+
+        if (price) {
+            posts.andWhere('min_price', '<=', price);
+            posts.andWhere('max_price', '>=', price);
+        }
+
+        if (homeType) {
+            posts.whereRaw(`FIND_IN_SET(${homeType}, home_type)`);
+        }
+
+        return await posts;
+    }
+
     static async getSubscription(id) {
         let query = Subscription
             .query()

@@ -975,6 +975,25 @@ class Post extends Model {
         }
     }
 
+    static async getActivePremiumPost() {
+        const posts = Database
+            .from('posts')
+            .select(
+                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms', 'posts.home_type_id',
+                'posts.municipio_id', 'municipios.provincia_id', 'owners.fullname', 'owners.email', 'owners.phone'
+            )
+            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
+            .innerJoin('owners', 'posts.id', 'owners.post_id')
+            .whereNotNull('posts.published_at')
+            .whereNotNull('owners.email')
+            .whereRaw('posts.closed_at >= now()')
+            .andWhere('posts.plan', 1)
+            .andWhere('posts.sold', '<>', 1)
+            .orderBy('posts.opdo', 'desc');
+
+        return await posts;
+    }
+
     async calculatePrice() {
         const municipio = await Municipio.find(this.municipio_id);
         this.opdo = await this.getAvgOpdo(this.municipio_id, municipio.provincia_id);

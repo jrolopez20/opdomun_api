@@ -119,6 +119,8 @@ Route.group(() => {
     Route.get('sol_tecnico_constructiva_options', 'VariableTcController.getSolTecnicoConstructivaValues').middleware(['auth']);
     Route.get('moviliario_options', 'VariableMhController.getMoviliarioOptions').middleware(['auth']);
     Route.get('electrodomestico_options', 'VariableMhController.getElectrodomesticoOptions').middleware(['auth']);
+    Route.post('notify_customers', 'MailerController.notifyCustomers').middleware(['auth']);
+    Route.post('notify_subscriptors', 'MailerController.notifySubscriptors').middleware(['auth']);
 
 
 }).prefix('api');
