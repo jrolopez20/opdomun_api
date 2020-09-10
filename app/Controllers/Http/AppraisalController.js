@@ -5,7 +5,7 @@ const Post = use('App/Models/Post');
 
 class AppraisalController {
 
-    async index({request, response}) {
+    async index({request, response, auth}) {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = {
@@ -18,7 +18,7 @@ class AppraisalController {
             homeType: request.input('homeType')
         };
         const orderBy = request.input('orderBy');
-        const posts = await Post.getAppraisals(page, limit, filter, orderBy);
+        const posts = await Post.getAppraisals(page, limit, filter, orderBy, auth);
         return response.json(posts);
     }
 

@@ -71,12 +71,13 @@ Route.group(() => {
             [['posts.update'], ['UpdatePost']]
         ]))
         .middleware(new Map([
-            [['store', 'update', 'destroy'], ['auth']],
+            [['store', 'index', 'update', 'destroy'], ['auth']],
             [['show'], ['visitors_count']]
         ])).apiOnly();
     Route.put('posts/:id/publish', 'PostController.publishPost').middleware(['auth']).validator('PublishPost');
     Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice').middleware(['auth']).validator('PublishPost');
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth']);
+    Route.get('published_posts', 'PostController.index');
 
     Route.get('appraisals', 'AppraisalController.index').middleware(['auth']);
 
@@ -119,9 +120,6 @@ Route.group(() => {
     Route.get('sol_tecnico_constructiva_options', 'VariableTcController.getSolTecnicoConstructivaValues').middleware(['auth']);
     Route.get('moviliario_options', 'VariableMhController.getMoviliarioOptions').middleware(['auth']);
     Route.get('electrodomestico_options', 'VariableMhController.getElectrodomesticoOptions').middleware(['auth']);
-    Route.post('notify_customers', 'MailerController.notifyCustomers').middleware(['auth']);
-    Route.post('notify_subscriptors', 'MailerController.notifySubscriptors').middleware(['auth']);
-
 
 }).prefix('api');
 

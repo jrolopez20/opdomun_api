@@ -12,7 +12,6 @@ class ImageService {
 
         const publicPath = Helpers.publicPath('images/post_pictures')
         let pictures = [];
-        let defaultImage = 1;
         if (postPictures) {
             const maxUpPict = 10;
 
@@ -25,9 +24,8 @@ class ImageService {
                         pictures.push({
                             'post_id': postId,
                             'url': picName,
-                            'default': defaultImage
+                            'default': null
                         });
-                        defaultImage = null;
 
                         return {
                             name: picName,

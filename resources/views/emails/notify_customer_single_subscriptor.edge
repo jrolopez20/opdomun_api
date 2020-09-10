@@ -1,0 +1,36 @@
+@layout('emails.layout')
+
+@section('content')
+<div style="text-align: left;">
+    <div style="margin-bottom: 30px;">
+        <div style="font-size: 24px; margin-bottom: 10px; text-align: center">
+            Hola {{ owner.fullname }}
+        </div>
+        <p>
+            <strong>{{ subscriptor.fullname }}</strong> está buscando casa con características similares a la suya.
+        </p>
+        <div>Acá le dejamos sus datos de contacto:</div>
+        <div style="text-align: left;">
+            <strong>Email</strong>: {{ subscriptor.email }}
+        </div>
+        <div style="text-align: left;">
+            <strong>Teléfono</strong>: {{ subscriptor.telephone }}
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="https://opdomun.com" target="_blank"
+           style="display: inline-block; text-align: center; background: #008FFC; padding: 12px 20px; color: #fff; text-decoration: none; border-radius: 5px;">
+            Visitar Opdomun
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('footer')
+<p>
+    Si usted ha recibido este correo electrónico es porque usted ha contratado el servicio de <strong>Anuncio
+    Premium</strong> y como parte de este se le notificará mientras se encuentre vigente el servicio adquirido de
+    personas con interés en propiedades con características similares a la suya.
+</p>
+@endsection

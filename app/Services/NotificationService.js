@@ -6,31 +6,44 @@ const MailNotification = use('App/Notifications/MailNotification');
 
 class NotificationService {
 
-    static async dispatchCustomerNotification() {
-        // Get all active premium post
-        const posts = await Post.getActivePremiumPost();
-        for (const post of posts) {
-            // For each post find all subscriptions that match to its attribute
+    static async dispatchCustomerNotification(post, subscription = null) {
+        if (!post.owner.email) {
+            return false;
+        }
+
+        if (subscription) {
+            await MailNotification.notifyCustomerSingle(post.owner, subscription);
+            return true;
+        } else {
+            // Find all subscriptions that match to post's attribute
             const subscriptors = await Subscription.getMatchedSubscriptions({
-                provinciaId: post.provincia_id,
+                provinciaId: post.municipio.provincia_id,
                 municipioId: post.municipio_id,
                 price: post.price,
                 homeType: post.home_type_id
             });
-            // Finally if there is at least one subcription matched to the post attributes dispatch email
-            if(subscriptors.length) {
-                await MailNotification.sendCustomerEmail({
-                    email: post.email,
-                    fullname: post.fullname
-                }, subscriptors);
 
-                break; // TODO, delete this line. It's created only for testing purpose
+            // Finally if there is at least one subcription matched to the post attributes dispatch email
+            if (subscriptors.length > 1) {
+                await MailNotification.notifyCustomerMultiple(post.owner, subscriptors);
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    static async dispatchSubscriptorNotification() {
+    static async dispatchSubscriptorNotification(post) {
+        // Find all subscriptions that match to post's attribute
+        const subscriptions = await Subscription.getMatchedSubscriptions({
+            provinciaId: post.municipio.provincia_id,
+            municipioId: post.municipio_id,
+            price: post.price,
+            homeType: post.home_type_id
+        });
+
+        for (const subscription of subscriptions) {
+            await MailNotification.notifySubcriptor(subscription, post);
+        }
     }
 
 }

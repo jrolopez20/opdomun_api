@@ -8,6 +8,8 @@ const Database = use('Database')
 class StatisticsService {
 
     static async getServices(user, startAt, endAt) {
+        startAt += ' 00:00:00';
+        endAt += ' 23:59:59';
         const query = Database
             .table('posts')
             .select('posts.plan', 'plans.title')
@@ -23,7 +25,6 @@ class StatisticsService {
             query.innerJoin('offices', 'users.office_id', 'offices.id')
             query.andWhere('offices.id', user.office_id)
             query.whereIn('posts.plan', [null, 1])
-
         }
 
         if (user.role === User.roles().USER) {
@@ -54,6 +55,8 @@ class StatisticsService {
     }
 
     static async servicesByOffice(startAt, endAt) {
+        startAt += ' 00:00:00';
+        endAt += ' 23:59:59';
         const result = await Office
             .query()
             .with('provincia')
@@ -69,6 +72,8 @@ class StatisticsService {
     }
 
     static async servicesByUser(startAt, endAt, officeId) {
+        startAt += ' 00:00:00';
+        endAt += ' 23:59:59';
         const services = await Database
             .table('posts')
             .count('posts.id as total')
@@ -102,6 +107,8 @@ class StatisticsService {
     }
 
     static async getServicesByOffice(startAt, endAt, officeId) {
+        startAt += ' 00:00:00';
+        endAt += ' 23:59:59';
         const services = await Database
             .table('posts')
             .select('posts.plan', 'plans.title')
@@ -133,6 +140,8 @@ class StatisticsService {
     }
 
     static async getServicesByUser(startAt, endAt, userId) {
+        startAt += ' 00:00:00';
+        endAt += ' 23:59:59';
         const services = await Database
             .table('posts')
             .select('posts.plan', 'plans.title')

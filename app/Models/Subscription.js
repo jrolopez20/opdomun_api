@@ -14,9 +14,27 @@ class Subscription extends Model {
             .with('provincia');
 
         if (filter) {
-            let where = "(fullname like '%" + filter + "%') OR (email like '%" + filter + "%') OR (telephone like '%" + filter + "%')";
-            where = where + " AND true = ?";
-            query.whereRaw(where, [true])
+            if (filter.provincia) {
+                query.andWhere('provincia_id', filter.provincia)
+            }
+            if (filter.municipio) {
+                query.whereRaw(`FIND_IN_SET(${filter.municipio}, municipio)`);
+            }
+            if (filter.homeType) {
+                query.whereRaw(`FIND_IN_SET(${filter.homeType}, home_type)`);
+            }
+            if (filter.bedrooms) {
+                query.andWhere('bedrooms', filter.bedrooms);
+            }
+            if (filter.bathrooms) {
+                query.andWhere('bathrooms', filter.bathrooms);
+            }
+            if (filter.minPrice) {
+                query.andWhere('min_price', '>=', filter.minPrice);
+            }
+            if (filter.maxPrice) {
+                query.andWhere('max_price', '<=', filter.maxPrice);
+            }
         }
 
         const subscriptions = await query.paginate(page, limit);
@@ -24,30 +42,30 @@ class Subscription extends Model {
     }
 
     static async getMatchedSubscriptions({provinciaId, municipioId, price, homeType, bedrooms, bathrooms}) {
-        const posts = Database
+        const subscriptions = Database
             .from('subscriptions')
             .select(
                 'id', 'email', 'telephone', 'fullname', 'subscriptions.municipio'
             );
 
         if (provinciaId) {
-            posts.where('provincia_id', provinciaId);
+            subscriptions.where('provincia_id', provinciaId);
         }
 
         if (municipioId) {
-            posts.whereRaw(`FIND_IN_SET(${municipioId}, municipio)`);
+            subscriptions.whereRaw(`FIND_IN_SET(${municipioId}, municipio)`);
         }
 
         if (price) {
-            posts.andWhere('min_price', '<=', price);
-            posts.andWhere('max_price', '>=', price);
+            subscriptions.andWhere('min_price', '<=', price);
+            subscriptions.andWhere('max_price', '>=', price);
         }
 
         if (homeType) {
-            posts.whereRaw(`FIND_IN_SET(${homeType}, home_type)`);
+            subscriptions.whereRaw(`FIND_IN_SET(${homeType}, home_type)`);
         }
 
-        return await posts;
+        return await subscriptions;
     }
 
     static async getSubscription(id) {

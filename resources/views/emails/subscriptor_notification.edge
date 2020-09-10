@@ -1,4 +1,42 @@
-<h2> Hello {{ username }} </h2>
+@layout('emails.layout')
+
+@section('content')
+<div style="text-align: left;">
+    <div style="margin-bottom: 30px;">
+        <div style="font-size: 24px; margin-bottom: 10px; text-align: center">
+            Anuncio recién publicado!!!
+        </div>
+        <p>
+            Hola {{ subscription.fullname }}, se ha publicado un anuncio con características similares a tu búsqueda que
+            pudiera interesarte.
+        </p>
+        <p>
+            La vivienda se encuentra en
+            <strong>{{ post.municipio.provincia.cod }}, {{ post.municipio.title }}, {{ post.address }}</strong> se
+            ha publicado con un precio de <strong>{{ post.price }} CUC</strong> y posee
+            <strong>{{ post.bedrooms }} habitacion(es)</strong> y <strong>{{ post.bathrooms }} baño(s)</strong>.
+        </p>
+        <div>Puede contactar a su propietario(a) {{ post.owner.fullname }} aquí:</div>
+        <div style="text-align: left;">
+            <span>Email</span>: <i>{{ post.owner.email }}</i>
+        </div>
+        <div style="text-align: left;">
+            <span>Teléfono</span>: <i>{{ post.owner.phone }}</i>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="https://opdomun.com/casa/{{ post.id }}" target="_blank"
+           style="display: inline-block; text-align: center; background: #008FFC; padding: 12px 20px; color: #fff; text-decoration: none; border-radius: 5px;">
+            Ver más sobre esta propiedad
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('footer')
 <p>
-    Welcome to the yardstick club, here's your getting started guide
+    Si usted ha recibido este correo electrónico es porque usted se ha suscrito a nuestra plataforma y ha aceptado
+    recibir correos de notificación de propiedades con características similares a sus intereses.
 </p>
+@endsection

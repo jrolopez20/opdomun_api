@@ -18,7 +18,15 @@ class SubscriptionController {
     async index({request, response}) {
         const page = request.input('page');
         const limit = request.input('limit');
-        const filter = request.input('filter');
+        const filter = {
+            provincia: request.input('provincia'),
+            municipio: request.input('municipio'),
+            minPrice: request.input('minPrice'),
+            maxPrice: request.input('maxPrice'),
+            bedrooms: request.input('bedrooms'),
+            bathrooms: request.input('bathrooms'),
+            homeType: request.input('homeType')
+        };
         const subscriptions = await Subscription.getSubscriptions(page, limit, filter);
         return response.json(subscriptions)
     }

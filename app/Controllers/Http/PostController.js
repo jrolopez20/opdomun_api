@@ -20,7 +20,7 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async index({request, response}) {
+    async index({request, response, auth}) {
         const plan = request.input('plan');
         const page = request.input('page');
         const limit = request.input('limit');
@@ -34,7 +34,7 @@ class PostController {
             homeType: request.input('homeType')
         };
         const orderBy = request.input('orderBy');
-        const posts = await Post.getPosts(plan, page, limit, filter, orderBy);
+        const posts = await Post.getPosts(plan, page, limit, filter, orderBy, auth);
         return response.json(posts);
     }
 

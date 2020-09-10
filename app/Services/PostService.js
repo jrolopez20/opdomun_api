@@ -8,6 +8,7 @@ const Database = use('Database');
 const HisPost = use('App/Models/HisPost')
 const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
+const NotificationService = use('App/Services/NotificationService')
 
 class PostService {
 
@@ -195,10 +196,17 @@ class PostService {
                 .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
                     [post.id]);
         }
-
         await post.save();
 
-        return await Post.getPost(postId);
+        const publishedPost = await Post.getPost(postId);
+        const postObj = publishedPost.toJSON();
+
+        // Notify owner about matched subscriptions
+        await NotificationService.dispatchCustomerNotification(postObj);
+        // Notify subscriptors about that match with the new property
+        await NotificationService.dispatchSubscriptorNotification(postObj);
+
+        return publishedPost;
     }
 
     static async calculatePrice(postId) {

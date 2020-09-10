@@ -28,13 +28,12 @@ class VariableIuController {
 
             await postVar.load('infUrbanas');
             const infUrbanas = await postVar.getRelated('infUrbanas').toJSON();
-
             const services = {...this.getDiccCalInfUrb()};
 
             for (let service in this.getDiccCalInfUrb()) {
-                services[service] = infUrbanas.find(item => {
+                services[service] = infUrbanas.length ? infUrbanas.find(item => {
                     return this.getDiccCalInfUrb()[service].title === item.title
-                }).value
+                }).value : null
             }
 
             return response.json(services);
