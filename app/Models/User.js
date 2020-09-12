@@ -6,7 +6,6 @@ const Hash = use('Hash')
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 const Database = use('Database')
-const Provincia = use('App/Models/Provincia')
 
 class User extends Model {
     static boot() {
@@ -27,6 +26,7 @@ class User extends Model {
         return {
             ADMIN: 'ADMIN',
             MANAGER: 'MANAGER',
+            AGENT: 'AGENT',
             USER: 'USER'
         }
     }

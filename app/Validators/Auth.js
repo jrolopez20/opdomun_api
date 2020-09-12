@@ -4,7 +4,8 @@ class Auth {
     get rules() {
         return {
             email: 'required|email',
-            password: 'required'
+            password: 'required',
+            entry_point: 'required'
         }
     }
 
@@ -12,7 +13,8 @@ class Auth {
         return {
             'email.required': 'You must provide an email address.',
             'email.email': 'You must provide a valid email address.',
-            'password.required': 'You must provide a password'
+            'password.required': 'You must provide a password',
+            'entry_point.required': 'You must provide a valid entry point'
         }
     }
 

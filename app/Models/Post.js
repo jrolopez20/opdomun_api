@@ -104,7 +104,7 @@ class Post extends Model {
 
         if (auth.user) {
             query.orderBy(`posts.updated_at`, 'DESC');
-            if (auth.user.role === User.roles().USER) {
+            if (auth.user.role === User.roles().AGENT) {
                 query.andWhere('posts.user_id', auth.user.id);
             }
             if (auth.user.role === User.roles().MANAGER) {
@@ -172,7 +172,7 @@ class Post extends Model {
             .where('posts.plan', null)
             .orderBy(`posts.${orderBy}`, 'DESC');
 
-        if (auth.user.role === User.roles().USER) {
+        if (auth.user.role === User.roles().AGENT) {
             query.andWhere('posts.user_id', auth.user.id);
         }
         if (auth.user.role === User.roles().MANAGER) {

@@ -27,7 +27,7 @@ class StatisticsService {
             query.whereIn('posts.plan', [null, 1])
         }
 
-        if (user.role === User.roles().USER) {
+        if (user.role === User.roles().AGENT) {
             query.andWhere('posts.user_id', user.id)
             query.whereIn('posts.plan', [null, 1])
         }
