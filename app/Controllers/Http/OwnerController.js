@@ -6,7 +6,7 @@ const Owner = use('App/Models/Owner');
  * Resourceful controller for interacting with owners
  */
 class OwnerController {
-    //TODO Owner for Post
+
     /**
      * Show a list of all owners.
      * GET owners
@@ -30,6 +30,7 @@ class OwnerController {
         try {
             const owner = await Owner.addOwner({
                 postId: params.postId,
+                userId: request.input('user_id'),
                 fullname: request.input('fullname'),
                 phone: request.input('phone'),
                 email: request.input('email'),
@@ -69,6 +70,7 @@ class OwnerController {
     async update({params, request, response}) {
         try {
             const owner = await Owner.find(params.id);
+            owner.user_id = request.input('user_id');
             owner.fullname = request.input('fullname');
             owner.phone = request.input('phone');
             owner.email = request.input('email');

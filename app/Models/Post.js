@@ -30,7 +30,7 @@ class Post extends Model {
             .with('municipio.provincia')
             .with('homeType')
             .with('postPlaces')
-            .with('owner')
+            .with('owner.user')
             .with('images', (builder) => {
                 builder.orderBy('default', 'DESC')
             })

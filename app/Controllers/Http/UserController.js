@@ -23,8 +23,9 @@ class UserController {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
+        const role = request.input('role');
         const orderBy = request.input('orderBy');
-        const users = await User.getUsers(page, limit, filter, orderBy);
+        const users = await User.getUsers(page, limit, filter, role, orderBy);
         return response.json(users)
     }
 
@@ -116,6 +117,11 @@ class UserController {
         } catch (e) {
             return response.status(400).json({message: e.message})
         }
+    }
+
+    async roles({response, auth}) {
+        const roles = await UserService.getRoles(auth.user);
+        return response.json(roles)
     }
 }
 

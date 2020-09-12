@@ -53,7 +53,7 @@ class PostService {
         return post;
     }
 
-    static async addFreePost(request) {
+    static async addFreePost(request, user) {
         const plan = 4;
         const activeMonths = 1;
         const otherPlaces = request.input('other_places');
@@ -79,6 +79,7 @@ class PostService {
 
         const owner = await Owner.addOwner({
             postId: post.id,
+            userId: user.id,
             fullname: request.input('fullname'),
             phone: request.input('phone'),
             email: request.input('email'),

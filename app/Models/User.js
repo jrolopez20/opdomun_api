@@ -31,21 +31,20 @@ class User extends Model {
         }
     }
 
-    static async getUsers(page = 1, limit = 20, filter, orderBy) {
+    static async getUsers(page = 1, limit = 20, filter, role = null, orderBy = null) {
         const query = Database
             .from('users')
-            .select('users.*')
-            .select('provincias.title as office_title')
+            .select('users.*', 'provincias.title as office_title')
             .leftJoin('offices', 'offices.id', 'users.office_id')
             .leftJoin('provincias', 'provincias.id', 'offices.provincia_id');
 
+        if (role) {
+            query.where({role})
+        }
+
         if (filter) {
-            let where = "(fullname like '%" + filter + "%') OR (email like '%" + filter + "%')";
-            if (!isNaN(filter)) {
-                where = where + " OR (opnum = " + filter + ")"
-            }
-            where = where + " AND true = ?";
-            query.whereRaw(where, [true])
+            let where = `((fullname like '%${filter}%') OR (email like '%${filter}%'))`;
+            query.whereRaw(where)
         }
 
         if (orderBy) {
@@ -117,6 +116,10 @@ class User extends Model {
 
     posts() {
         return this.hasMany('App/Models/Post')
+    }
+
+    owners() {
+        return this.hasMany('App/Models/Owner')
     }
 
     userProvincias() {

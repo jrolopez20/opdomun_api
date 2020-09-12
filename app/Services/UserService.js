@@ -38,9 +38,10 @@ class UserService {
         }
         await user.save();
 
-
-        user.opnum = user.id;
-        await user.save();
+        if (user.role !== User.roles().USER) {
+            user.opnum = user.id;
+            await user.save();
+        }
 
         return user;
     }
@@ -103,6 +104,25 @@ class UserService {
         await user.save();
 
         return user;
+    }
+
+    static async getRoles(user) {
+        const roles = await User.roles();
+        let enter = false;
+        const filteredRoles = [];
+
+        for (const key in roles) {
+            if (user.role === roles[key]) {
+                enter = true;
+                continue;
+            }
+            if (enter) {
+                filteredRoles.push(roles[key]);
+            }
+        }
+
+        filteredRoles.unshift(roles.ADMIN);
+        return filteredRoles;
     }
 
 }

@@ -59,6 +59,7 @@ Route.group(() => {
         .apiOnly();
     Route.post('users/:id/password', 'UserController.changePassword').middleware(['auth']);
     Route.put('users/:id/toggle_enable', 'UserController.toggleEnable').middleware(['auth']);
+    Route.get('roles', 'UserController.roles').middleware(['auth']);
 
     Route.resource('posts/:postId/owner', 'OwnerController')
         .middleware(new Map([
