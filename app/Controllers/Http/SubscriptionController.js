@@ -39,9 +39,9 @@ class SubscriptionController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async store({request, response}) {
+    async store({request, response, auth}) {
         try {
-            const subscription = await SubscriptionService.addSubscription(request);
+            const subscription = await SubscriptionService.addSubscription(request, auth.user);
             return response.status(201).json(subscription)
         } catch (e) {
             return response.status(400).json({message: e.message})

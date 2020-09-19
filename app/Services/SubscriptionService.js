@@ -15,7 +15,7 @@ class SubscriptionService {
         }
     }
 
-    static async addSubscription(request) {
+    static async addSubscription(request, user) {
         const provinciaId = request.input('provincia_id');
         const municipios = request.input('municipio').join(',');
         const homeTypes = request.input('home_type').join(',');
@@ -24,6 +24,7 @@ class SubscriptionService {
 
         const subscription = new Subscription();
 
+        subscription.user_id = user.id;
         subscription.provincia_id = provinciaId;
         subscription.min_price = minPrice;
         subscription.max_price = maxPrice;

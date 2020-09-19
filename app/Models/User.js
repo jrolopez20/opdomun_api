@@ -62,9 +62,8 @@ class User extends Model {
             .with('office.provincia')
             .where('id', id)
 
-        return await query.first()
-        // const user = await this.findOrFail(id);
-        // return user;
+        const {password, ...user} = (await query.first()).toJSON()
+        return user;
     }
 
     static async getAgents(page, criteria, provincia) {
@@ -120,6 +119,10 @@ class User extends Model {
 
     owners() {
         return this.hasMany('App/Models/Owner')
+    }
+
+    subscriptions() {
+        return this.hasMany('App/Models/Subscription')
     }
 
     userProvincias() {

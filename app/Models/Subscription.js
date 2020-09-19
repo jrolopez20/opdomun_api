@@ -103,6 +103,10 @@ class Subscription extends Model {
     provincia() {
         return this.belongsTo('App/Models/Provincia');
     }
+
+    user() {
+        return this.belongsTo('App/Models/User');
+    }
 }
 
 module.exports = Subscription
