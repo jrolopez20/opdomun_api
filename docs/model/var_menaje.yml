@@ -1,0 +1,20 @@
+definitions:
+  VarMenaje:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      exist:
+        type: integer
+        default: 0
+        description: '0-No tiene menaje, 1-Se vende con menaje'
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - exist

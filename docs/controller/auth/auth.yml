@@ -1,0 +1,24 @@
+/login:
+  post:
+    tags:
+      - Auth
+    summary: Auth JWT login
+    description: Login to the application
+    produces:
+      - application/json
+    parameters:
+      - name: email
+        description: email to use for login.
+        in: formData
+        required: true
+        type: string
+      - name: password
+        description: User's password.
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Login
+      401:
+        description: Invalid login attemp

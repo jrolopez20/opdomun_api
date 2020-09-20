@@ -1,0 +1,18 @@
+definitions:
+  NomSegCiudadana:
+    type: object
+    properties:
+      id:
+        type: uint
+      title:
+        type: string
+      value:
+        type: integer
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - title
+      - value

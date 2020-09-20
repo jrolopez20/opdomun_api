@@ -1,9 +1,13 @@
 # Opdomun API application
 
-### Migrations
+### Instalation
 
-Run the following command to run startup migrations.
+Run the following command `npm install` or`yarn install`.
 
-```js
-adonis migration:run
-```
+### Configuration
+
+Open `.env` file and configure database connection.
+
+###Adonis Swagger Documentation
+
+Open your browser at `http://localhost:3334/docs`

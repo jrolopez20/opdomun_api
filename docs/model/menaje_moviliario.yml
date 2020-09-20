@@ -1,0 +1,18 @@
+definitions:
+  MenajeMoviliario:
+    type: object
+    properties:
+      id:
+        type: uint
+      menage_id:
+        $ref: '#/definitions/VarMenaje'
+      moviliario_id:
+        $ref: '#/definitions/NomMoviliario'
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - menage_id
+      - moviliario_id

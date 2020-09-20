@@ -1,0 +1,22 @@
+definitions:
+  PostVariable:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      variable_id:
+        $ref: '#/definitions/Variable'
+      result:
+        type: float
+      points:
+        type: float
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - variable_id

@@ -1,0 +1,11 @@
+definitions:
+  Office:
+    type: object
+    properties:
+      id:
+        type: uint
+      provincia_id:
+        $ref: '#/definitions/Provincia'
+    required:
+      - id
+      - provincia_id

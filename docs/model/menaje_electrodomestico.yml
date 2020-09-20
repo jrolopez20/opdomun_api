@@ -1,0 +1,18 @@
+definitions:
+  MenajeElectrodomestico:
+    type: object
+    properties:
+      id:
+        type: uint
+      menage_id:
+        $ref: '#/definitions/VarMenaje'
+      electrodomestico_id:
+        $ref: '#/definitions/NomElectrodomestico'
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - menage_id
+      - electrodomestico_id

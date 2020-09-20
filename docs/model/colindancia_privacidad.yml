@@ -1,0 +1,36 @@
+definitions:
+  ColindanciaPrivacidad:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_variable_id:
+        $ref: '#/definitions/PostVariable'
+      rel_hor:
+        type: integer
+      rel_vert:
+        type: integer
+      tipo_via:
+        type: integer
+      altura_cerc_per:
+        type: string
+      permeabilidad:
+        type: integer
+      altura:
+        type: integer
+      distancia:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_variable_id
+      - rel_hor
+      - rel_vert
+      - tipo_via
+      - altura_cerc_per
+      - permeabilidad
+      - altura
+      - distancia

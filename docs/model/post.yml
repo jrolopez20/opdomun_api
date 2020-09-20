@@ -1,0 +1,54 @@
+definitions:
+  Post:
+    type: object
+    description: 'Store all post and appraisals'
+    properties:
+      id:
+        type: uint
+      user_id:
+        $ref: '#/definitions/User'
+      municipio_id:
+        $ref: '#/definitions/Municipio'
+      home_type_id:
+        $ref: '#/definitions/HomeType'
+      plan:
+        $ref: '#/definitions/Plan'
+      address:
+        type: string
+      price:
+        type: float
+      area:
+        type: float
+      bedrooms:
+        type: integer
+      bathrooms:
+        type: integer
+      summary:
+        type: string
+      evi:
+        type: float
+      opdo:
+        type: float
+      built_year:
+        type: integer
+      built_status:
+        type: string
+      sold:
+        type: integer
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+      published_at:
+        type: datetime
+      closed_at:
+        type: datetime
+    required:
+      - id
+      - user_id
+      - municipio_id
+      - home_type_id
+      - address
+      - area
+      - bedrooms
+      - bathrooms

@@ -1,0 +1,24 @@
+definitions:
+  ServPublico:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_variable_id:
+        $ref: '#/definitions/PostVariable'
+      value:
+        type: integer
+      display_value:
+        type: string
+      title:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_variable_id
+      - value
+      - display_value
+      - title

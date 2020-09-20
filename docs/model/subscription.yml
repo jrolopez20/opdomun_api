@@ -1,0 +1,38 @@
+definitions:
+  Subscription:
+    type: object
+    properties:
+      id:
+        type: uint
+      user_id:
+        $ref: '#/definitions/User'
+      provincia_id:
+        $ref: '#/definitions/Provincia'
+      municipio:
+        type: varchar
+        description: 'List of comma separated of municipio_id'
+      home_type:
+        type: varchar
+        description: 'List of comma separated of home_type_id'
+      min_price:
+        type: float
+      max_price:
+        type: float
+      bedrooms:
+        type: integer
+      bathrooms:
+        type: integer
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - user_id
+      - provincia_id
+      - municipio
+      - home_type
+      - min_price
+      - max_price
+      - bedrooms
+      - bathrooms

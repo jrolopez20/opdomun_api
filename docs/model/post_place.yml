@@ -1,0 +1,21 @@
+definitions:
+  PostPlace:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      title:
+        type: string
+      score:
+        type: float
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - title
+      - score

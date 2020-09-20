@@ -1,0 +1,23 @@
+definitions:
+  Municipio:
+    type: object
+    properties:
+      id:
+        type: uint
+      provincia_id:
+        $ref: '#/definitions/Provincia'
+      title:
+        type: string
+      prosp_urbana:
+        type: float
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+      closed_at:
+        type: datetime
+    required:
+      - id
+      - provincia_id
+      - title
+      - prosp_urbana

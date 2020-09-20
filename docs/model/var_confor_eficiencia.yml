@@ -1,0 +1,36 @@
+definitions:
+  VarConforEficiencia:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      window_category:
+        type: float
+      window_area:
+        type: float
+      puntal:
+        type: int
+      solar_protection:
+        type: int
+      east_protection:
+        type: int
+      south_protection:
+        type: int
+      west_protection:
+        type: int
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - window_category
+      - window_area
+      - puntal
+      - solar_protection
+      - east_protection
+      - south_protection
+      - west_protection

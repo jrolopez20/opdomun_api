@@ -1,0 +1,19 @@
+definitions:
+  HisPost:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      action:
+        type: integer
+        description: '1-Publicado, 2-Renovado, 3-Tasar'
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - action

@@ -1,0 +1,25 @@
+definitions:
+  Owner:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      user_id:
+        $ref: '#/definitions/User'
+      fullname:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - fullname
+      - phone

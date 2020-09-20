@@ -1,0 +1,21 @@
+definitions:
+  VarDisenoEstetica:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      valor_arquitectonico:
+        type: int
+      valor_urbano:
+        type: int
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - valor_arquitectonico
+      - valor_urbano

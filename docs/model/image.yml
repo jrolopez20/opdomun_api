@@ -1,0 +1,20 @@
+definitions:
+  Image:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_id:
+        $ref: '#/definitions/Post'
+      url:
+        type: string
+      default:
+        type: integer
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_id
+      - url

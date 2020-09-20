@@ -1,0 +1,33 @@
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: uint
+      numid:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      fullname:
+        type: string
+      telephone:
+        type: string
+      address:
+        type: string
+      picture:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - numid
+      - email
+      - password
+      - fullname
+      - role

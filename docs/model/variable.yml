@@ -1,0 +1,20 @@
+definitions:
+  Variable:
+    type: object
+    properties:
+      id:
+        type: uint
+      cod:
+        type: string
+      title:
+        type: string
+      influencia:
+        type: float
+      visible:
+        type: integer
+    required:
+      - id
+      - cod
+      - title
+      - influencia
+      - visible

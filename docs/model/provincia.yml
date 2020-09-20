@@ -1,0 +1,20 @@
+definitions:
+  Provincia:
+    type: object
+    properties:
+      id:
+        type: uint
+      cod:
+        type: string
+      title:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+      closed_at:
+        type: datetime
+    required:
+      - id
+      - cod
+      - title

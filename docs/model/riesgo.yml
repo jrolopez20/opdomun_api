@@ -1,0 +1,20 @@
+definitions:
+  Riesgo:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_variable_id:
+        $ref: '#/definitions/PostVariable'
+      value:
+        type: integer
+      type:
+        type: integer
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_variable_id
+      - value

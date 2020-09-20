@@ -1,0 +1,21 @@
+definitions:
+  EnvElement:
+    type: object
+    properties:
+      id:
+        type: uint
+      post_variable_id:
+        $ref: '#/definitions/PostVariable'
+      value:
+        type: integer
+      title:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - post_variable_id
+      - value
+      - title

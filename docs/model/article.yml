@@ -1,0 +1,26 @@
+definitions:
+  Article:
+    type: object
+    properties:
+      id:
+        type: uint
+      user_id:
+        $ref: '#/definitions/User'
+      title:
+        type: string
+      summary:
+        type: string
+      text:
+        type: string
+      picture:
+        type: string
+      created_at:
+        type: datetime
+      updated_at:
+        type: datetime
+    required:
+      - id
+      - user_id
+      - title
+      - summary
+      - text

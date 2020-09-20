@@ -1,0 +1,31 @@
+/users:
+  get:
+    security:
+      - bearerAuth: []
+    description: List of users
+    produces:
+      - application/json
+    parameters:
+      - name: page
+        description: page
+        in: query
+        type: integer
+      - name: limit
+        description: limit
+        in: query
+        type: integer
+      - name: filter
+        description: filter
+        in: query
+        type: string
+      - name: role
+        description: role
+        in: query
+        type: string
+      - name: orderBy
+        description: Order by
+        in: query
+        type: string
+    responses:
+      200:
+        description: Users
