@@ -7,15 +7,15 @@ definitions:
       title:
         type: string
       price:
-        type: float
+        type: number
       duration:
         type: integer
       ranking:
         type: integer
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - title

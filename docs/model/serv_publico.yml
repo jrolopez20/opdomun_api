@@ -13,9 +13,9 @@ definitions:
       title:
         type: string
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_variable_id

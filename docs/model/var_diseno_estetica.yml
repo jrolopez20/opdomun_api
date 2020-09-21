@@ -11,9 +11,9 @@ definitions:
       valor_urbano:
         type: int
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_id

@@ -7,9 +7,9 @@ definitions:
       post_id:
         $ref: '#/definitions/Post'
       window_category:
-        type: float
+        type: number
       window_area:
-        type: float
+        type: number
       puntal:
         type: int
       solar_protection:
@@ -21,9 +21,9 @@ definitions:
       west_protection:
         type: int
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_id

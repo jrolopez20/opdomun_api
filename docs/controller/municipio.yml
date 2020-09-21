@@ -1,0 +1,27 @@
+/provincias/{provinciaId}/municipios:
+  get:
+    tags:
+      - Municipio
+    description: List of municipios
+    produces:
+      - application/json
+    parameters:
+      - name: provinciaId
+        in: path
+        required: true
+        description: 'Provincia ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: page
+        description: page
+        in: query
+        type: integer
+      - name: limit
+        description: limit
+        in: query
+        type: integer
+    responses:
+      200:
+        description: Municipios

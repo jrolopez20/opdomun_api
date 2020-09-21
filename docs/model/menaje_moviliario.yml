@@ -9,9 +9,9 @@ definitions:
       moviliario_id:
         $ref: '#/definitions/NomMoviliario'
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - menage_id

@@ -1,0 +1,19 @@
+/provincias:
+  get:
+    tags:
+      - Provincia
+    description: List of provinces
+    produces:
+      - application/json
+    parameters:
+      - name: page
+        description: page
+        in: query
+        type: integer
+      - name: limit
+        description: limit
+        in: query
+        type: integer
+    responses:
+      200:
+        description: Provinces

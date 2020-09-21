@@ -9,23 +9,23 @@ definitions:
       provincia_id:
         $ref: '#/definitions/Provincia'
       municipio:
-        type: varchar
+        type: string
         description: 'List of comma separated of municipio_id'
       home_type:
-        type: varchar
+        type: string
         description: 'List of comma separated of home_type_id'
       min_price:
-        type: float
+        type: number
       max_price:
-        type: float
+        type: number
       bedrooms:
         type: integer
       bathrooms:
         type: integer
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - user_id

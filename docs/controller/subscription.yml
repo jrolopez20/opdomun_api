@@ -1,0 +1,165 @@
+/subscriptions:
+  get:
+    tags:
+      - Subscription
+    description: List of subscriptions
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: page
+        description: page
+        in: query
+        type: integer
+      - name: limit
+        description: limit
+        in: query
+        type: integer
+    responses:
+      200:
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Subscription'
+        description: Subscriptions
+
+  post:
+    tags:
+      - Subscription
+    description: Create a subscription
+    produces:
+      - application/json
+    parameters:
+      - name: provincia_id
+        in: formData
+        required: true
+        type: integer
+      - name: municipio
+        in: formData
+        required: true
+        type: string
+        description: 'Number array'
+      - name: home_type
+        in: formData
+        required: true
+        type: string
+        description: 'Number array'
+      - name: min_price
+        in: formData
+        required: true
+        type: number
+      - name: max_price
+        in: formData
+        required: true
+        type: number
+      - name: bedrooms
+        in: formData
+        required: true
+        type: integer
+      - name: bathrooms
+        in: formData
+        required: true
+        type: integer
+    responses:
+      200:
+        schema:
+          $ref: '#/definitions/Subscription'
+        description: Subscription
+
+/subscriptions/{subscriptionId}:
+  get:
+    tags:
+      - Subscription
+    summary: Returns a subscription by ID
+    description: Returns a subscription by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: 'Subscription ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: Subscription
+
+  put:
+    tags:
+      - Subscription
+    summary: Update a subscription
+    description: Update subscription
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: 'User ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: provincia_id
+        in: formData
+        required: true
+        type: integer
+      - name: municipio
+        in: formData
+        required: true
+        type: array
+        description: 'Number array'
+      - name: home_type
+        in: formData
+        required: true
+        type: array
+        description: 'Number array'
+      - name: min_price
+        in: formData
+        required: true
+        type: number
+      - name: max_price
+        in: formData
+        required: true
+        type: number
+      - name: bedrooms
+        in: formData
+        required: true
+        type: integer
+      - name: bathrooms
+        in: formData
+        required: true
+        type: integer
+    responses:
+      200:
+        description: User
+
+  delete:
+    tags:
+      - Subscription
+    summary: Remove subscription by ID
+    description: Remove subscription by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: 'Subscription ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Null

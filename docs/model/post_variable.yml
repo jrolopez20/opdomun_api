@@ -9,13 +9,13 @@ definitions:
       variable_id:
         $ref: '#/definitions/Variable'
       result:
-        type: float
+        type: number
       points:
-        type: float
+        type: number
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_id

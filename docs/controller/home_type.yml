@@ -1,0 +1,10 @@
+/hometypes:
+  get:
+    tags:
+      - HomeType
+    description: List of home types
+    produces:
+      - application/json
+    responses:
+      200:
+        description: HomeTypes

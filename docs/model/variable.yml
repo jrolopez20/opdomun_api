@@ -9,7 +9,7 @@ definitions:
       title:
         type: string
       influencia:
-        type: float
+        type: number
       visible:
         type: integer
     required:

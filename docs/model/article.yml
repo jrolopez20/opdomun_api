@@ -15,9 +15,9 @@ definitions:
       picture:
         type: string
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - user_id

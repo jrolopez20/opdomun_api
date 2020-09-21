@@ -9,13 +9,13 @@ definitions:
       title:
         type: string
       prosp_urbana:
-        type: float
+        type: number
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
       closed_at:
-        type: datetime
+        type: string
     required:
       - id
       - provincia_id

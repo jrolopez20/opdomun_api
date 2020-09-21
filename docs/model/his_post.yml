@@ -10,9 +10,9 @@ definitions:
         type: integer
         description: '1-Publicado, 2-Renovado, 3-Tasar'
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_id

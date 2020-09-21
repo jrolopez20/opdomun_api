@@ -4,6 +4,8 @@ definitions:
     properties:
       id:
         type: uint
+      office_id:
+        $ref: '#/definitions/Office'
       numid:
         type: string
       email:
@@ -21,9 +23,9 @@ definitions:
       picture:
         type: string
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - numid

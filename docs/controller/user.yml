@@ -1,8 +1,10 @@
 /users:
   get:
+    tags:
+      - User
+    description: List of users
     security:
       - bearerAuth: []
-    description: List of users
     produces:
       - application/json
     parameters:
@@ -29,3 +31,196 @@
     responses:
       200:
         description: Users
+
+  post:
+    tags:
+      - User
+    description: Create a new user
+    produces:
+      - application/json
+    parameters:
+      - name: numid
+        in: formData
+        required: true
+        type: string
+        description: 'Carnet de identidad'
+      - name: fullname
+        in: formData
+        required: true
+        type: string
+      - name: email
+        in: formData
+        required: true
+        type: string
+      - name: telephone
+        in: formData
+        required: true
+        type: string
+      - name: role
+        in: formData
+        required: true
+        type: string
+      - name: address
+        in: formData
+        type: string
+      - name: office_id
+        in: formData
+        type: integer
+      - name: password
+        in: formData
+        required: true
+        type: string
+      - name: repassword
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Subscription
+
+/users/{userId}:
+  get:
+    tags:
+      - User
+    summary: Returns a user by ID
+    description: Returns a user by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 'User ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: User
+
+  put:
+    tags:
+      - User
+    summary: Update a user
+    description: Update user
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 'User ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: numid
+        in: formData
+        required: true
+        type: string
+        description: 'Carnet de identidad'
+      - name: fullname
+        in: formData
+        required: true
+        type: string
+      - name: email
+        in: formData
+        required: true
+        type: string
+      - name: telephone
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: User
+
+  delete:
+    tags:
+      - User
+    summary: Remove user by ID
+    description: Remove user by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 'User ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Null
+
+/users/{userId}/password:
+  post:
+    tags:
+      - User
+    summary: Change user password
+    description: Changer password
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 'User ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: password
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: User
+
+/users/{userId}/toggle_enable:
+  put:
+    tags:
+      - User
+    summary: Toggle enable
+    description: Toggle enable
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 'User ID'
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: User
+
+/roles:
+  get:
+    tags:
+      - User
+    description: List of available roles depending on authenticated user role
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Roles

@@ -1,0 +1,19 @@
+/offices:
+  get:
+    tags:
+      - Office
+    description: List of offices
+    produces:
+      - application/json
+    parameters:
+      - name: page
+        description: page
+        in: query
+        type: integer
+      - name: limit
+        description: limit
+        in: query
+        type: integer
+    responses:
+      200:
+        description: Offices

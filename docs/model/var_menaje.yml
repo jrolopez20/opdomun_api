@@ -11,9 +11,9 @@ definitions:
         default: 0
         description: '0-No tiene menaje, 1-Se vende con menaje'
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_id

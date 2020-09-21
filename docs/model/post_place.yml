@@ -9,11 +9,11 @@ definitions:
       title:
         type: string
       score:
-        type: float
+        type: number
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
     required:
       - id
       - post_id

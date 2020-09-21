@@ -1,0 +1,7 @@
+components:
+  schemas:
+    - ArrayIntegerType:
+      schema:
+        type: array
+        items:
+          type: integer

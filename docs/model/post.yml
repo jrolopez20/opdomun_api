@@ -16,9 +16,9 @@ definitions:
       address:
         type: string
       price:
-        type: float
+        type: number
       area:
-        type: float
+        type: number
       bedrooms:
         type: integer
       bathrooms:
@@ -26,9 +26,9 @@ definitions:
       summary:
         type: string
       evi:
-        type: float
+        type: number
       opdo:
-        type: float
+        type: number
       built_year:
         type: integer
       built_status:
@@ -36,13 +36,13 @@ definitions:
       sold:
         type: integer
       created_at:
-        type: datetime
+        type: string
       updated_at:
-        type: datetime
+        type: string
       published_at:
-        type: datetime
+        type: string
       closed_at:
-        type: datetime
+        type: string
     required:
       - id
       - user_id
