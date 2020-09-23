@@ -24,9 +24,11 @@ DB_DATABASE=opdomun_dev
 adonis migration:run
 ```
 
+- Load `db_init_script.sql` script into database with required data.
+
 - Fill database with dummy data *[Optional]*
 ```bash
-adonis seed
+adonis seed:sync
 ```
 
 ### Adonis Swagger Documentation

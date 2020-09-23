@@ -40,9 +40,6 @@ class UserSeeder {
         // Create Users
         const users = await Factory.model('App/Models/User')
             .createMany(40)
-
-        return [ArticleSeeder];
-
     }
 }
 
