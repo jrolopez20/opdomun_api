@@ -8,6 +8,12 @@ Run the following command `npm install` or`yarn install`.
 
 - Create role and database
 
+- Generate APP key
+
+```bash
+adonis key:generate
+```
+
 - Open `.env` file and configure database connection, for example:
 ```
 DB_CONNECTION=pg
@@ -29,6 +35,13 @@ adonis migration:run
 - Fill database with dummy data *[Optional]*
 ```bash
 adonis seed:sync
+```
+
+### Run Application
+And finally start the server:
+
+```bash
+adonis serve --dev
 ```
 
 ### Adonis Swagger Documentation
