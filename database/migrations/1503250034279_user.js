@@ -7,10 +7,17 @@ class UserSchema extends Schema {
   up () {
     this.create('users', (table) => {
       table.increments()
-      table.string('username', 80).notNullable().unique()
+      table.integer('office_id').unsigned().references('id').inTable('offices').onDelete('RESTRICT')
       table.string('email', 254).notNullable().unique()
       table.string('password', 60).notNullable()
+      table.string('role', 10).notNullable()
+      table.string('fullname', 50).notNullable()
+      table.string('numid', 11)
+      table.string('telephone', 15)
+      table.string('address', 120)
+      table.string('picture', 254)
       table.timestamps()
+      table.timestamp('closed_at')
     })
   }
 

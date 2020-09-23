@@ -28,7 +28,8 @@
     "@adonisjs/mail": "^3.0.10",
     "@adonisjs/validator": "^5.0.6",
     "adonis-swagger": "^1.2.9",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "pg": "^8.3.3"
   },
   "devDependencies": {},
   "autoload": {

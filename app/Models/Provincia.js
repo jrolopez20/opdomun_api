@@ -25,8 +25,8 @@ class Provincia extends Model {
         return this.hasMany('App/Models/UserProvincia')
     }
 
-    offices() {
-        return this.hasMany('App/Models/Office')
+    office() {
+        return this.hasOne('App/Models/Office')
     }
 }
 

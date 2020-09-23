@@ -3,7 +3,7 @@ definitions:
     type: object
     properties:
       id:
-        type: uint
+        type: integer
       post_id:
         $ref: '#/definitions/Post'
       variable_id:

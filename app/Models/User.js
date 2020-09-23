@@ -121,6 +121,10 @@ class User extends Model {
         return this.hasMany('App/Models/Owner')
     }
 
+    articles() {
+        return this.hasMany('App/Models/Article')
+    }
+
     subscriptions() {
         return this.hasMany('App/Models/Subscription')
     }

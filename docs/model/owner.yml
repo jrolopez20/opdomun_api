@@ -3,14 +3,14 @@ definitions:
     type: object
     properties:
       id:
-        type: uint
+        type: integer
       post_id:
         $ref: '#/definitions/Post'
       user_id:
         $ref: '#/definitions/User'
       fullname:
         type: string
-      phone:
+      telephone:
         type: string
       email:
         type: string
