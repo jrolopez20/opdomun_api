@@ -37,3 +37,9 @@ Factory.blueprint('App/Models/User', async (faker, i, data) => {
         office_id: data.office ? data.office.id : null,
     }
 });
+
+Factory.blueprint('App/Models/Office', async (faker, i, data) => {
+    return {
+        provincia_id: data.provincia.id
+    }
+});

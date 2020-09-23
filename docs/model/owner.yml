@@ -22,4 +22,4 @@ definitions:
       - id
       - post_id
       - fullname
-      - phone
+      - telephone

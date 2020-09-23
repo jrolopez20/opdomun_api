@@ -38,11 +38,6 @@ class UserService {
         }
         await user.save();
 
-        if (user.role !== User.roles().USER) {
-            user.opnum = user.id;
-            await user.save();
-        }
-
         return user;
     }
 

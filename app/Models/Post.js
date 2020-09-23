@@ -306,7 +306,7 @@ class Post extends Model {
                 'posts.summary', 'home_types.title as homeType',
                 'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provincia_title',
                 'posts.user_id', 'users.fullname as agent_name', 'users.email as agent_email', 'users.telephone as agent_phone',
-                'owners.fullname as owner_name', 'owners.email as owner_email', 'owners.phone as owner_phone',
+                'owners.fullname as owner_name', 'owners.email as owner_email', 'owners.telephone as owner_phone',
                 'var_flexibilidads.area_crecimiento', 'post_visits.total as visits',
                 'vde.valor_arquitectonico', 'vde.valor_urbano'
             )
@@ -1002,7 +1002,7 @@ class Post extends Model {
             .from('posts')
             .select(
                 'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms', 'posts.home_type_id',
-                'posts.municipio_id', 'municipios.provincia_id', 'owners.fullname', 'owners.email', 'owners.phone'
+                'posts.municipio_id', 'municipios.provincia_id', 'owners.fullname', 'owners.email', 'owners.telephone'
             )
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('owners', 'posts.id', 'owners.post_id')
@@ -1070,10 +1070,6 @@ class Post extends Model {
 
     homeType() {
         return this.belongsTo('App/Models/HomeType');
-    }
-
-    comments() {
-        return this.hasMany('App/Models/Comment')
     }
 
     images() {

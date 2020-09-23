@@ -81,7 +81,7 @@ class PostService {
             postId: post.id,
             userId: user.id,
             fullname: request.input('fullname'),
-            phone: request.input('phone'),
+            telephone: request.input('telephone'),
             email: request.input('email'),
         });
 
