@@ -16,12 +16,12 @@ class Owner extends Model {
         return this.belongsTo('App/Models/User')
     }
 
-    static async addOwner({postId, userId, fullname, phone, email}) {
+    static async addOwner({postId, userId, fullname, telephone, email}) {
         const owner = new Owner();
         owner.post_id = postId;
         owner.user_id = userId;
         owner.fullname = fullname;
-        owner.phone = phone;
+        owner.telephone = telephone;
         owner.email = email;
         await owner.save();
 

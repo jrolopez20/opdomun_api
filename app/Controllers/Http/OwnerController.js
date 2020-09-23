@@ -32,7 +32,7 @@ class OwnerController {
                 postId: params.postId,
                 userId: request.input('user_id'),
                 fullname: request.input('fullname'),
-                phone: request.input('phone'),
+                telephone: request.input('telephone'),
                 email: request.input('email'),
             });
 
@@ -72,7 +72,7 @@ class OwnerController {
             const owner = await Owner.find(params.id);
             owner.user_id = request.input('user_id');
             owner.fullname = request.input('fullname');
-            owner.phone = request.input('phone');
+            owner.telephone = request.input('telephone');
             owner.email = request.input('email');
             await owner.save();
 

@@ -52,7 +52,7 @@ class SubscriptionService {
                 owner: {
                     fullname: post.fullname,
                     email: post.email,
-                    phone: post.phone
+                    telephone: post.telephone
                 }
             }, subscription);
         }

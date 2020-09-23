@@ -66,31 +66,6 @@ class User extends Model {
         return user;
     }
 
-    static async getAgents(page, criteria, provincia) {
-        const query = Database
-            .select('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture')
-            .table('users')
-            .leftJoin('posts', 'users.id', 'posts.user_id')
-            .where('users.id', '<>', 3) // Don't show my own account as agent
-            .count('posts.id as total')
-            .orderBy('total', 'DESC')
-            .groupBy('users.id', 'users.fullname', 'users.telephone', 'users.email', 'users.picture');
-
-        if (criteria) {
-            let where = "(fullname like '%" + criteria + "%')";
-
-            where = where + " AND true = ?";
-            query.whereRaw(where, [true])
-        }
-        if (provincia) {
-            query.innerJoin('user_provincias', 'users.id', 'user_provincias.user_id')
-                .where('user_provincias.provincia_id', provincia)
-        }
-
-        const users = await query.paginate(page, 24);
-        return users;
-    }
-
     /**
      * A relationship on tokens is required for auth to
      * work. Since features like `refreshTokens` or
@@ -103,14 +78,6 @@ class User extends Model {
      */
     tokens() {
         return this.hasMany('App/Models/Token')
-    }
-
-    bills() {
-        return this.hasMany('App/Models/Bill')
-    }
-
-    alerts() {
-        return this.hasMany('App/Models/Alert')
     }
 
     posts() {
@@ -127,10 +94,6 @@ class User extends Model {
 
     subscriptions() {
         return this.hasMany('App/Models/Subscription')
-    }
-
-    userProvincias() {
-        return this.hasMany('App/Models/UserProvincia')
     }
 
     office() {
