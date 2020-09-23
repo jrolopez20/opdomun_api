@@ -19,3 +19,4 @@ public/images/article_pictures/
 # VSCode & PhpStorm history directories
 .history
 .idea
+.DS_Store
