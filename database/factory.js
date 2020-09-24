@@ -40,6 +40,6 @@ Factory.blueprint('App/Models/User', async (faker, i, data) => {
 
 Factory.blueprint('App/Models/Office', async (faker, i, data) => {
     return {
-        provincia_id: data.provincia.id
+        provincia_id: data.province.id
     }
 });

@@ -2,6 +2,8 @@
 
 const PostVariable = use('App/Models/PostVariable')
 const Post = use('App/Models/Post')
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
+
 /**
  * Resourceful controller for interacting with posts
  */
@@ -19,7 +21,7 @@ class VariableRdController {
 
             return response.json(rd);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

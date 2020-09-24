@@ -10,7 +10,7 @@ class EstConstructivaSchema extends Schema {
       table.integer('post_variable_id').unsigned().notNullable().references('id').inTable('post_variables').onDelete('CASCADE')
       table.string('display_value', 100).notNullable()
       table.string('title', 30).notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

@@ -9,7 +9,7 @@ class VarFlexibilidadSchema extends Schema {
       table.increments()
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
       table.float('area_crecimiento').comment('Max resize area')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

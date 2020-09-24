@@ -4,8 +4,10 @@
 const Model = use('Model')
 
 class Owner extends Model {
+
     static boot() {
         super.boot()
+        this.addTrait('CastDate')
     }
 
     post() {

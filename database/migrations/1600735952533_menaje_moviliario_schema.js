@@ -9,7 +9,7 @@ class MenajeMoviliarioSchema extends Schema {
       table.increments()
       table.integer('menaje_id').unsigned().notNullable().references('id').inTable('var_menajes').onDelete('CASCADE')
       table.integer('moviliario_id').unsigned().notNullable().references('id').inTable('nom_moviliarios').onDelete('RESTRICT')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

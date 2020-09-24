@@ -12,7 +12,7 @@ class OwnerSchema extends Schema {
       table.string('fullname', 50).notNullable()
       table.string('telephone', 15).notNullable()
       table.string('email', 50)
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

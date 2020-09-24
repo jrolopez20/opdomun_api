@@ -9,8 +9,8 @@ class ImageSchema extends Schema {
       table.increments()
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
       table.string('url', 254).notNullable()
-      table.integer('default')
-      table.timestamps()
+      table.boolean('default').comment('Default image to show')
+      table.timestamps(true, true)
     })
   }
 

@@ -11,7 +11,7 @@ class ServPublicoSchema extends Schema {
       table.integer('value').notNullable()
       table.string('display_value', 100).notNullable()
       table.string('title', 40).notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

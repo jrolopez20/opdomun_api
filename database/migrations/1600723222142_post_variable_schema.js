@@ -11,7 +11,7 @@ class PostVariableSchema extends Schema {
       table.integer('variable_id').unsigned().notNullable().references('id').inTable('posts').onDelete('RESTRICT')
       table.float('result')
       table.float('points')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

@@ -10,7 +10,7 @@ class PostPlaceSchema extends Schema {
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
       table.string('title', 254).notNullable()
       table.integer('score').notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

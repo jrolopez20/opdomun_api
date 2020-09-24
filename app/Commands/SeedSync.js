@@ -5,6 +5,7 @@ const util = require('util')
 const execSync = util.promisify(require('child_process').execSync)
 
 const defaultSeedOrder = [
+  'OfficeSeeder.js',
   'UserSeeder.js',
   'ArticleSeeder.js',
 ]

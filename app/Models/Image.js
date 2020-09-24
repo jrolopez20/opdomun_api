@@ -37,7 +37,7 @@ class Image extends Model {
             .orderBy('default', 'DESC');
 
         const images = await query.paginate(page, limit);
-        return images;
+        return images.toJSON();
     }
 
     static async getImage(postId, imageId) {

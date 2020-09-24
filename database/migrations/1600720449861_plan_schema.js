@@ -9,7 +9,7 @@ class PlanSchema extends Schema {
       table.increments()
       table.string('title', 20).notNullable().unique().index()
       table.integer('ranking').notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

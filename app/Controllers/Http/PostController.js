@@ -2,12 +2,12 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Post = use('App/Models/Post');
 const PostService = use('App/Services/PostService');
-
+const PaginatedResponse = use('App/Util/PaginatedResponse');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 /**
  * Resourceful controller for interacting with posts
  */
@@ -34,8 +34,9 @@ class PostController {
             homeType: request.input('homeType')
         };
         const orderBy = request.input('orderBy');
-        const posts = await Post.getPosts(plan, page, limit, filter, orderBy, auth);
-        return response.json(posts);
+
+        const result = await Post.getPosts(plan, page, limit, filter, orderBy, auth);
+        return PaginatedResponse.parse(response, result)
     }
 
     /**
@@ -68,7 +69,7 @@ class PostController {
             const post = await Post.getPost(params.id);
             return response.json(post);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

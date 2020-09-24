@@ -3,6 +3,7 @@
 const PostVariable = use('App/Models/PostVariable')
 const Post = use('App/Models/Post')
 const VarDisenoEstetica = use('App/Models/VarDisenoEstetica')
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with posts
@@ -21,7 +22,7 @@ class VariableDeController {
 
             return response.json(de);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

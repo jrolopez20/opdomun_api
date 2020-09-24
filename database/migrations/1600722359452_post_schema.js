@@ -17,14 +17,14 @@ class PostSchema extends Schema {
       table.integer('bedrooms').notNullable()
       table.integer('bathrooms').notNullable()
       table.string('summary', 1200)
-      table.timestamps()
-      table.timestamp('closed_at')
-      table.timestamp('published_at')
+      table.timestamps(true, true)
+      table.timestamp('closed_at', true)
+      table.timestamp('published_at', true)
       table.float('evi')
       table.float('opdo')
       table.integer('built_year')
       table.integer('build_status')
-      table.integer('sold')
+      table.boolean('sold')
     })
   }
 

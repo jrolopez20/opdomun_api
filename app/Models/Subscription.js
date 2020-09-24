@@ -4,8 +4,10 @@ const Database = use('Database')
 const Model = use('Model')
 
 class Subscription extends Model {
+
     static boot() {
         super.boot()
+        this.addTrait('CastDate')
     }
 
     static async getSubscriptions(page = 1, limit = 20, filter) {
@@ -38,7 +40,7 @@ class Subscription extends Model {
         }
 
         const subscriptions = await query.paginate(page, limit);
-        return subscriptions;
+        return subscriptions.toJSON();
     }
 
     static async getMatchedSubscriptions({provinciaId, municipioId, price, homeType, bedrooms, bathrooms}) {

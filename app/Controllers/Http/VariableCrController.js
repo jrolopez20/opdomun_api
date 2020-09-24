@@ -1,4 +1,5 @@
 'use strict'
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 const PostVariable = use('App/Models/PostVariable')
 const ColindanciaPrivacidad = use('App/Models/ColindanciaPrivacidad')
@@ -15,7 +16,7 @@ class VariableCrController {
 
             return response.json(colindanciaPrivacidad);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

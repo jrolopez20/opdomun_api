@@ -5,9 +5,6 @@ const Model = use('Model')
 const Database = use('Database')
 
 class NomSegCiudadana extends Model {
-    static boot() {
-        super.boot()
-    }
 
     static async getPostSegCiudadana(postId) {
         const segCiudadana = Database

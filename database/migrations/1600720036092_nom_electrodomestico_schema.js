@@ -9,7 +9,7 @@ class NomElectrodomesticoSchema extends Schema {
       table.increments()
       table.string('title', 255).notNullable()
       table.integer('value').notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

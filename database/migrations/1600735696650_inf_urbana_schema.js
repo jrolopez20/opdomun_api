@@ -10,7 +10,7 @@ class InfUrbanaSchema extends Schema {
       table.integer('post_variable_id').unsigned().notNullable().references('id').inTable('post_variables').onDelete('CASCADE')
       table.string('title', 40).notNullable()
       table.integer('value').notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

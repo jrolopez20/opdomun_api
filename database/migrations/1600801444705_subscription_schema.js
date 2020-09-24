@@ -15,7 +15,7 @@ class SubscriptionSchema extends Schema {
       table.float('max_type').notNullable()
       table.integer('bedrooms')
       table.integer('bathrooms')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

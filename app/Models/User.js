@@ -8,6 +8,7 @@ const Model = use('Model')
 const Database = use('Database')
 
 class User extends Model {
+
     static boot() {
         super.boot()
 
@@ -20,6 +21,11 @@ class User extends Model {
                 userInstance.password = await Hash.make(userInstance.password)
             }
         })
+        this.addTrait('CastDate')
+    }
+
+    static get hidden() {
+        return ['password'];
     }
 
     static roles() {
@@ -34,7 +40,8 @@ class User extends Model {
     static async getUsers(page = 1, limit = 20, filter, role = null, orderBy = null) {
         const query = Database
             .from('users')
-            .select('users.*', 'provincias.title as office_title')
+            .select('users.id', 'users.email', 'users.role', 'users.fullname', 'users.numid', 'users.telephone',
+                'users.address', 'users.picture', 'users.created_at', 'users.closed_at', 'provincias.title as office_title')
             .leftJoin('offices', 'offices.id', 'users.office_id')
             .leftJoin('provincias', 'provincias.id', 'offices.provincia_id');
 
@@ -62,7 +69,7 @@ class User extends Model {
             .with('office.provincia')
             .where('id', id)
 
-        const {password, ...user} = (await query.first()).toJSON()
+        const user = await query.first()
         return user;
     }
 

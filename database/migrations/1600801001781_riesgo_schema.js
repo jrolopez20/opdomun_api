@@ -10,7 +10,7 @@ class RiesgoSchema extends Schema {
       table.integer('post_variable_id').unsigned().notNullable().references('id').inTable('post_variables').onDelete('CASCADE')
       table.integer('value').notNullable()
       table.integer('type')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

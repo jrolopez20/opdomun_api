@@ -2,11 +2,12 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Image = use('App/Models/Image');
 const ImageService = use('App/Services/ImageService');
+const PaginatedResponse = use('App/Util/PaginatedResponse');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with images
@@ -23,8 +24,9 @@ class ImageController {
     async index({params, request, response}) {
         const page = request.input('page');
         const limit = request.input('limit');
-        const images = await Image.getImages(params.posts_id, page, limit);
-        return response.json(images)
+
+        const result = await Image.getImages(params.posts_id, page, limit);
+        return PaginatedResponse.parse(response, result)
     }
 
     /**
@@ -62,7 +64,7 @@ class ImageController {
             const image = await Image.getImage(params.posts_id, params.id);
             return response.json(image);
         } catch (e) {
-            return response.status(404).json({message: 'Image not found'})
+            throw new ResourceNotFoundException();
         }
     }
 

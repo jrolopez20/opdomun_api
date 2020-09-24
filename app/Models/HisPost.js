@@ -5,8 +5,14 @@ const Model = use('Model')
 const Database = use('Database')
 
 class HisPost extends Model {
+
   static boot() {
     super.boot()
+    this.addTrait('CastDate')
+  }
+
+  static castDates(field, value) {
+    return value;
   }
 
   static async getMonthHistory(userId) {

@@ -9,7 +9,7 @@ class HomeTypeSchema extends Schema {
       table.increments()
       table.string('title', 20).notNullable().unique()
       table.integer('value').notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

@@ -9,7 +9,7 @@ class ProvinciaSchema extends Schema {
       table.increments()
       table.string('cod', 5).notNullable().unique().index()
       table.string('title', 30).notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

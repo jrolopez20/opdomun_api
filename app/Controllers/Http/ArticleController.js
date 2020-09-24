@@ -2,11 +2,12 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Article = use('App/Models/Article');
 const ArticleService = use('App/Services/ArticleService');
+const PaginatedResponse = use('App/Util/PaginatedResponse');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with articles
@@ -25,8 +26,9 @@ class ArticleController {
         const limit = request.input('limit');
         const filter = request.input('filter');
         const sortBy = request.input('sortBy');
-        const articles = await Article.getArticles(page, limit, filter, sortBy);
-        return response.json(articles);
+
+        const result = await Article.getArticles(page, limit, filter, sortBy);
+        return PaginatedResponse.parse(response, result)
     }
 
     /**
@@ -58,7 +60,7 @@ class ArticleController {
             const article = await Article.getArticle(params.id);
             return response.json(article);
         } catch (e) {
-            return response.status(404).json({message: 'Article not found'});
+            throw new ResourceNotFoundException();
         }
     }
 

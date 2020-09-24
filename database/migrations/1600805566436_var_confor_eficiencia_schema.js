@@ -15,7 +15,7 @@ class VarConforEficienciaSchema extends Schema {
       table.integer('east_protection')
       table.integer('south_protection')
       table.integer('west_protection')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

@@ -5,7 +5,6 @@ const Model = use('Model')
 const Database = use('Database')
 
 class VarConforEficiencia extends Model {
-
   static getDicc() {
     return {
       /*

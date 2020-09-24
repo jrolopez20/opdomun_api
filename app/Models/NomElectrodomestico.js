@@ -4,9 +4,6 @@
 const Model = use('Model')
 
 class NomElectrodomestico extends Model {
-    static boot() {
-        super.boot()
-    }
 
     menajeElectrodomestico() {
         return this.hasMany('App/Models/MenajeElectrodomestico');

@@ -15,7 +15,7 @@ class ColindanciaPrivacidadSchema extends Schema {
       table.integer('permeabilidad').notNullable()
       table.integer('altura').notNullable()
       table.string('distancia', 3).notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

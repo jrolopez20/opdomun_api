@@ -11,7 +11,7 @@ class VariableSchema extends Schema {
       table.string('title', 100).notNullable()
       table.float('influencia').notNullable()
       table.boolean('visible').notNullable().defaultTo(true)
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

@@ -2,6 +2,7 @@
 
 const PostVariable = use('App/Models/PostVariable')
 const VarFlexibilidad = use('App/Models/VarFlexibilidad')
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with posts
@@ -19,7 +20,7 @@ class VariableFpController {
 
             return response.json(fp);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

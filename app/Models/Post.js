@@ -16,11 +16,10 @@ const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
 
 class Post extends Model {
-
     static boot() {
         super.boot()
         this.addTrait('Opdo')
-        this.addTrait('DictamenTecnico')
+        this.addTrait('CastDate')
     }
 
     static async getPost(id) {

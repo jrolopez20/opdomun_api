@@ -7,6 +7,7 @@ const NomElectrodomestico = use('App/Models/NomElectrodomestico')
 const VarMenaje = use('App/Models/VarMenaje')
 const MenajeMoviliario = use('App/Models/MenajeMoviliario')
 const MenajeElectrodomestico = use('App/Models/MenajeElectrodomestico')
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with posts
@@ -49,7 +50,7 @@ class VariableMhController {
 
             return response.json(mh);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

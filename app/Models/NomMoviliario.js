@@ -4,9 +4,6 @@
 const Model = use('Model')
 
 class NomMoviliario extends Model {
-    static boot() {
-        super.boot()
-    }
 
     menajeMoviliario() {
         return this.hasMany('App/Models/MenajeMoviliario');

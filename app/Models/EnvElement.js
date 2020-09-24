@@ -5,6 +5,7 @@ const Model = use('Model')
 const Database = use('Database')
 
 class EnvElement extends Model {
+
     static async getEnvElements(postId) {
         return await Database.select('ee.id', '.ee.value', 'ee.title')
             .from('env_elements as ee')

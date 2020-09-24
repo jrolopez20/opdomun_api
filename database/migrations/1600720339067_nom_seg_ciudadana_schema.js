@@ -9,7 +9,7 @@ class NomSegCiudadanaSchema extends Schema {
       table.increments()
       table.string('title', 10).notNullable()
       table.integer('value').notNullable()
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

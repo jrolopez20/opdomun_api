@@ -2,12 +2,12 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
-const Database = use('Database')
 
 class Article extends Model {
 
     static boot() {
         super.boot()
+        this.addTrait('CastDate')
     }
 
     static async getArticles(page = 1, limit = 20, filter = null, sortBy) {
@@ -26,7 +26,7 @@ class Article extends Model {
         }
 
         const articles = await query.paginate(page, limit);
-        return articles;
+        return articles.toJSON();
     }
 
     static async getArticle(id) {
@@ -36,7 +36,7 @@ class Article extends Model {
             .where('id', id)
 
 
-        return await query.first();
+        return await query.firstOrFail();
     }
 
     user() {

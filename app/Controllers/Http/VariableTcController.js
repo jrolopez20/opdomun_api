@@ -1,6 +1,7 @@
 'use strict'
 
 const PostVariable = use('App/Models/PostVariable')
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with posts
@@ -28,7 +29,7 @@ class VariableTcController {
 
             return response.json(tc);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

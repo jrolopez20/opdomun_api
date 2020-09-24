@@ -4,19 +4,19 @@
 const Schema = use('Schema')
 
 class MunicipioSchema extends Schema {
-  up () {
-    this.create('municipios', (table) => {
-      table.increments()
-      table.integer('provincia_id').unsigned().notNullable().references('id').inTable('provincias').onDelete('CASCADE')
-      table.string('title', 30).notNullable()
-      table.decimal('prosp_urbana', 5).notNullable()
-      table.timestamps()
-    })
-  }
+    up() {
+        this.create('municipios', (table) => {
+            table.increments()
+            table.integer('provincia_id').unsigned().notNullable().references('id').inTable('provincias').onDelete('CASCADE')
+            table.string('title', 30).notNullable()
+            table.decimal('prosp_urbana', 5).notNullable()
+            table.timestamps(true, true)
+        })
+    }
 
-  down () {
-    this.drop('municipios')
-  }
+    down() {
+        this.drop('municipios')
+    }
 }
 
 module.exports = MunicipioSchema

@@ -2,6 +2,7 @@
 
 const PostService = use('App/Services/PostService');
 const Post = use('App/Models/Post');
+const PaginatedResponse = use('App/Util/PaginatedResponse');
 
 class AppraisalController {
 
@@ -18,8 +19,8 @@ class AppraisalController {
             homeType: request.input('homeType')
         };
         const orderBy = request.input('orderBy');
-        const posts = await Post.getAppraisals(page, limit, filter, orderBy, auth);
-        return response.json(posts);
+        const result = await Post.getAppraisals(page, limit, filter, orderBy, auth);
+        return PaginatedResponse.parse(response, result)
     }
 
     async calculatePrice({params, response}) {

@@ -8,8 +8,8 @@ class VarMenajeSchema extends Schema {
     this.create('var_menajes', (table) => {
       table.increments()
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
-      table.integer('exist').notNullable().defaultTo(0)
-      table.timestamps()
+      table.boolean('exist').notNullable().defaultTo(0)
+      table.timestamps(true, true)
     })
   }
 

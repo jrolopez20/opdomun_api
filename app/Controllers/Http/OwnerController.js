@@ -1,6 +1,7 @@
 'use strict'
 
 const Owner = use('App/Models/Owner');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with owners
@@ -52,10 +53,10 @@ class OwnerController {
      */
     async show({params, request, response}) {
         try {
-            const owner = await Owner.find(params.id);
+            const owner = await Owner.findOrFail(params.id);
             return response.json(owner);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

@@ -6,6 +6,8 @@
 
 const User = use('App/Models/User');
 const UserService = use('App/Services/UserService');
+const PaginatedResponse = use('App/Util/PaginatedResponse');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with users
@@ -25,8 +27,9 @@ class UserController {
         const filter = request.input('filter');
         const role = request.input('role');
         const orderBy = request.input('orderBy');
-        const users = await User.getUsers(page, limit, filter, role, orderBy);
-        return response.json(users)
+
+        const result = await User.getUsers(page, limit, filter, role, orderBy);
+        return PaginatedResponse.parse(response, result)
     }
 
     /**
@@ -59,7 +62,7 @@ class UserController {
             const user = await User.getUser(params.id);
             return response.json(user)
         } catch (e) {
-            return response.status(404).json({message: 'User not found'})
+            throw new ResourceNotFoundException();
         }
     }
 

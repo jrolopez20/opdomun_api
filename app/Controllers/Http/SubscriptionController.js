@@ -2,6 +2,8 @@
 
 const Subscription = use('App/Models/Subscription');
 const SubscriptionService = use('App/Services/SubscriptionService');
+const PaginatedResponse = use('App/Util/PaginatedResponse');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with subscriptions
@@ -27,8 +29,9 @@ class SubscriptionController {
             bathrooms: request.input('bathrooms'),
             homeType: request.input('homeType')
         };
-        const subscriptions = await Subscription.getSubscriptions(page, limit, filter);
-        return response.json(subscriptions)
+
+        const result = await Subscription.getSubscriptions(page, limit, filter);
+        return PaginatedResponse.parse(response, result)
     }
 
     /**
@@ -61,7 +64,7 @@ class SubscriptionController {
             const subscription = await Subscription.getSubscription(params.id);
             return response.json(subscription)
         } catch (e) {
-            return response.status(404).json({message: 'Subscription not found'})
+            throw new ResourceNotFoundException();
         }
     }
 

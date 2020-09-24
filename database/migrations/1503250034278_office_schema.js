@@ -8,7 +8,7 @@ class OfficeSchema extends Schema {
     this.create('offices', (table) => {
       table.increments()
       table.integer('provincia_id').unsigned().notNullable().references('id').inTable('provincias').onDelete('CASCADE')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

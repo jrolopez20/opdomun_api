@@ -10,7 +10,7 @@ class VarDisenoEsteticaSchema extends Schema {
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
       table.integer('valor_arquitectonico')
       table.integer('valor_urbano')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

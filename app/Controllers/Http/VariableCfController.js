@@ -3,6 +3,7 @@
 const PostVariable = use('App/Models/PostVariable');
 const VarConforEficiencia = use('App/Models/VarConforEficiencia');
 const {validate} = use('Validator');
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with posts
@@ -26,7 +27,7 @@ class VariableCfController {
 
             return response.json(cf);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 

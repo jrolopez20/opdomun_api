@@ -5,8 +5,9 @@ const Model = use('Model')
 const Database = use('Database')
 
 class HomeType extends Model {
-    static boot() {
-        super.boot()
+
+    static castDates(field, value) {
+        return value;
     }
 
     static async getHomeTypes() {

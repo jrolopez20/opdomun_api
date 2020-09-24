@@ -9,7 +9,7 @@ class HistPostSchema extends Schema {
       table.increments()
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
       table.integer('action').notNullable().comment('1-Publicado, 2-Renovado, 3-Tasar')
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

@@ -9,7 +9,7 @@ class PostVisitSchema extends Schema {
       table.increments()
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
       table.integer('total').notNullable().defaultTo(0)
-      table.timestamps()
+      table.timestamps(true, true)
     })
   }
 

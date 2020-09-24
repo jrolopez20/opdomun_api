@@ -3,6 +3,7 @@
 const PostVariable = use('App/Models/PostVariable')
 const Post = use('App/Models/Post')
 const NomSegCiudadana = use('App/Models/NomSegCiudadana')
+const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with posts
@@ -24,7 +25,7 @@ class VariableScController {
 
             return response.json(sc);
         } catch (e) {
-            return response.status(404).json({message: e.message});
+            throw new ResourceNotFoundException();
         }
     }
 
