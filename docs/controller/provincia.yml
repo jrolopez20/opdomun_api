@@ -5,15 +5,10 @@
     description: List of provinces
     produces:
       - application/json
-    parameters:
-      - name: page
-        description: page
-        in: query
-        type: integer
-      - name: limit
-        description: limit
-        in: query
-        type: integer
     responses:
       200:
-        description: Provinces
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Provincia'

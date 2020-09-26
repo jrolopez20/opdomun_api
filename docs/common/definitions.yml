@@ -1,0 +1,42 @@
+# Common reusable definitions:
+definitions:
+  PaginationData:
+    Pagination-Count:
+      description: Total number of items
+      type: integer
+    Pagination-Page:
+      description: Current page number
+      type: integer
+    Pagination-Limit:
+      description: Number of returned items
+      type: integer
+
+  Message:
+    type: object
+    properties:
+      message:
+        type: string
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      field:
+        type: string
+
+  Errors:
+    type: array
+    items:
+      $ref: '#/definitions/Error'
+
+  ValidationError:
+    type: object
+    properties:
+      message:
+        type: string
+      errors:
+        $ref: '#/definitions/Errors'

@@ -7,4 +7,8 @@
       - application/json
     responses:
       200:
-        description: HomeTypes
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/HomeType'

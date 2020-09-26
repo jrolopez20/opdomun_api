@@ -22,11 +22,8 @@ class MunicipioController {
      * @param {View} ctx.view
      */
     async index({params, request, response}) {
-        const provinciaId = params.provinciaId;
-        const page = request.input('page');
-        const limit = request.input('limit');
-        const filter = request.input('filter');
-        const municipios = await Municipio.getMunicipios(provinciaId, page, limit, filter);
+        const provinciaId = params.id;
+        const municipios = await Municipio.getMunicipios(provinciaId);
         return response.json(municipios);
     }
 

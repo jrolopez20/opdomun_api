@@ -24,7 +24,7 @@ class UserSeeder {
 
         // Create ADMIN user
         const admin = await Factory.model('App/Models/User')
-            .create({role: User.roles().ADMIN})
+            .create({email: 'admin@opdomun.com', role: User.roles().ADMIN})
 
         const offices = await Office.all();
         for (const office of offices.toJSON()) {

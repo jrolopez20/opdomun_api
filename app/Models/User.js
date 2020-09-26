@@ -38,12 +38,16 @@ class User extends Model {
     }
 
     static async getUsers(page = 1, limit = 20, filter, role = null, orderBy = null) {
-        const query = Database
-            .from('users')
-            .select('users.id', 'users.email', 'users.role', 'users.fullname', 'users.numid', 'users.telephone',
-                'users.address', 'users.picture', 'users.created_at', 'users.closed_at', 'provincias.title as office_title')
-            .leftJoin('offices', 'offices.id', 'users.office_id')
-            .leftJoin('provincias', 'provincias.id', 'offices.provincia_id');
+        const query = User
+            .query()
+            .with('office.provincia')
+
+        // const query = Database
+        //     .from('users')
+        //     .select('users.id', 'users.email', 'users.role', 'users.fullname', 'users.numid', 'users.telephone',
+        //         'users.address', 'users.picture', 'users.created_at', 'users.closed_at', 'provincias.title as office_title')
+        //     .leftJoin('offices', 'offices.id', 'users.office_id')
+        //     .leftJoin('provincias', 'provincias.id', 'offices.provincia_id');
 
         if (role) {
             query.where({role})
@@ -60,7 +64,7 @@ class User extends Model {
 
         limit = limit > 0 ? limit : undefined;
         const users = await query.paginate(page, limit);
-        return users;
+        return users.toJSON();
     }
 
     static async getUser(id) {

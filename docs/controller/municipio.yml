@@ -1,4 +1,4 @@
-/provincias/{provinciaId}/municipios:
+/provincias/{id}/municipios:
   get:
     tags:
       - Municipio
@@ -6,22 +6,11 @@
     produces:
       - application/json
     parameters:
-      - name: provinciaId
-        in: path
-        required: true
-        description: 'Provincia ID'
-        schema:
-          type: integer
-          format: int64
-          minimum: 1
-      - name: page
-        description: page
-        in: query
-        type: integer
-      - name: limit
-        description: limit
-        in: query
-        type: integer
+      - $ref: '#/parameters/id'
     responses:
       200:
-        description: Municipios
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Municipio'

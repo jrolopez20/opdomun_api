@@ -11,7 +11,7 @@ class HomeType extends Model {
     }
 
     static async getHomeTypes() {
-        return await Database.select('id', 'title').from('home_types')
+        return await Database.select('id', 'title', 'value').from('home_types')
     }
 
     posts() {

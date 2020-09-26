@@ -28,7 +28,7 @@ Factory.blueprint('App/Models/Article', async (faker, i, data) => {
 
 Factory.blueprint('App/Models/User', async (faker, i, data) => {
     return {
-        email: faker.email(),
+        email: data.email || faker.email(),
         password: '123456',
         role: data.role || User.roles().USER,
         fullname: faker.name(),

@@ -16,4 +16,10 @@
         type: integer
     responses:
       200:
-        description: Offices
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Office'
+        headers:
+          $ref: '#/definitions/PaginationData'

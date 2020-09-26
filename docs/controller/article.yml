@@ -2,219 +2,127 @@
   get:
     tags:
       - Article
-    description: List of articles
+    summary: List of articles
     produces:
       - application/json
     parameters:
-      - name: page
-        description: page
-        in: query
-        type: integer
-      - name: limit
-        description: limit
-        in: query
-        type: integer
-      - name: filter
-        description: filter
-        in: query
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/filter'
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Article'
+        headers:
+          $ref: '#/definitions/PaginationData'
+
+  post:
+    tags:
+      - Article
+    summary: Create a new article
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: title
+        in: formData
+        required: true
         type: string
-      - name: sortBy
-        description: Field name to sort
-        in: query
+      - name: summary
+        in: formData
+        required: true
+        type: string
+      - name: text
+        in: formData
+        required: true
+        type: string
+      - name: picture
+        in: formData
         type: string
     responses:
       200:
-        description: Users
+        description: Success
+        schema:
+          $ref: '#/definitions/Article'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
 
-#  post:
-#    tags:
-#      - User
-#    description: Create a new user
-#    produces:
-#      - application/json
-#    parameters:
-#      - name: numid
-#        in: formData
-#        required: true
-#        type: string
-#        description: 'Carnet de identidad'
-#      - name: fullname
-#        in: formData
-#        required: true
-#        type: string
-#      - name: email
-#        in: formData
-#        required: true
-#        type: string
-#      - name: telephone
-#        in: formData
-#        required: true
-#        type: string
-#      - name: role
-#        in: formData
-#        required: true
-#        type: string
-#      - name: address
-#        in: formData
-#        type: string
-#      - name: office_id
-#        in: formData
-#        type: integer
-#      - name: password
-#        in: formData
-#        required: true
-#        type: string
-#      - name: repassword
-#        in: formData
-#        required: true
-#        type: string
-#    responses:
-#      200:
-#        description: Subscription
-#
-#/users/{userId}:
-#  get:
-#    tags:
-#      - User
-#    summary: Returns a user by ID
-#    description: Returns a user by ID
-#    security:
-#      - bearerAuth: []
-#    produces:
-#      - application/json
-#    parameters:
-#      - name: userId
-#        in: path
-#        required: true
-#        description: 'User ID'
-#        schema:
-#          type: integer
-#          format: int64
-#          minimum: 1
-#    responses:
-#      200:
-#        description: User
-#
-#  put:
-#    tags:
-#      - User
-#    summary: Update a user
-#    description: Update user
-#    security:
-#      - bearerAuth: []
-#    produces:
-#      - application/json
-#    parameters:
-#      - name: userId
-#        in: path
-#        required: true
-#        description: 'User ID'
-#        schema:
-#          type: integer
-#          format: int64
-#          minimum: 1
-#      - name: numid
-#        in: formData
-#        required: true
-#        type: string
-#        description: 'Carnet de identidad'
-#      - name: fullname
-#        in: formData
-#        required: true
-#        type: string
-#      - name: email
-#        in: formData
-#        required: true
-#        type: string
-#      - name: telephone
-#        in: formData
-#        required: true
-#        type: string
-#    responses:
-#      200:
-#        description: User
-#
-#  delete:
-#    tags:
-#      - User
-#    summary: Remove user by ID
-#    description: Remove user by ID
-#    security:
-#      - bearerAuth: []
-#    produces:
-#      - application/json
-#    parameters:
-#      - name: userId
-#        in: path
-#        required: true
-#        description: 'User ID'
-#        schema:
-#          type: integer
-#          format: int64
-#          minimum: 1
-#    responses:
-#      204:
-#        description: Null
-#
-#/users/{userId}/password:
-#  post:
-#    tags:
-#      - User
-#    summary: Change user password
-#    description: Changer password
-#    security:
-#      - bearerAuth: []
-#    produces:
-#      - application/json
-#    parameters:
-#      - name: userId
-#        in: path
-#        required: true
-#        description: 'User ID'
-#        schema:
-#          type: integer
-#          format: int64
-#          minimum: 1
-#      - name: password
-#        in: formData
-#        required: true
-#        type: string
-#    responses:
-#      200:
-#        description: User
-#
-#/users/{userId}/toggle_enable:
-#  put:
-#    tags:
-#      - User
-#    summary: Toggle enable
-#    description: Toggle enable
-#    security:
-#      - bearerAuth: []
-#    produces:
-#      - application/json
-#    parameters:
-#      - name: userId
-#        in: path
-#        required: true
-#        description: 'User ID'
-#        schema:
-#          type: integer
-#          format: int64
-#          minimum: 1
-#    responses:
-#      200:
-#        description: User
-#
-#/roles:
-#  get:
-#    tags:
-#      - User
-#    description: List of available roles depending on authenticated user role
-#    security:
-#      - bearerAuth: []
-#    produces:
-#      - application/json
-#    responses:
-#      200:
-#        description: Roles
+/articles/{userId}:
+  get:
+    tags:
+      - Article
+    summary: Returns a article by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Article'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  put:
+    tags:
+      - Article
+    summary: Update article
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+      - name: title
+        in: formData
+        required: true
+        type: string
+      - name: summary
+        in: formData
+        required: true
+        type: string
+      - name: text
+        in: formData
+        required: true
+        type: string
+      - name: picture
+        in: formData
+        type: string
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Article'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  delete:
+    tags:
+      - Article
+    summary: Remove articleby ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      204:
+        description: Null

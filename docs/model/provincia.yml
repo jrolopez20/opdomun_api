@@ -12,8 +12,6 @@ definitions:
         type: string
       updated_at:
         type: string
-      closed_at:
-        type: string
     required:
       - id
       - cod

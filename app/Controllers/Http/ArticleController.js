@@ -25,9 +25,8 @@ class ArticleController {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = request.input('filter');
-        const sortBy = request.input('sortBy');
 
-        const result = await Article.getArticles(page, limit, filter, sortBy);
+        const result = await Article.getArticles(page, limit, filter);
         return PaginatedResponse.parse(response, result)
     }
 

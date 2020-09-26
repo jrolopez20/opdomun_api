@@ -1,0 +1,39 @@
+# Define reusable parameters:
+parameters:
+  id:
+    name: id
+    in: path
+    required: true
+    description: Item id
+    schema:
+      type: integer
+      format: int64
+      minimum: 1
+
+  page:
+    name: page
+    in: query
+    description: Current page number
+    required: false
+    type: integer
+    format: int32
+    default: 1
+    minimum: 1
+
+  limit:
+    name: limit
+    in: query
+    description: Limits the number of returned items
+    required: false
+    type: integer
+    format: int32
+    default: 10
+    minimum: 10
+    maximum: 100
+    multipleOf: 10
+
+  filter:
+    name: filter
+    description: filter
+    in: query
+    type: string

@@ -1,0 +1,22 @@
+# Define reusable responses:
+responses:
+  SuccessMessage:
+    description: Success
+    schema:
+      $ref: '#/definitions/Message'
+  400BadRequest:
+    description: The request was invalid or cannot be otherwise served.
+    schema:
+      $ref: '#/definitions/ValidationError'
+  401Unauthorized:
+    description: Authentication credentials were missing or incorrect.
+    schema:
+      $ref: '#/definitions/Message'
+  403Forbidden:
+    description: The request is understood, but it has been refused or access is not allowed.
+    schema:
+      $ref: '#/definitions/Message'
+  404NotFound:
+    description: The URI requested is invalid or the resource requested does not exists.
+    schema:
+      $ref: '#/definitions/Message'

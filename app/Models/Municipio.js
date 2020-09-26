@@ -5,16 +5,17 @@ const Model = use('Model')
 
 class Municipio extends Model {
 
-    static async getMunicipios(provinciaId, page = 1, limit = 20, filter) {
-        let query = this.query()
-            .where('provincia_id', provinciaId);
+    static get hidden() {
+        return ['created_at', 'updated_at'];
+    }
 
-        if (filter) {
-            const where = "(title like '%" + filter + "%') AND true = ?";
-            query.whereRaw(where, [true]);
-        }
+    static async getMunicipios(provinciaId) {
+        const municipios = await Municipio
+            .query()
+            .setVisible(['id', 'title', 'prosp_urbana'])
+            .where('provincia_id', provinciaId)
+            .fetch();
 
-        const municipios = await query.paginate(page, limit);
         return municipios;
     }
 

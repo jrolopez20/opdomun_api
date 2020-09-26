@@ -2,10 +2,10 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Office = use('App/Models/Office')
+const PaginatedResponse = use('App/Util/PaginatedResponse');
 
 /**
  * Resourceful controller for interacting with offices
@@ -24,8 +24,8 @@ class OfficeController {
     async index({request, response}) {
         const page = request.input('page');
         const limit = request.input('limit');
-        const offices = await Office.getOffices(page, limit);
-        return response.json(offices)
+        const result = await Office.getOffices(page, limit);
+        return PaginatedResponse.parse(response, result)
     }
 
 }

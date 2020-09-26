@@ -25,7 +25,7 @@ Route.group(() => {
     Route.get('provincias', 'ProvinciaController.index');
 
     // Municipios
-    Route.get('provincias/:provinciaId/municipios', 'MunicipioController.index');
+    Route.get('provincias/:id/municipios', 'MunicipioController.index');
 
     // Offices
     Route.get('offices', 'OfficeController.index');
@@ -86,7 +86,7 @@ Route.group(() => {
     Route.post('free_post', 'PostController.addFreePost');
 
     Route.get('otherplaces', 'PostPlaceController.getOtherPlaces');
-    Route.get('posts/:postId/post_variables', 'PostVariableController.getPostVariables').middleware(['auth']);
+    Route.get('posts/:id/post_variables', 'PostVariableController.getPostVariables').middleware(['auth']);
     Route.get('variables/:id/ec', 'VariableEcController.show').middleware(['auth']);
     Route.put('variables/:id/ec', 'VariableEcController.update').middleware(['auth']);
     Route.get('variables/:id/de', 'VariableDeController.show').middleware(['auth']);

@@ -22,10 +22,7 @@ class ProvinciaController {
      * @param {View} ctx.view
      */
     async index({request, response}) {
-        const page = request.input('page');
-        const limit = request.input('limit');
-        const filter = request.input('filter');
-        const provincias = await Provincia.getProvincias(page, limit, filter);
+        const provincias = await Provincia.getProvincias();
         return response.json(provincias)
     }
 

@@ -18,11 +18,13 @@
         type: integer
     responses:
       200:
+        description: Success
         schema:
           type: array
           items:
             $ref: '#/definitions/Subscription'
-        description: Subscriptions
+        headers:
+          $ref: '#/definitions/PaginationData'
 
   post:
     tags:

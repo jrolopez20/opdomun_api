@@ -10,19 +10,22 @@ class Article extends Model {
         this.addTrait('CastDate')
     }
 
-    static async getArticles(page = 1, limit = 20, filter = null, sortBy) {
+    static get hidden() {
+        return ['user_id', 'updated_at'];
+    }
+
+    static async getArticles(page = 1, limit = 20, filter = null) {
         const query = Article
             .query()
-            .with('user')
+            .setVisible(['id', 'title', 'sumary', 'created_at'])
+            .with('user', (builder) => {
+                builder.setVisible(['id', 'fullname'])
+            })
 
         if (filter) {
             let where = "(title like '%" + filter + "%') OR (summary like '%" + filter + "%') OR (text like '%" + filter + "%')";
             where = where + " AND true = ?";
             query.whereRaw(where, [true])
-        }
-
-        if (sortBy) {
-            query.orderBy(sortBy, 'DESC')
         }
 
         const articles = await query.paginate(page, limit);

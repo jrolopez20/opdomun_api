@@ -5,6 +5,10 @@ const Model = use('Model')
 
 class Office extends Model {
 
+    static get hidden() {
+        return ['created_at', 'updated_at'];
+    }
+    
     static async getOffices (page, limit) {
         const query = Office
             .query()
@@ -14,7 +18,7 @@ class Office extends Model {
             });
 
         const offices = await query.paginate(page, limit);
-        return offices;
+        return offices.toJSON();
     }
 
     provincia() {
