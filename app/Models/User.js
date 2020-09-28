@@ -33,7 +33,7 @@ class User extends Model {
             ADMIN: 'ADMIN',
             MANAGER: 'MANAGER',
             AGENT: 'AGENT',
-            USER: 'USER'
+            CLIENT: 'CLIENT'
         }
     }
 

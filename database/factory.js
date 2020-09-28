@@ -30,7 +30,7 @@ Factory.blueprint('App/Models/User', async (faker, i, data) => {
     return {
         email: data.email || faker.email(),
         password: '123456',
-        role: data.role || User.roles().USER,
+        role: data.role || User.roles().CLIENT,
         fullname: faker.name(),
         numid: faker.integer({min: 60000000000, max: 99999999999}),
         telephone: faker.phone({formatted: false}),
