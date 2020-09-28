@@ -34,10 +34,10 @@ class HisPost extends Model {
       .groupByRaw('plan');
 
     if (year) {
-      query.whereRaw('year(his_posts.created_at) = ?', year)
+      query.whereRaw('EXTRACT(year FROM his_posts.created_at) = ?', year)
     }
     if (month) {
-      query.whereRaw('month(his_posts.created_at) = ?', month)
+      query.whereRaw('EXTRACT(month FROM his_posts.created_at) = ?', month)
     }
 
     return await query;
@@ -55,22 +55,22 @@ class HisPost extends Model {
       .count('his_posts.id as total')
       .innerJoin('posts', 'posts.id', 'his_posts.post_id')
       .andWhere('his_posts.action', 2) //Accion para tasacion
-      .andWhereRaw('year(his_posts.created_at) = year(now())');
+      .andWhereRaw('EXTRACT(year FROM his_posts.created_at) = EXTRACT(year FROM now())');
 
     if (userId) {
       query.where('posts.user_id', userId)
     }
 
     if (currentMonth === true) {
-      query.andWhereRaw('month(his_posts.created_at) = month(now())')
+      query.andWhereRaw('EXTRACT(month FROM his_posts.created_at) = EXTRACT(month FROM now())')
     } else if (typeof (parseInt(currentMonth)) === 'number') {
-      query.andWhereRaw('month(his_posts.created_at) = ' + currentMonth);
+      query.andWhereRaw(`date_part('month', his_posts.created_at) = ${currentMonth}`);
     }
 
     if (currentYear === true) {
-      query.andWhereRaw('year(his_posts.created_at) = year(now())')
+      query.andWhereRaw(`date_part('year', his_posts.created_at) = date_part('year', now())`)
     } else if (typeof (parseInt(currentYear)) === 'number') {
-      query.andWhereRaw('year(his_posts.created_at) = ' + currentYear);
+      query.andWhereRaw(`date_part('year', his_posts.created_at) = ${currentYear}`);
     }
 
     const result = await query;
@@ -89,10 +89,10 @@ class HisPost extends Model {
       .count('his_posts.id as total');
 
     if (year) {
-      query.whereRaw('year(his_posts.created_at) = ?', year)
+      query.whereRaw(`date_part('year', his_posts.created_at) = {year}`)
     }
     if (month) {
-      query.whereRaw('month(his_posts.created_at) = ?', month)
+      query.whereRaw(`date_part('month', his_posts.created_at) = ${month}`)
     }
     if (group) {
       query.groupByRaw('posts.plan');
@@ -138,15 +138,15 @@ class HisPost extends Model {
     }
 
     if (currentMonth === true) {
-      query.andWhereRaw('month(his_posts.created_at) = month(now())')
+      query.andWhereRaw(`date_part('month', his_posts.created_at) = date_part('month', now())`)
     } else if (typeof (parseInt(currentMonth)) === 'number') {
-      query.andWhereRaw('month(his_posts.created_at) = ' + currentMonth);
+      query.andWhereRaw(`date_part('month', his_posts.created_at) = ${currentMonth}`);
     }
 
     if (currentYear === true) {
-      query.andWhereRaw('year(his_posts.created_at) = year(now())')
+      query.andWhereRaw(`date_part('year', (his_posts.created_at) = date_part('year', now())`)
     } else if (typeof (parseInt(currentYear)) === 'number') {
-      query.andWhereRaw('year(his_posts.created_at) = ' + currentYear);
+      query.andWhereRaw(`date_part('year', his_posts.created_at) = ${currentYear}`);
     }
     return await query;
   }
@@ -163,22 +163,22 @@ class HisPost extends Model {
       .count('his_posts.id as total')
       .innerJoin('posts', 'posts.id', 'his_posts.post_id')
       .andWhere('his_posts.action', 3) //Accion para tasacion
-      .andWhereRaw('year(his_posts.created_at) = year(now())');
+      .andWhereRaw(`date_part('year', his_posts.created_at) = date_part('year', now())`);
 
     if (userId) {
       query.where('posts.user_id', userId)
     }
 
     if (currentMonth === true) {
-      query.andWhereRaw('month(his_posts.created_at) = month(now())')
+      query.andWhereRaw(`date_part('month', his_posts.created_at) = date_part('month', now())`)
     } else if (typeof (parseInt(currentMonth)) === 'number') {
-      query.andWhereRaw('month(his_posts.created_at) = ' + currentMonth);
+      query.andWhereRaw(`date_part('month', his_posts.created_at) = ${currentMonth}`);
     }
 
     if (currentYear === true) {
-      query.andWhereRaw('year(his_posts.created_at) = year(now())')
+      query.andWhereRaw(`date_part('year', his_posts.created_at) = year(now())`)
     } else if (typeof (parseInt(currentYear)) === 'number') {
-      query.andWhereRaw('year(his_posts.created_at) = ' + currentYear);
+      query.andWhereRaw(`date_part('year', his_posts.created_at) = ${currentYear}`);
     }
 
     const result = await query;

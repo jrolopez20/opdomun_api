@@ -9,9 +9,9 @@ class AuthController {
         let password = request.input("password");
         try {
             if (await auth.attempt(email, password)) {
-                const {password, ...user} = (await User.findBy('email', email)).toJSON();
+                const user = await User.findBy('email', email);
                 const accessToken = await auth.generate(user);
-                return response.json({user, 'access_token': accessToken})
+                return response.json({'access_token': accessToken})
             }
 
             return response.status(401).json({message: 'Invalid login attemp!'})

@@ -41,9 +41,7 @@ class PostService {
 
         if (post.plan) {
             // Define post close date
-            await Database
-                .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
-                    [post.id]);
+            await this.setExpirationDate(post.id, activeMonths);
         }
 
         await this.initPostVariable(post);
@@ -73,9 +71,7 @@ class PostService {
         await post.save();
 
         // Define post close date
-        await Database
-            .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
-                [post.id]);
+        await this.setExpirationDate(post.id, activeMonths);
 
         const owner = await Owner.addOwner({
             postId: post.id,
@@ -153,7 +149,6 @@ class PostService {
                 variable_id: variable.id
             });
         }
-
         await post
             .postVariables()
             .createMany(postVariables);
@@ -193,9 +188,7 @@ class PostService {
             // Case when is an appraisal
             post.plan = 1; // Set premium plan
             const activeMonths = 3;
-            await Database
-                .raw(`UPDATE posts SET posts.closed_at = DATE_ADD(now(), INTERVAL ${activeMonths} MONTH) WHERE id = ?`,
-                    [post.id]);
+            await this.setExpirationDate(post.id, activeMonths);
         }
         await post.save();
 
@@ -208,6 +201,12 @@ class PostService {
         await NotificationService.dispatchSubscriptorNotification(postObj);
 
         return publishedPost;
+    }
+
+    static async setExpirationDate(postId, months) {
+        await Database
+            .raw(`UPDATE posts SET closed_at = (now() + interval '${months} month') WHERE id = ?`,
+                [postId]);
     }
 
     static async calculatePrice(postId) {

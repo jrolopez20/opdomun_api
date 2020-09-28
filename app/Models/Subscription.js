@@ -20,10 +20,10 @@ class Subscription extends Model {
                 query.andWhere('provincia_id', filter.provincia)
             }
             if (filter.municipio) {
-                query.whereRaw(`FIND_IN_SET(${filter.municipio}, municipio)`);
+                query.whereRaw(`${filter.municipio} = ANY (string_to_array(municipio))`);
             }
             if (filter.homeType) {
-                query.whereRaw(`FIND_IN_SET(${filter.homeType}, home_type)`);
+                query.whereRaw(`${filter.homeType} = ANY (string_to_array(home_type))`);
             }
             if (filter.bedrooms) {
                 query.andWhere('bedrooms', filter.bedrooms);
@@ -55,7 +55,7 @@ class Subscription extends Model {
         }
 
         if (municipioId) {
-            subscriptions.whereRaw(`FIND_IN_SET(${municipioId}, municipio)`);
+            subscriptions.whereRaw(`${municipioId} = ANY (string_to_array(municipio))`);
         }
 
         if (price) {
@@ -64,7 +64,7 @@ class Subscription extends Model {
         }
 
         if (homeType) {
-            subscriptions.whereRaw(`FIND_IN_SET(${homeType}, home_type)`);
+            subscriptions.whereRaw(`${homeType} = ANY (string_to_array(home_type))`);
         }
 
         return await subscriptions;

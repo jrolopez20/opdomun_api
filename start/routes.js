@@ -71,7 +71,7 @@ Route.group(() => {
             [['posts.update'], ['UpdatePost']]
         ]))
         .middleware(new Map([
-            [['store', 'index', 'update', 'destroy'], ['auth']],
+            [['store', 'update', 'destroy'], ['auth']],
             [['show'], ['visitors_count']]
         ])).apiOnly();
     Route.put('posts/:id/publish', 'PostController.publishPost').middleware(['auth']).validator('PublishPost');

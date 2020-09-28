@@ -54,7 +54,7 @@ class User extends Model {
         }
 
         if (filter) {
-            let where = `((fullname like '%${filter}%') OR (email like '%${filter}%'))`;
+            let where = `((fullname ilike '%${filter}%') OR (email like '%${filter}%'))`;
             query.whereRaw(where)
         }
 

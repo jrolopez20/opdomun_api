@@ -22,6 +22,10 @@ class Post extends Model {
         this.addTrait('CastDate')
     }
 
+    static get hidden() {
+        return ['updated_at'];
+    }
+
     static async getPost(id) {
         const post = await Post
             .query()
@@ -53,11 +57,11 @@ class Post extends Model {
             .leftJoin('images', function () {
                 this
                     .on('posts.id', 'images.post_id')
-                    .andOn('images.default', 1)
+                    .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
             .where('plans.id', 1)
-            .where('posts.sold', '<>', 1)
+            .where('posts.sold', '<>', true)
             .orderBy('posts.opdo', 'desc')
             .limit(3);
 
@@ -70,11 +74,12 @@ class Post extends Model {
             .with('user')
             .with('municipio.provincia')
             .with('images', (builder) => {
-                builder.where('default', 1)
+                builder.where('default', true)
             })
             .where('plan', 1)
             .whereNotNull('published_at')
-            .whereRaw('month(published_at) in (month(now()), month(now())-1) AND closed_at >= now()')
+            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at >= now()')
+
             .where('posts.sold', 0)
             .orderBy('posts.opdo', 'desc');
 
@@ -83,23 +88,12 @@ class Post extends Model {
     }
 
     static async getPosts(plan = null, page = 1, limit = 20, filter, orderBy = 'updated_at', auth) {
-        const query = Database
-            .from('posts')
-            .select(
-                'posts.id', 'posts.plan', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
-                'posts.published_at', 'posts.closed_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.sold', 'images.url as image',
-                'municipios.title as municipio', 'provincias.cod as provincia'
-            )
-            .leftJoin('users', 'posts.user_id', 'users.id')
-            .innerJoin('owners', 'owners.post_id', 'posts.id')
-            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
-            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .leftJoin('plans', 'plans.id', 'posts.plan')
-            .leftJoin('images', function () {
-                this
-                    .on('posts.id', 'images.post_id')
-                    .andOn('images.default', 1)
-            });
+        const query = Post
+            .query()
+            .with('municipio.provincia')
+            .with('images', (builder) => {
+                builder.where('default', true)
+            })
 
         if (auth.user) {
             query.orderBy(`posts.updated_at`, 'DESC');
@@ -111,11 +105,8 @@ class Post extends Model {
             }
         } else {
             query.whereNotNull('posts.published_at')
-                .orderBy('plans.ranking', 'ASC')
-                .orderBy('posts.opdo', 'DESC')
-                .orderBy('posts.opdo', 'orderBy');
-
-            //query.whereRaw('posts.closed_at >= now()')
+                .orderBy('posts.plan', 'ASC')
+                .orderBy('posts.opdo', 'DESC');
         }
 
         if (plan) {
@@ -128,32 +119,35 @@ class Post extends Model {
             query.whereIn('posts.plan', [1, 4])
         }
 
-        if (filter) {
-            if (filter.provincia) {
-                query.andWhere('provincias.id', filter.provincia)
-            }
-            if (filter.municipio) {
-                query.andWhere('municipios.id', filter.municipio)
-            }
-            if (filter.homeType) {
-                query.andWhere('posts.home_type_id', filter.homeType);
-            }
-            if (filter.bedrooms) {
-                query.andWhere('posts.bedrooms', filter.bedrooms);
-            }
-            if (filter.bathrooms) {
-                query.andWhere('posts.bathrooms', filter.bathrooms);
-            }
-            if (filter.minPrice) {
-                query.andWhere('posts.price', '>=', filter.minPrice);
-            }
-            if (filter.maxPrice) {
-                query.andWhere('posts.price', '<=', filter.maxPrice);
-            }
+        if (filter.municipio) {
+            query.andWhere('posts.municipio_id', filter.municipio);
+        }
+        if (filter.homeType) {
+            query.andWhere('posts.home_type_id', filter.homeType);
+        }
+        if (filter.bedrooms) {
+            query.andWhere('posts.bedrooms', filter.bedrooms);
+        }
+        if (filter.bathrooms) {
+            query.andWhere('posts.bathrooms', filter.bathrooms);
+        }
+        if (filter.minPrice) {
+            query.andWhere('posts.price', '>=', filter.minPrice);
+        }
+        if (filter.maxPrice) {
+            query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
+        if (filter.provincia) {
+            query.whereRaw(
+                `posts.id IN (SELECT posts.id FROM posts 
+                INNER JOIN municipios ON municipios.id = posts.municipio_id WHERE municipios.provincia_id = ${filter.provincia})`
+            );
+        }
+
+
         const posts = await query.paginate(page, limit);
-        return posts;
+        return posts.toJSON();
     }
 
     static async getAppraisals(page = 1, limit = 20, filter, orderBy = 'updated_at', auth) {
@@ -220,12 +214,12 @@ class Post extends Model {
             .innerJoin('images', function () {
                 this
                     .on('posts.id', 'images.post_id')
-                    .andOn('images.default', 1)
+                    .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
             .andWhere('posts.plan', 1)
-            .andWhere('posts.sold', '<>', 1)
-            .whereRaw('month(posts.published_at) in (month(now()), month(now())-1)')
+            .andWhere('posts.sold', '<>', true)
+            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
             .orderBy(`posts.opdo`, 'DESC')
             .limit(limit)
 
@@ -259,7 +253,7 @@ class Post extends Model {
             .leftJoin('images', function () {
                 this
                     .on('posts.id', 'images.post_id')
-                    .andOn('images.default', 1)
+                    .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
             //.whereRaw('posts.closed_at >= now()')
@@ -1009,7 +1003,7 @@ class Post extends Model {
             .whereNotNull('owners.email')
             .whereRaw('posts.closed_at >= now()')
             .andWhere('posts.plan', 1)
-            .andWhere('posts.sold', '<>', 1);
+            .andWhere('posts.sold', '<>', true);
 
         if (provinciaId) {
             posts.andWhere('municipios.provincia_id', provinciaId);
@@ -1069,6 +1063,10 @@ class Post extends Model {
 
     homeType() {
         return this.belongsTo('App/Models/HomeType');
+    }
+
+    plan() {
+        return this.belongsTo('App/Models/Plan')
     }
 
     images() {

@@ -23,7 +23,7 @@ class Article extends Model {
             })
 
         if (filter) {
-            let where = "(title like '%" + filter + "%') OR (summary like '%" + filter + "%') OR (text like '%" + filter + "%')";
+            let where = "(title ilike '%" + filter + "%') OR (summary ilike '%" + filter + "%') OR (text ilike '%" + filter + "%')";
             where = where + " AND true = ?";
             query.whereRaw(where, [true])
         }

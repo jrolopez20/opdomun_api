@@ -8,7 +8,7 @@ class PostVariableSchema extends Schema {
     this.create('post_variables', (table) => {
       table.increments()
       table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
-      table.integer('variable_id').unsigned().notNullable().references('id').inTable('posts').onDelete('RESTRICT')
+      table.integer('variable_id').unsigned().notNullable().references('id').inTable('variables').onDelete('RESTRICT')
       table.float('result')
       table.float('points')
       table.timestamps(true, true)
