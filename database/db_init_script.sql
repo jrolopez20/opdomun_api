@@ -1,7 +1,18 @@
-﻿
+﻿/**
+* Initianlization script
+*
+* 1- Provincias
+* 2- Municipios
+* 3- Variables
+* 4- Home_types
+* 5- Plans
+* 6- Nom_electrodomesticos
+* 7- Nom_moviliarios
+* 8- Nom_seg_ciudadanas
+*
+*/
 
-/* Data for the `provincias` table  (Records 1 - 16) */
-
+/* 1- Data for the `provincias` table  (Records 1 - 16) */
 
 INSERT INTO "provincias" ("id", "cod", "title")
 VALUES (1, 'PR', 'Pinar del rio');
@@ -52,10 +63,7 @@ INSERT INTO "provincias" ("id", "cod", "title")
 VALUES (16, 'IJ', 'Isla de la Juventud');
 
 
-
-
-/* Data for the `municipios` table  (Records 1 - 168) */
-
+/* 2- Data for the `municipios` table  (Records 1 - 168) */
 
 INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
 VALUES (1, 1, 'Sandino', 13.56);
@@ -562,9 +570,7 @@ INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
 VALUES (179, 16, 'Isla de la Juventud', 33.71);
 
 
-
-/* Data for the `variables` table  (Records 1 - 14) */
-
+/* 3- Data for the `variables` table  (Records 1 - 14) */
 
 INSERT INTO "variables" ("id", "cod", "title", "influencia", "visible")
 VALUES (1, 'Au', 'Area util interior y exterior', 0.0675, false);
@@ -609,8 +615,7 @@ INSERT INTO "variables" ("id", "cod", "title", "influencia", "visible")
 VALUES (14, 'Mh', 'Menaje del hogar', 0.0557, true);
 
 
-/* Data for the `home_types` table  (Records 1 - 6) */
-
+/* 4- Data for the `home_types` table  (Records 1 - 6) */
 
 INSERT INTO "home_types" ("id", "title", "value")
 VALUES (1, 'Aislada', 100);
@@ -631,8 +636,7 @@ INSERT INTO "home_types" ("id", "title", "value")
 VALUES (6, 'Pent house', 90);
 
 
-/* Data for the `plans` table  (Records 1 - 4) */
-
+/* 5- Data for the `plans` table  (Records 1 - 4) */
 
 INSERT INTO "plans" ("id", "title", "ranking")
 VALUES (1, 'premium', 2);
@@ -645,3 +649,67 @@ VALUES (3, 'PREMIUM PLUS', 1);
 
 INSERT INTO "plans" ("id", "title", "ranking")
 VALUES (4, 'gratis', 4);
+
+
+/* 6 - Data for the `nom_electrodomesticos` table  (Records 1 - 7) */
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (1, 'Televisión', 100);
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (2, 'Aire Acondicionado', 100);
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (3, 'Refrigerador', 100);
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (4, 'Cocina / Horno', 100);
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (5, 'Microwave', 100);
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (6, 'Ventilador', 100);
+
+INSERT INTO "nom_electrodomesticos" ("id", "title", "value")
+VALUES (7, 'Computadora', 100);
+
+
+/* 7- Data for the `nom_moviliarios` table  (Records 1 - 6) */
+
+INSERT INTO "nom_moviliarios" ("id", "title", "value")
+VALUES (1, 'Mobiliario de Sala', 100);
+
+INSERT INTO "nom_moviliarios" ("id", "title", "value")
+VALUES (2, 'Mobiliario de Comedor', 90);
+
+INSERT INTO "nom_moviliarios" ("id", "title", "value")
+VALUES (3, 'Mobiliario de Dormitorios', 100);
+
+INSERT INTO "nom_moviliarios" ("id", "title", "value")
+VALUES (4, 'Mobiliario de Terraza', 80);
+
+INSERT INTO "nom_moviliarios" ("id", "title", "value")
+VALUES (5, 'Mobiliario de Portal', 60);
+
+INSERT INTO "nom_moviliarios" ("id", "title", "value")
+VALUES (6, 'Mobiliario de Estudio / Oficina', 50);
+
+
+/* 8- Data for the `nom_seg_ciudadanas` table  (Records 1 - 5) */
+
+INSERT INTO "nom_seg_ciudadanas" ("id", "value", "title")
+VALUES (1, 100, 'Muy Alta');
+
+INSERT INTO "nom_seg_ciudadanas" ("id", "value", "title")
+VALUES (2, 80, 'Alta');
+
+INSERT INTO "nom_seg_ciudadanas" ("id", "value", "title")
+VALUES (3, 60, 'Media');
+
+INSERT INTO "nom_seg_ciudadanas" ("id", "value", "title")
+VALUES (4, 40, 'Baja');
+
+INSERT INTO "nom_seg_ciudadanas" ("id", "value", "title")
+VALUES (5, 20, 'Muy Baja');
+
