@@ -11,7 +11,7 @@ class StorePost {
             bathrooms: 'required|number',
             home_type_id: 'required|number',
             built_year: 'number',
-            plan: 'number'
+            plan_id: 'number'
         }
     }
 
@@ -30,7 +30,7 @@ class StorePost {
             'home_type_id.required': 'You must provide a home_type_id.',
             'home_type_id.number': 'The field home_type_id must be a number',
             'built_year.number': 'The field built_year must be a number',
-            'plan.number': 'The field plan must be a number'
+            'plan_id.number': 'The field plan must be a number'
         }
     }
 

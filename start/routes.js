@@ -71,19 +71,19 @@ Route.group(() => {
             [['posts.update'], ['UpdatePost']]
         ]))
         .middleware(new Map([
-            [['store', 'update', 'destroy'], ['auth']],
+            [['index', 'store', 'update', 'destroy'], ['auth']],
             [['show'], ['visitors_count']]
         ])).apiOnly();
     Route.put('posts/:id/publish', 'PostController.publishPost').middleware(['auth']).validator('PublishPost');
     Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice').middleware(['auth']).validator('PublishPost');
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth']);
-    Route.get('published_posts', 'PostController.index');
+    Route.get('published_posts', 'PostController.PublishedPosts');
 
     Route.get('appraisals', 'AppraisalController.index').middleware(['auth']);
+    Route.post('free_post', 'PostController.addFreePost').middleware(['auth']);
 
     Route.get('featured_posts', 'PostController.getFeaturedPosts');
     Route.get('recommended_posts', 'PostController.getRecommendedPosts');
-    Route.post('free_post', 'PostController.addFreePost');
 
     Route.get('otherplaces', 'PostPlaceController.getOtherPlaces');
     Route.get('posts/:id/post_variables', 'PostVariableController.getPostVariables').middleware(['auth']);

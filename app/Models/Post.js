@@ -15,6 +15,11 @@ const VarMenaje = use('App/Models/VarMenaje')
 const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
 
+function strToBool(s) {
+    const regex=/^\s*(true|1)\s*$/i
+    return regex.test(s)
+}
+
 class Post extends Model {
     static boot() {
         super.boot()
@@ -53,7 +58,7 @@ class Post extends Model {
             )
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .innerJoin('plans', 'plans.id', 'posts.plan')
+            .innerJoin('plans', 'plans.id', 'posts.plan_id')
             .leftJoin('images', function () {
                 this
                     .on('posts.id', 'images.post_id')
@@ -76,7 +81,7 @@ class Post extends Model {
             .with('images', (builder) => {
                 builder.where('default', true)
             })
-            .where('plan', 1)
+            .where('plan_id', 1)
             .whereNotNull('published_at')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at >= now()')
 
@@ -87,43 +92,59 @@ class Post extends Model {
         return posts;
     }
 
-    static async getPosts(plan = null, page = 1, limit = 20, filter, orderBy = 'updated_at', auth) {
+    static async getPosts(plan_id = null, page = 1, limit = 20, filter, user) {
         const query = Post
             .query()
+            .setVisible(['id', 'address', 'price', 'published_at', 'closed_at', 'sold'])
+            .with('plan', (builder) => {
+                builder.setVisible(['id', 'title'])
+            })
             .with('municipio.provincia')
             .with('images', (builder) => {
                 builder.where('default', true)
             })
+            .orderBy('updated_at', 'DESC')
 
-        if (auth.user) {
-            query.orderBy(`posts.updated_at`, 'DESC');
-            if (auth.user.role === User.roles().AGENT) {
-                query.andWhere('posts.user_id', auth.user.id);
-            }
-            if (auth.user.role === User.roles().MANAGER) {
-                query.andWhere('users.office_id', auth.user.office_id);
-            }
-        } else {
-            query.whereNotNull('posts.published_at')
-                .orderBy('posts.plan', 'ASC')
-                .orderBy('posts.opdo', 'DESC');
+        if (user.role === User.roles().MANAGER) {
+            query.whereRaw(
+                `posts.id IN (SELECT posts.id FROM posts 
+                INNER JOIN users ON users.id = posts.user_id WHERE users.office_id = ${user.office_id})`
+            );
         }
 
-        if (plan) {
-            if (parseInt(plan) === -1) {
-                query.andWhere('posts.plan', null)
+        if (user.role === User.roles().AGENT) {
+            query.andWhere('posts.user_id', user.id);
+        }
+
+        if (user.role === User.roles().CLIENT) {
+            query.whereRaw(
+                `posts.id IN (SELECT posts.id FROM posts 
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+            );
+        }
+
+        if (strToBool(filter.my_posts)) {
+            query.whereRaw(
+                `posts.user_id = ${user.id} OR posts.id IN (SELECT posts.id FROM posts
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+            );
+        }
+
+        if (plan_id) {
+            if (parseInt(plan_id) === -1) {
+                query.whereNull('posts.plan_id')
             } else {
-                query.andWhere('posts.plan', parseInt(plan));
+                query.andWhere('posts.plan_id', parseInt(plan_id));
             }
         } else {
-            query.whereIn('posts.plan', [1, 4])
+            query.whereIn('posts.plan_id', [1, 4])
         }
 
-        if (filter.municipio) {
-            query.andWhere('posts.municipio_id', filter.municipio);
+        if (filter.municipio_id) {
+            query.andWhere('posts.municipio_id', filter.municipio_id);
         }
-        if (filter.homeType) {
-            query.andWhere('posts.home_type_id', filter.homeType);
+        if (filter.home_type_id) {
+            query.andWhere('posts.home_type_id', filter.home_type_id);
         }
         if (filter.bedrooms) {
             query.andWhere('posts.bedrooms', filter.bedrooms);
@@ -138,13 +159,69 @@ class Post extends Model {
             query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
-        if (filter.provincia) {
+        if (filter.provincia_id) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN municipios ON municipios.id = posts.municipio_id WHERE municipios.provincia_id = ${filter.provincia})`
+                INNER JOIN municipios ON municipios.id = posts.municipio_id WHERE municipios.provincia_id = ${filter.provincia_id})`
             );
         }
 
+        const posts = await query.paginate(page, limit);
+        return posts.toJSON();
+    }
+
+    static async getPublishedPosts(plan_id = null, page = 1, limit = 20, filter) {
+        const query = Post
+            .query()
+            .setVisible(['id', 'address', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'published_at', 'sold'])
+            .with('plan', (builder) => {
+                builder.setVisible(['id', 'title'])
+            })
+            .with('municipio.provincia')
+            .with('images', (builder) => {
+                builder.where('default', true)
+            })
+            .whereNotNull('posts.published_at')
+            .andWhere('posts.closed_at', '>=', new Date())
+            .orderBy('posts.plan_id', 'ASC')
+            .orderBy('posts.opdo', 'DESC');
+
+
+        if (plan_id) {
+            if (parseInt(plan_id) === -1) {
+                query.whereNull('posts.plan_id')
+            } else {
+                query.andWhere('posts.plan_id', parseInt(plan_id));
+            }
+        } else {
+            query.whereIn('posts.plan_id', [1, 4])
+        }
+
+        if (filter.municipio_id) {
+            query.andWhere('posts.municipio_id', filter.municipio_id);
+        }
+        if (filter.home_type_id) {
+            query.andWhere('posts.home_type_id', filter.home_type_id);
+        }
+        if (filter.bedrooms) {
+            query.andWhere('posts.bedrooms', filter.bedrooms);
+        }
+        if (filter.bathrooms) {
+            query.andWhere('posts.bathrooms', filter.bathrooms);
+        }
+        if (filter.minPrice) {
+            query.andWhere('posts.price', '>=', filter.minPrice);
+        }
+        if (filter.maxPrice) {
+            query.andWhere('posts.price', '<=', filter.maxPrice);
+        }
+
+        if (filter.provincia_id) {
+            query.whereRaw(
+                `posts.id IN (SELECT posts.id FROM posts 
+                INNER JOIN municipios ON municipios.id = posts.municipio_id WHERE municipios.provincia_id = ${filter.provincia_id})`
+            );
+        }
 
         const posts = await query.paginate(page, limit);
         return posts.toJSON();
@@ -154,7 +231,7 @@ class Post extends Model {
         const query = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan', 'posts.opdo', 'posts.price', 'posts.area',
+                'posts.id', 'posts.plan_id', 'posts.opdo', 'posts.price', 'posts.area',
                 'posts.address', 'posts.created_at', 'posts.bedrooms', 'posts.bathrooms',
                 'municipios.title as municipio', 'provincias.cod as provincia'
             )
@@ -162,7 +239,7 @@ class Post extends Model {
             .innerJoin('users', 'posts.user_id', 'users.id')
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .where('posts.plan', null)
+            .whereNull('posts.plan_id')
             .orderBy(`posts.${orderBy}`, 'DESC');
 
         if (auth.user.role === User.roles().AGENT) {
@@ -204,20 +281,20 @@ class Post extends Model {
         const query = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area',
+                'posts.id', 'posts.plan_id', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area',
                 'posts.address', 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'images.url as image',
                 'municipios.title as municipio', 'provincias.cod as provincia'
             )
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .innerJoin('plans', 'plans.id', 'posts.plan')
+            .innerJoin('plans', 'plans.id', 'posts.plan_id')
             .innerJoin('images', function () {
                 this
                     .on('posts.id', 'images.post_id')
                     .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
-            .andWhere('posts.plan', 1)
+            .andWhere('posts.plan_id', 1)
             .andWhere('posts.sold', '<>', true)
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
             .orderBy(`posts.opdo`, 'DESC')
@@ -232,7 +309,7 @@ class Post extends Model {
         const provincia = request.input('provincia');
         const municipio = request.input('municipio');
         const homeType = request.input('homeType');
-        const plan = request.input('plan');
+        const plan_id = request.input('plan_id');
         const bedrooms = request.input('bedrooms');
         const bathrooms = request.input('bathrooms');
         const minPrice = request.input('minPrice');
@@ -242,14 +319,14 @@ class Post extends Model {
         const query = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
+                'posts.id', 'posts.plan_id', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
                 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.sold', 'images.url as image',
                 'municipios.title as municipio', 'provincias.cod as provincia'
             )
             .leftJoin('users', 'users.id', 'posts.user_id')
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .innerJoin('plans', 'plans.id', 'posts.plan')
+            .innerJoin('plans', 'plans.id', 'posts.plan_id')
             .leftJoin('images', function () {
                 this
                     .on('posts.id', 'images.post_id')
@@ -270,8 +347,8 @@ class Post extends Model {
         if (homeType) {
             query.andWhere('posts.home_type_id', homeType);
         }
-        if (plan) {
-            query.andWhere('posts.plan', plan);
+        if (plan_id) {
+            query.andWhere('posts.plan_id', plan_id);
         }
         if (bedrooms) {
             query.andWhere('posts.bedrooms', bedrooms);
@@ -294,7 +371,7 @@ class Post extends Model {
         const post = await Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan', 'plans.title as plan_title', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
+                'posts.id', 'posts.plan_id', 'plans.title as plan_title', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
                 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.built_year', 'posts.build_status',
                 'posts.summary', 'home_types.title as homeType',
                 'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provincia_title',
@@ -307,7 +384,7 @@ class Post extends Model {
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
             .leftJoin('users', 'users.id', 'posts.user_id')
             .innerJoin('home_types', 'home_types.id', 'posts.home_type_id')
-            .leftJoin('plans', 'plans.id', 'posts.plan')
+            .leftJoin('plans', 'plans.id', 'posts.plan_id')
             .leftJoin('owners', 'owners.post_id', 'posts.id')
             .leftJoin('post_visits', 'posts.id', 'post_visits.post_id')
             .leftJoin('var_flexibilidads', 'posts.id', 'var_flexibilidads.post_id')
@@ -401,7 +478,7 @@ class Post extends Model {
                 },
                 {
                     absolutePosition: {x: 413, y: 63},
-                    text: !post.plan ? 'Tasación de inmueble' : '',
+                    text: !post.plan_id ? 'Tasación de inmueble' : '',
                     fontSize: 11,
                     color: '#FFFFFF'
                 }
@@ -466,8 +543,8 @@ class Post extends Model {
                                     text: this.parsePrice(post.price),
                                     border: [false, false, false, true],
                                     alignment: 'right',
-                                    fontSize: post.plan ? 12 : 14,
-                                    bold: !post.plan
+                                    fontSize: post.plan_id ? 12 : 14,
+                                    bold: !post.plan_id
                                 },
                                 '',
                                 {
@@ -569,7 +646,7 @@ class Post extends Model {
                     text: post.summary,
                 }
             ]
-            if (post.plan != 4) {
+            if (post.plan_id != 4) {
                 body[2].table.body.unshift([
                     {
                         text: 'Índice Op:',
@@ -1002,7 +1079,7 @@ class Post extends Model {
             .whereNotNull('posts.published_at')
             .whereNotNull('owners.email')
             .whereRaw('posts.closed_at >= now()')
-            .andWhere('posts.plan', 1)
+            .andWhere('posts.plan_id', 1)
             .andWhere('posts.sold', '<>', true);
 
         if (provinciaId) {

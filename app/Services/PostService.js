@@ -12,61 +12,72 @@ const NotificationService = use('App/Services/NotificationService')
 
 class PostService {
 
-    static async addPost(request, authorId) {
-        const plan = request.input('plan');
-        const municipio = request.input('municipio_id');
-        const address = request.input('address');
-        const price = request.input('price');
-        const area = request.input('area');
-        const bedrooms = request.input('bedrooms');
-        const bathrooms = request.input('bathrooms');
-        const homeTypeId = request.input('home_type_id');
-        const summary = request.input('summary');
-        const activeMonths = request.input('active_months');
-        const otherPlaces = request.input('other_places');
+    static async addPost(
+        {
+            plan_id,
+            municipio_id,
+            address,
+            price,
+            area,
+            bedrooms,
+            bathrooms,
+            home_type_id,
+            summary,
+            other_places,
+            active_months
+        },
+        author) {
 
         let post = new Post();
-        post.user_id = authorId;
-        post.plan = plan;
-        post.municipio_id = municipio;
-        post.address = address;
-        post.price = price;
-        post.area = area;
-        post.bedrooms = bedrooms;
-        post.bathrooms = bathrooms;
-        post.home_type_id = homeTypeId;
-        post.summary = summary;
+        post = Object.assign(post, {
+            user_id: author.id,
+            plan_id,
+            municipio_id,
+            address,
+            price,
+            area,
+            bedrooms,
+            bathrooms,
+            home_type_id,
+            summary
+        });
 
         await post.save();
 
-        if (post.plan) {
+        if (post.plan_id) {
             // Define post close date
-            await this.setExpirationDate(post.id, activeMonths);
+            await this.setExpirationDate(post.id, active_months);
         }
 
         await this.initPostVariable(post);
-        await this.setAu(post, otherPlaces);
+        await this.setAu(post, other_places);
 
         post = await post.calculateOpdo();
         return post;
     }
 
-    static async addFreePost(request, user) {
-        const plan = 4;
+    static async addFreePost(
+        {
+            municipio_id, address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
+        },
+        user
+    ) {
+        const plan_id = 4;
         const activeMonths = 1;
-        const otherPlaces = request.input('other_places');
 
         let post = new Post();
-        post.plan = plan;
-        post.municipio_id = request.input('municipio');
-        post.address = request.input('address');
-        post.price = request.input('price');
-        post.area = request.input('area');
-        post.bedrooms = request.input('bedrooms');
-        post.bathrooms = request.input('bathrooms');
-        post.home_type_id = request.input('home_type');
-        post.summary = request.input('summary');
-        post.published_at = new Date();
+        post = Object.assign(post, {
+            plan_id,
+            municipio_id,
+            address,
+            price,
+            area,
+            bedrooms,
+            bathrooms,
+            home_type_id,
+            summary,
+            published_at: new Date()
+        });
 
         await post.save();
 
@@ -76,13 +87,15 @@ class PostService {
         const owner = await Owner.addOwner({
             postId: post.id,
             userId: user.id,
-            fullname: request.input('fullname'),
-            telephone: request.input('telephone'),
-            email: request.input('email'),
+            email: user.telephone,
+            fullname: user.fullname,
+            telephone: user.telephone
         });
 
         await this.initPostVariable(post);
-        await this.setAu(post, otherPlaces);
+        if (other_places) {
+            await this.setAu(post, other_places);
+        }
 
         post = await post.calculateOpdo();
         post.owner = owner;
@@ -184,9 +197,9 @@ class PostService {
 
         post.published_at = new Date();
 
-        if (!post.plan) {
+        if (!post.plan_id) {
             // Case when is an appraisal
-            post.plan = 1; // Set premium plan
+            post.plan_id = 1; // Set premium plan
             const activeMonths = 3;
             await this.setExpirationDate(post.id, activeMonths);
         }
@@ -216,7 +229,7 @@ class PostService {
             throw new Error('Post not found');
         }
 
-        if (!post.plan) {
+        if (!post.plan_id) {
             await post.calculatePrice();
         }
 

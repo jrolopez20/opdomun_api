@@ -10,7 +10,7 @@ class PostSchema extends Schema {
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.integer('municipio_id').unsigned().notNullable().references('id').inTable('municipios').onDelete('RESTRICT')
       table.integer('home_type_id').unsigned().notNullable().references('id').inTable('home_types').onDelete('RESTRICT')
-      table.integer('plan').unsigned().references('id').inTable('plans').onDelete('RESTRICT')
+      table.integer('plan_id').unsigned().references('id').inTable('plans').onDelete('RESTRICT')
       table.string('address', 120).notNullable()
       table.float('price')
       table.float('area').notNullable()
@@ -23,7 +23,7 @@ class PostSchema extends Schema {
       table.float('evi')
       table.float('opdo')
       table.integer('built_year')
-      table.integer('build_status')
+      table.string('build_status', 20)
       table.boolean('sold')
     })
   }

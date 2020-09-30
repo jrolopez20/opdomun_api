@@ -8,6 +8,7 @@ const defaultSeedOrder = [
   'OfficeSeeder.js',
   'UserSeeder.js',
   'ArticleSeeder.js',
+  'PostSeeder.js',
 ]
 
 class SeedSync extends Command {

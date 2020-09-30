@@ -25,13 +25,13 @@ class HisPost extends Model {
   static async getMonthPublishedPosts(userId, year = null, month = null) {
     const query = Database
       .table('posts')
-      .select('plan')
+      .select('plan_id')
       .innerJoin('his_posts', 'posts.id', 'his_posts.post_id')
       .where('user_id', userId)
       .andWhere('his_posts.action', 1)
-      .orderBy('plan')
+      .orderBy('plan_id')
       .count('posts.id as total')
-      .groupByRaw('plan');
+      .groupByRaw('plan_id');
 
     if (year) {
       query.whereRaw('EXTRACT(year FROM his_posts.created_at) = ?', year)
@@ -82,7 +82,7 @@ class HisPost extends Model {
   static async getHistoryPosts(userId, action, year = null, month = null, group = false) {
     const query = Database
       .table('posts')
-      .select('posts.plan')
+      .select('posts.plan_id')
       .innerJoin('his_posts', 'posts.id', 'his_posts.post_id')
       .where('posts.user_id', userId)
       .andWhere('his_posts.action', action)
@@ -95,7 +95,7 @@ class HisPost extends Model {
       query.whereRaw(`date_part('month', his_posts.created_at) = ${month}`)
     }
     if (group) {
-      query.groupByRaw('posts.plan');
+      query.groupByRaw('posts.plan_id');
     }
     return await query;
   }
@@ -125,13 +125,13 @@ class HisPost extends Model {
 
     const query = Database
       .table('posts')
-      .select('posts.plan', 'plans.title', 'plans.price')
+      .select('posts.plan_id', 'plans.title', 'plans.price')
       .count('posts.id as total')
       .innerJoin('his_posts', 'posts.id', 'his_posts.post_id')
-      .innerJoin('plans', 'plans.id', 'posts.plan')
+      .innerJoin('plans', 'plans.id', 'posts.plan_id')
       .andWhere('his_posts.action', 1)
       .orderBy('plans.ranking', 'desc')
-      .groupByRaw('posts.plan');
+      .groupByRaw('posts.plan_id');
 
     if (userId) {
       query.where('posts.user_id', userId)
@@ -189,12 +189,12 @@ class HisPost extends Model {
     const publicados = await Database.raw('select count(posts.id) as total_posts, SUM(TIMESTAMPDIFF(MONTH, posts.created_at, posts.closed_at)) as total_months\n' +
       'from `posts`\n' +
       'inner join `his_posts` on `posts`.`id` = `his_posts`.`post_id`\n' +
-      'where `his_posts`.`action` = 1 and month(his_posts.created_at) = month(now()) and posts.plan = 1');
+      'where `his_posts`.`action` = 1 and month(his_posts.created_at) = month(now()) and posts.plan_id = 1');
 
     const renovados = await Database.raw('select count(posts.id) as total_posts, SUM(TIMESTAMPDIFF(MONTH, now(), posts.closed_at)) as total_months\n' +
       'from `posts`\n' +
       'inner join `his_posts` on `posts`.`id` = `his_posts`.`post_id`\n' +
-      'where `his_posts`.`action` = 2 and month(his_posts.created_at) = month(now()) and posts.plan = 1');
+      'where `his_posts`.`action` = 2 and month(his_posts.created_at) = month(now()) and posts.plan_id = 1');
     return {
       'publicados': publicados[0][0],
       'renovados': renovados[0][0],

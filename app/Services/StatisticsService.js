@@ -12,24 +12,24 @@ class StatisticsService {
         endAt += ' 23:59:59';
         const query = Database
             .table('posts')
-            .select('posts.plan', 'plans.title')
-            .leftJoin('plans', 'posts.plan', 'plans.id')
-            .whereRaw('(posts.plan is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.published_at >= ? AND posts.published_at <= ?)', [startAt, endAt, startAt, endAt])
+            .select('posts.plan_id', 'plans.title')
+            .leftJoin('plans', 'posts.plan_id', 'plans.id')
+            .whereRaw('(posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.published_at >= ? AND posts.published_at <= ?)', [startAt, endAt, startAt, endAt])
             .leftJoin('users', 'posts.user_id', 'users.id')
-            .orderBy('plan', 'plans.title')
+            .orderBy('plan_id', 'plans.title')
             .count('posts.id as total')
-            .groupBy('posts.plan')
+            .groupBy('posts.plan_id', 'plans.title')
         ;
 
         if (user.role === User.roles().MANAGER) {
             query.innerJoin('offices', 'users.office_id', 'offices.id')
             query.andWhere('offices.id', user.office_id)
-            query.whereIn('posts.plan', [null, 1])
+            query.whereIn('posts.plan_id', [null, 1])
         }
 
         if (user.role === User.roles().AGENT) {
             query.andWhere('posts.user_id', user.id)
-            query.whereIn('posts.plan', [null, 1])
+            query.whereIn('posts.plan_id', [null, 1])
         }
 
         let services = await query;
@@ -44,10 +44,10 @@ class StatisticsService {
         }
 
         for (let service of services) {
-            if (service.plan === 1 || service.plan === 4) {
+            if (service.plan_id === 1 || service.plan_id === 4) {
                 service.title = 'Anuncios ' + service.title
             }
-            if (service.plan === null) {
+            if (service.plan_id === null) {
                 service.title = 'Tasaciones'
             }
         }
@@ -77,11 +77,11 @@ class StatisticsService {
         const services = await Database
             .table('posts')
             .count('posts.id as total')
-            .select('posts.plan', 'plans.title', 'users.fullname')
-            .leftJoin('plans', 'posts.plan', 'plans.id')
+            .select('posts.plan_id', 'plans.title', 'users.fullname')
+            .leftJoin('plans', 'posts.plan_id', 'plans.id')
             .innerJoin('users', 'posts.user_id', 'users.id')
-            .whereRaw('users.office_id = ? AND ((posts.plan is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.plan = 1 AND posts.published_at >= ? AND posts.published_at <= ?))', [officeId, startAt, endAt, startAt, endAt])
-            .groupBy('users.fullname', 'posts.plan')
+            .whereRaw('users.office_id = ? AND ((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.plan_id = 1 AND posts.published_at >= ? AND posts.published_at <= ?))', [officeId, startAt, endAt, startAt, endAt])
+            .groupBy('users.fullname', 'posts.plan_id')
         ;
         const response = [];
         services.map(service => {
@@ -89,16 +89,16 @@ class StatisticsService {
             if (item) {
                 item.services.push({
                     total: service.total,
-                    plan: service.plan,
-                    title: service.plan ? 'Anuncios ' + service.title : 'Tasaciones'
+                    plan: service.plan_id,
+                    title: service.plan_id ? 'Anuncios ' + service.title : 'Tasaciones'
                 })
             } else {
                 response.push({
                     fullname: service.fullname,
                     services: [{
                         total: service.total,
-                        plan: service.plan,
-                        title: service.plan ? 'Anuncios ' + service.title : 'Tasaciones'
+                        plan: service.plan_id,
+                        title: service.plan_id ? 'Anuncios ' + service.title : 'Tasaciones'
                     }]
                 })
             }
@@ -107,29 +107,27 @@ class StatisticsService {
     }
 
     static async getServicesByOffice(startAt, endAt, officeId) {
-        startAt += ' 00:00:00';
-        endAt += ' 23:59:59';
         const services = await Database
             .table('posts')
-            .select('posts.plan', 'plans.title')
-            .leftJoin('plans', 'posts.plan', 'plans.id')
+            .select('posts.plan_id', 'plans.title')
+            .leftJoin('plans', 'posts.plan_id', 'plans.id')
             .innerJoin('users', 'posts.user_id', 'users.id')
-            .whereRaw('users.office_id = ? AND ((posts.plan is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.plan = 1 AND posts.published_at >= ? AND posts.published_at <= ?))', [officeId, startAt, endAt, startAt, endAt])
-            .orderBy('plan', 'plans.title')
+            .whereRaw('users.office_id = ? AND ((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.plan_id = 1 AND posts.published_at >= ? AND posts.published_at <= ?))', [officeId, startAt, endAt, startAt, endAt])
+            .orderBy('plan_id', 'plans.title')
             .count('posts.id as total')
-            .groupBy('posts.plan')
+            .groupBy('posts.plan_id', 'plans.title')
         ;
 
         const response = [];
 
-        const premium = services.find(item => item.plan === 1);
+        const premium = services.find(item => item.plan_id === 1);
         response.push({
             plan: 1,
             title: 'Anuncio premium',
             total: premium ? premium.total : 0
         })
 
-        const appraisal = services.find(item => item.plan === null);
+        const appraisal = services.find(item => item.plan_id === null);
         response.push({
             plan: null,
             title: 'Tasaciones',
@@ -144,25 +142,25 @@ class StatisticsService {
         endAt += ' 23:59:59';
         const services = await Database
             .table('posts')
-            .select('posts.plan', 'plans.title')
-            .leftJoin('plans', 'posts.plan', 'plans.id')
+            .select('posts.plan_id', 'plans.title')
+            .leftJoin('plans', 'posts.plan_id', 'plans.id')
             .innerJoin('users', 'posts.user_id', 'users.id')
-            .whereRaw('users.id = ? AND ((posts.plan is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.plan = 1 AND posts.published_at >= ? AND posts.published_at <= ?))', [userId, startAt, endAt, startAt, endAt])
-            .orderBy('plan', 'plans.title')
+            .whereRaw('users.id = ? AND ((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.plan_id = 1 AND posts.published_at >= ? AND posts.published_at <= ?))', [userId, startAt, endAt, startAt, endAt])
+            .orderBy('plan_id', 'plans.title')
             .count('posts.id as total')
-            .groupBy('posts.plan')
+            .groupBy('posts.plan_id', 'plans.title')
         ;
 
         const response = [];
 
-        const premium = services.find(item => item.plan === 1);
+        const premium = services.find(item => item.plan_id === 1);
         response.push({
             plan: 1,
             title: 'Anuncio premium',
             total: premium ? premium.total : 0
         })
 
-        const appraisal = services.find(item => item.plan === null);
+        const appraisal = services.find(item => item.plan_id === null);
         response.push({
             plan: null,
             title: 'Tasaciones',

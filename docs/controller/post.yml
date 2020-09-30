@@ -1,0 +1,86 @@
+/published_posts:
+  get:
+    tags:
+      - Posts
+    summary: List of published posts
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      - name: provincia_id
+        in: query
+        type: integer
+      - name: municipio_id
+        in: query
+        type: integer
+      - name: home_type_id
+        in: query
+        type: integer
+      - name: minPrice
+        in: query
+        type: integer
+      - name: maxPrice
+        in: query
+        type: integer
+      - name: bedrooms
+        in: query
+        type: integer
+      - name: bathrooms
+        in: query
+        type: integer
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Post'
+        headers:
+          $ref: '#/definitions/PaginationData'
+
+/posts:
+  get:
+    tags:
+      - Posts
+    summary: List of posts based on authenticated users
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      - name: provincia_id
+        in: query
+        type: integer
+      - name: municipio_id
+        in: query
+        type: integer
+      - name: home_type_id
+        in: query
+        type: integer
+      - name: minPrice
+        in: query
+        type: integer
+      - name: maxPrice
+        in: query
+        type: integer
+      - name: bedrooms
+        in: query
+        type: integer
+      - name: bathrooms
+        in: query
+        type: integer
+      - name: my_posts
+        in: query
+        type: boolean
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Post'
+        headers:
+          $ref: '#/definitions/PaginationData'

@@ -23,7 +23,7 @@ class Opdo {
                 }
             }
             this.evi = parseFloat(this.area) * 12.33 * sum;
-            if (this.plan) {
+            if (this.plan_id) {
                 this.opdo = parseFloat(this.evi / parseFloat(this.price));
             }
             await this.save();
@@ -42,7 +42,7 @@ class Opdo {
                 .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('posts.plan', [1, 2, 3])
+                .whereIn('posts.plan_id', [1, 2, 3])
                 .andWhere('municipios.id', municipio)
                 .orderBy('opdo', 'DESC')
                 .limit(5);
@@ -54,7 +54,7 @@ class Opdo {
                 .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('posts.plan', [1, 2, 3])
+                .whereIn('posts.plan_id', [1, 2, 3])
                 .andWhere('municipios.provincia_id', provincia)
                 .orderBy('opdo', 'DESC')
                 .limit(5);
@@ -64,7 +64,7 @@ class Opdo {
                 .table('posts')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('posts.plan', [1, 2, 3])
+                .whereIn('posts.plan_id', [1, 2, 3])
                 .orderBy('opdo', 'desc')
                 .limit(5);
 

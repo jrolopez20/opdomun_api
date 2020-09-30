@@ -7,7 +7,7 @@ class Au {
     const defaultOptions = {}
     const options = Object.assign(defaultOptions, customOptions)
 
-    Model.calculateAu = async function (postId, bedrooms, bathrooms, otherPlaces, opdo = true) {
+    Model.calculateAu = async function (postId, bedrooms, bathrooms, otherPlaces) {
       const varAu = await Database
         .select('post_variables.id', 'post_variables.post_id', 'variables.influencia')
         .from('post_variables')

@@ -27,6 +27,7 @@ DB_DATABASE=opdomun_dev
 - Run migrations
 
 ```bash
+adonis migration:reset
 adonis migration:run
 ```
 
