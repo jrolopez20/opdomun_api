@@ -4,9 +4,15 @@
 const Model = use('Model')
 
 class Plan extends Model {
-
     static get hidden() {
         return ['created_at', 'updated_at'];
+    }
+
+    static TYPES() {
+        return {
+            PREMIUM: 'PREMIUM',
+            FREE: 'FREE'
+        }
     }
 
     posts() {

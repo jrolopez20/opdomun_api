@@ -14,6 +14,7 @@
 const Factory = use('Factory')
 const User = use('App/Models/User')
 const Post = use('App/Models/Post')
+const Plan = use('App/Models/Plan')
 const PostService = use('App/Services/PostService')
 
 class PostSeeder {
@@ -27,8 +28,9 @@ class PostSeeder {
         }
 
         const agents = await User.query().where('role', User.roles().AGENT).fetch();
+        const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
         for (const agent of agents.toJSON()) {
-            const post = await Factory.model('App/Models/Post').make({plan_id: 1})
+            const post = await Factory.model('App/Models/Post').make({plan_id: premiumPlan.id})
             post.active_months = 3;
             await PostService.addPost(post, agent);
         }

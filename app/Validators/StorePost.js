@@ -30,7 +30,7 @@ class StorePost {
             'home_type_id.required': 'You must provide a home_type_id.',
             'home_type_id.number': 'The field home_type_id must be a number',
             'built_year.number': 'The field built_year must be a number',
-            'plan_id.number': 'The field plan must be a number'
+            'plan_id.number': 'The field plan_id must be a number'
         }
     }
 

@@ -8,6 +8,7 @@ const Database = use('Database');
 const HisPost = use('App/Models/HisPost')
 const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
+const Plan = use('App/Models/Plan')
 const NotificationService = use('App/Services/NotificationService')
 
 class PostService {
@@ -62,12 +63,12 @@ class PostService {
         },
         user
     ) {
-        const plan_id = 4;
+        const freePlan = await Plan.findBy('type', Plan.TYPES().FREE)
         const activeMonths = 1;
 
         let post = new Post();
         post = Object.assign(post, {
-            plan_id,
+            plan_id: freePlan.id,
             municipio_id,
             address,
             price,
@@ -198,8 +199,9 @@ class PostService {
         post.published_at = new Date();
 
         if (!post.plan_id) {
-            // Case when is an appraisal
-            post.plan_id = 1; // Set premium plan
+            // Case when is an appraisal set plan to premium
+            const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
+            post.plan_id = premiumPlan.id;
             const activeMonths = 3;
             await this.setExpirationDate(post.id, activeMonths);
         }
@@ -242,7 +244,7 @@ class PostService {
             throw new Error('Post not found');
         }
 
-        post.sold = 1;
+        post.sold = true;
         await post.save();
 
         return await Post.getPost(postId);

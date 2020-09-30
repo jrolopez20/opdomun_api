@@ -23,8 +23,8 @@ class Municipio extends Model {
         return this.belongsTo('App/Models/Provincia');
     }
 
-    posts() {
-        return this.hasMany('App/Models/Post')
+    localidads() {
+        return this.hasMany('App/Models/Localidad')
     }
 }
 

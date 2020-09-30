@@ -125,7 +125,7 @@ class HisPost extends Model {
 
     const query = Database
       .table('posts')
-      .select('posts.plan_id', 'plans.title', 'plans.price')
+      .select('posts.plan_id', 'plans.type', 'plans.price')
       .count('posts.id as total')
       .innerJoin('his_posts', 'posts.id', 'his_posts.post_id')
       .innerJoin('plans', 'plans.id', 'posts.plan_id')
@@ -188,13 +188,15 @@ class HisPost extends Model {
   static async getGlobalStatistics() {
     const publicados = await Database.raw('select count(posts.id) as total_posts, SUM(TIMESTAMPDIFF(MONTH, posts.created_at, posts.closed_at)) as total_months\n' +
       'from `posts`\n' +
+      'inner join `plans` on `posts`.`plan_id` = `plans`.`id`\n' +
       'inner join `his_posts` on `posts`.`id` = `his_posts`.`post_id`\n' +
-      'where `his_posts`.`action` = 1 and month(his_posts.created_at) = month(now()) and posts.plan_id = 1');
+      'where `his_posts`.`action` = 1 and month(his_posts.created_at) = month(now()) and plans.type = "PREMIUM"');
 
     const renovados = await Database.raw('select count(posts.id) as total_posts, SUM(TIMESTAMPDIFF(MONTH, now(), posts.closed_at)) as total_months\n' +
       'from `posts`\n' +
+      'inner join `plans` on `posts`.`plan_id` = `plans`.`id`\n' +
       'inner join `his_posts` on `posts`.`id` = `his_posts`.`post_id`\n' +
-      'where `his_posts`.`action` = 2 and month(his_posts.created_at) = month(now()) and posts.plan_id = 1');
+      'where `his_posts`.`action` = 2 and month(his_posts.created_at) = month(now()) and plans.type = "PREMIUM"');
     return {
       'publicados': publicados[0][0],
       'renovados': renovados[0][0],

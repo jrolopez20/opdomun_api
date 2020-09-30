@@ -8,10 +8,9 @@ class PostSchema extends Schema {
     this.create('posts', (table) => {
       table.increments()
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
-      table.integer('municipio_id').unsigned().notNullable().references('id').inTable('municipios').onDelete('RESTRICT')
+      table.integer('address_id').unsigned().notNullable().references('id').inTable('addresses').onDelete('CASCADE')
       table.integer('home_type_id').unsigned().notNullable().references('id').inTable('home_types').onDelete('RESTRICT')
       table.integer('plan_id').unsigned().references('id').inTable('plans').onDelete('RESTRICT')
-      table.string('address', 120).notNullable()
       table.float('price')
       table.float('area').notNullable()
       table.integer('bedrooms').notNullable()

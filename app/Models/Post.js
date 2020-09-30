@@ -35,7 +35,7 @@ class Post extends Model {
         const post = await Post
             .query()
             .with('user')
-            .with('municipio.provincia')
+            .with('address.localidad.municipio.provincia')
             .with('homeType')
             .with('postPlaces')
             .with('owner.user')
@@ -95,11 +95,11 @@ class Post extends Model {
     static async getPosts(plan_id = null, page = 1, limit = 20, filter, user) {
         const query = Post
             .query()
-            .setVisible(['id', 'address', 'price', 'published_at', 'closed_at', 'sold'])
+            .setVisible(['id', 'price', 'published_at', 'closed_at', 'sold'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'title'])
             })
-            .with('municipio.provincia')
+            .with('address.localidad.municipio.provincia')
             .with('images', (builder) => {
                 builder.where('default', true)
             })
@@ -162,7 +162,10 @@ class Post extends Model {
         if (filter.provincia_id) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN municipios ON municipios.id = posts.municipio_id WHERE municipios.provincia_id = ${filter.provincia_id})`
+                INNER JOIN addresses ON addresses.id = posts.addresses_id 
+                INNER JOIN localidads ON localidads.id = addresses.localidad_id 
+                INNER JOIN municipios ON municipios.id = localidads.municipio_id 
+                WHERE municipios.provincia_id = ${filter.provincia_id})`
             );
         }
 
@@ -177,7 +180,7 @@ class Post extends Model {
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'title'])
             })
-            .with('municipio.provincia')
+            .with('address.localidad.municipio.provincia')
             .with('images', (builder) => {
                 builder.where('default', true)
             })
@@ -219,7 +222,10 @@ class Post extends Model {
         if (filter.provincia_id) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN municipios ON municipios.id = posts.municipio_id WHERE municipios.provincia_id = ${filter.provincia_id})`
+                INNER JOIN addresses ON addresses.id = posts.addresses_id 
+                INNER JOIN localidads ON localidads.id = addresses.localidad_id 
+                INNER JOIN municipios ON municipios.id = localidads.municipio_id 
+                WHERE municipios.provincia_id = ${filter.provincia_id})`
             );
         }
 
@@ -281,7 +287,7 @@ class Post extends Model {
         const query = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan_id', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area',
+                'posts.id', 'posts.plan_id', 'plans.type as plan_title', 'posts.opdo', 'posts.price', 'posts.area',
                 'posts.address', 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'images.url as image',
                 'municipios.title as municipio', 'provincias.cod as provincia'
             )
@@ -319,7 +325,7 @@ class Post extends Model {
         const query = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan_id', 'plans.title as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
+                'posts.id', 'posts.plan_id', 'plans.type as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
                 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.sold', 'images.url as image',
                 'municipios.title as municipio', 'provincias.cod as provincia'
             )
@@ -371,7 +377,7 @@ class Post extends Model {
         const post = await Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan_id', 'plans.title as plan_title', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
+                'posts.id', 'posts.plan_id', 'plans.type as plan_title', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
                 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.built_year', 'posts.build_status',
                 'posts.summary', 'home_types.title as homeType',
                 'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provincia_title',
@@ -1134,8 +1140,8 @@ class Post extends Model {
         return this.belongsTo('App/Models/Post');
     }
 
-    municipio() {
-        return this.belongsTo('App/Models/Municipio');
+    address() {
+        return this.belongsTo('App/Models/Address');
     }
 
     homeType() {
