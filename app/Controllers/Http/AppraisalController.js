@@ -7,19 +7,22 @@ const PaginatedResponse = use('App/Util/PaginatedResponse');
 class AppraisalController {
 
     async index({request, response, auth}) {
+        const plan_id = -1;
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = {
-            provincia: request.input('provincia'),
-            municipio: request.input('municipio'),
+            provincia_id: request.input('provincia_id'),
+            municipio_id: request.input('municipio_id'),
+            localidad_id: request.input('localidad_id'),
             minPrice: request.input('minPrice'),
             maxPrice: request.input('maxPrice'),
             bedrooms: request.input('bedrooms'),
             bathrooms: request.input('bathrooms'),
-            homeType: request.input('homeType')
+            home_type_id: request.input('home_type_id'),
+            my_posts: request.input('my_posts')
         };
-        const orderBy = request.input('orderBy');
-        const result = await Post.getAppraisals(page, limit, filter, orderBy, auth);
+
+        const result = await Post.getPosts(plan_id, page, limit, filter, auth.user);
         return PaginatedResponse.parse(response, result)
     }
 

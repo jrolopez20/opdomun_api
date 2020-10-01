@@ -28,4 +28,4 @@ class Localidad extends Model {
     }
 }
 
-module.exports = Municipio
+module.exports = Localidad

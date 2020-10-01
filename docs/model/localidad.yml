@@ -1,0 +1,19 @@
+definitions:
+  Localidad:
+    type: object
+    properties:
+      id:
+        type: integer
+        readOnly: true
+      municipio_id:
+        $ref: '#/definitions/Municipio'
+      title:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    required:
+      - id
+      - municipio_id
+      - title

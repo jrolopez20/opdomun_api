@@ -27,6 +27,9 @@ Route.group(() => {
     // Municipios
     Route.get('provincias/:id/municipios', 'MunicipioController.index');
 
+    // Localidades
+    Route.get('municipios/:id/localidades', 'LocalidadController.index');
+
     // Offices
     Route.get('offices', 'OfficeController.index');
 

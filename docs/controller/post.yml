@@ -90,3 +90,76 @@
             $ref: '#/definitions/Post'
         headers:
           $ref: '#/definitions/PaginationData'
+
+/free_post:
+  post:
+    tags:
+      - Posts
+    summary: Create a free post
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: address
+        required: true
+        in: body
+        description: Address info
+        schema:
+          type: object
+          properties:
+            localidad_id:
+              required: true
+              type: string
+            street:
+              type: string
+              required: true
+            location:
+              type: string
+      - name: price
+        in: inForm
+        required: true
+        type: float
+      - name: area
+        in: inForm
+        required: true
+        type: integer
+      - name: bedrooms
+        in: inForm
+        required: true
+        type: integer
+      - name: bathrooms
+        in: inForm
+        required: true
+        type: integer
+      - name: home_type_id
+        in: inForm
+        required: true
+        type: integer
+      - name: summary
+        in: inForm
+        required: true
+        type: string
+      - name: other_places
+        required: true
+        in: body
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                required: true
+                type: string
+              score:
+                required: true
+                type: integer
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Post'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'

@@ -16,7 +16,7 @@ const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
 
 function strToBool(s) {
-    const regex=/^\s*(true|1)\s*$/i
+    const regex = /^\s*(true|1)\s*$/i
     return regex.test(s)
 }
 
@@ -97,7 +97,7 @@ class Post extends Model {
             .query()
             .setVisible(['id', 'price', 'published_at', 'closed_at', 'sold'])
             .with('plan', (builder) => {
-                builder.setVisible(['id', 'title'])
+                builder.setVisible(['id', 'type'])
             })
             .with('address.localidad.municipio.provincia')
             .with('images', (builder) => {
@@ -136,13 +136,8 @@ class Post extends Model {
             } else {
                 query.andWhere('posts.plan_id', parseInt(plan_id));
             }
-        } else {
-            query.whereIn('posts.plan_id', [1, 4])
         }
 
-        if (filter.municipio_id) {
-            query.andWhere('posts.municipio_id', filter.municipio_id);
-        }
         if (filter.home_type_id) {
             query.andWhere('posts.home_type_id', filter.home_type_id);
         }
@@ -159,10 +154,24 @@ class Post extends Model {
             query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
+        if (filter.localidad_id) {
+            query.whereRaw(
+                `posts.address_id IN (SELECT addresses.id FROM addresses 
+                WHERE addresses.localidad_id = ${filter.localidad_id})`
+            );
+        }
+
+        if (filter.municipio_id) {
+            query.whereRaw(
+                `posts.address_id IN (SELECT addresses.id FROM addresses 
+                INNER JOIN localidads ON localidads.id = addresses.localidad_id 
+                WHERE localidads.municipio_id = ${filter.municipio_id})`
+            );
+        }
+
         if (filter.provincia_id) {
             query.whereRaw(
-                `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN addresses ON addresses.id = posts.addresses_id 
+                `posts.address_id IN (SELECT addresses.id FROM addresses 
                 INNER JOIN localidads ON localidads.id = addresses.localidad_id 
                 INNER JOIN municipios ON municipios.id = localidads.municipio_id 
                 WHERE municipios.provincia_id = ${filter.provincia_id})`
@@ -176,9 +185,9 @@ class Post extends Model {
     static async getPublishedPosts(plan_id = null, page = 1, limit = 20, filter) {
         const query = Post
             .query()
-            .setVisible(['id', 'address', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'published_at', 'sold'])
+            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'published_at', 'sold'])
             .with('plan', (builder) => {
-                builder.setVisible(['id', 'title'])
+                builder.setVisible(['id', 'type'])
             })
             .with('address.localidad.municipio.provincia')
             .with('images', (builder) => {
@@ -191,18 +200,9 @@ class Post extends Model {
 
 
         if (plan_id) {
-            if (parseInt(plan_id) === -1) {
-                query.whereNull('posts.plan_id')
-            } else {
-                query.andWhere('posts.plan_id', parseInt(plan_id));
-            }
-        } else {
-            query.whereIn('posts.plan_id', [1, 4])
+            query.andWhere('posts.plan_id', parseInt(plan_id));
         }
 
-        if (filter.municipio_id) {
-            query.andWhere('posts.municipio_id', filter.municipio_id);
-        }
         if (filter.home_type_id) {
             query.andWhere('posts.home_type_id', filter.home_type_id);
         }
@@ -219,10 +219,24 @@ class Post extends Model {
             query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
+        if (filter.localidad_id) {
+            query.whereRaw(
+                `posts.address_id IN (SELECT addresses.id FROM addresses 
+                WHERE addresses.localidad_id = ${filter.localidad_id})`
+            );
+        }
+
+        if (filter.municipio_id) {
+            query.whereRaw(
+                `posts.address_id IN (SELECT addresses.id FROM addresses 
+                INNER JOIN localidads ON localidads.id = addresses.localidad_id 
+                WHERE localidads.municipio_id = ${filter.municipio_id})`
+            );
+        }
+
         if (filter.provincia_id) {
             query.whereRaw(
-                `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN addresses ON addresses.id = posts.addresses_id 
+                `posts.address_id IN (SELECT addresses.id FROM addresses 
                 INNER JOIN localidads ON localidads.id = addresses.localidad_id 
                 INNER JOIN municipios ON municipios.id = localidads.municipio_id 
                 WHERE municipios.provincia_id = ${filter.provincia_id})`
@@ -231,56 +245,6 @@ class Post extends Model {
 
         const posts = await query.paginate(page, limit);
         return posts.toJSON();
-    }
-
-    static async getAppraisals(page = 1, limit = 20, filter, orderBy = 'updated_at', auth) {
-        const query = Database
-            .from('posts')
-            .select(
-                'posts.id', 'posts.plan_id', 'posts.opdo', 'posts.price', 'posts.area',
-                'posts.address', 'posts.created_at', 'posts.bedrooms', 'posts.bathrooms',
-                'municipios.title as municipio', 'provincias.cod as provincia'
-            )
-            .leftJoin('owners', 'owners.post_id', 'posts.id')
-            .innerJoin('users', 'posts.user_id', 'users.id')
-            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
-            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .whereNull('posts.plan_id')
-            .orderBy(`posts.${orderBy}`, 'DESC');
-
-        if (auth.user.role === User.roles().AGENT) {
-            query.andWhere('posts.user_id', auth.user.id);
-        }
-        if (auth.user.role === User.roles().MANAGER) {
-            query.andWhere('users.office_id', auth.user.office_id);
-        }
-
-        if (filter) {
-            if (filter.provincia) {
-                query.andWhere('provincias.id', filter.provincia)
-            }
-            if (filter.municipio) {
-                query.andWhere('municipios.id', filter.municipio)
-            }
-            if (filter.homeType) {
-                query.andWhere('posts.home_type_id', filter.homeType);
-            }
-            if (filter.bedrooms) {
-                query.andWhere('posts.bedrooms', filter.bedrooms);
-            }
-            if (filter.bathrooms) {
-                query.andWhere('posts.bathrooms', filter.bathrooms);
-            }
-            if (filter.minPrice) {
-                query.andWhere('posts.price', '>=', filter.minPrice);
-            }
-            if (filter.maxPrice) {
-                query.andWhere('posts.price', '<=', filter.maxPrice);
-            }
-        }
-
-        const posts = await query.paginate(page, limit);
-        return posts;
     }
 
     static async getRecommendedPost(limit = 6) {

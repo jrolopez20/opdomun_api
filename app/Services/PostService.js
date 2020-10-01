@@ -10,13 +10,13 @@ const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
 const NotificationService = use('App/Services/NotificationService')
+const AddressService = use('App/Services/AddressService')
 
 class PostService {
 
     static async addPost(
         {
             plan_id,
-            municipio_id,
             address,
             price,
             area,
@@ -28,13 +28,13 @@ class PostService {
             active_months
         },
         author) {
-
+        const addressObj = await AddressService.addAddress(address)
         let post = new Post();
+
         post = Object.assign(post, {
             user_id: author.id,
+            address_id: addressObj.id,
             plan_id,
-            municipio_id,
-            address,
             price,
             area,
             bedrooms,
@@ -46,7 +46,7 @@ class PostService {
         await post.save();
 
         if (post.plan_id) {
-            // Define post close date
+            // Add expiration date to post
             await this.setExpirationDate(post.id, active_months);
         }
 
@@ -59,18 +59,25 @@ class PostService {
 
     static async addFreePost(
         {
-            municipio_id, address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
+            address,
+            price,
+            area,
+            bedrooms,
+            bathrooms,
+            home_type_id,
+            summary,
+            other_places
         },
         user
     ) {
         const freePlan = await Plan.findBy('type', Plan.TYPES().FREE)
         const activeMonths = 1;
+        const addressObj = await AddressService.addAddress(address)
 
         let post = new Post();
         post = Object.assign(post, {
             plan_id: freePlan.id,
-            municipio_id,
-            address,
+            address_id: addressObj.id,
             price,
             area,
             bedrooms,
@@ -168,7 +175,7 @@ class PostService {
             .createMany(postVariables);
 
         // Calcula automaticamente la variable Pu
-        await PostVariable.calculatePu(post.id, post.municipio_id)
+        await PostVariable.calculatePu(post.id)
     }
 
     static async setAu(post, otherPlaces) {
@@ -210,9 +217,7 @@ class PostService {
         const publishedPost = await Post.getPost(postId);
         const postObj = publishedPost.toJSON();
 
-        // Notify owner about matched subscriptions
-        await NotificationService.dispatchCustomerNotification(postObj);
-        // Notify subscriptors about that match with the new property
+        // Notify subscriptors about the new property
         await NotificationService.dispatchSubscriptorNotification(postObj);
 
         return publishedPost;

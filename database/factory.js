@@ -16,7 +16,7 @@ const Factory = use('Factory')
 const User = use('App/Models/User')
 const Office = use('App/Models/Office')
 const HomeType = use('App/Models/HomeType')
-const Municipio = use('App/Models/Municipio')
+const Localidad = use('App/Models/Localidad')
 const Hash = use('Hash')
 
 
@@ -36,22 +36,20 @@ Factory.blueprint('App/Models/User', async (faker, i, data) => {
         fullname: faker.name(),
         numid: faker.integer({min: 60000000000, max: 99999999999}),
         telephone: faker.phone({formatted: false}),
-        office_id: data.office ? data.office.id : null,
+        office_id: data.office ? data.office.id : null
     }
 });
 
 Factory.blueprint('App/Models/Post', async (faker, i, data) => {
     const homeTypes = (await HomeType.all()).toJSON();
-    const municipios = (await Municipio.all()).toJSON();
-    if (!homeTypes.length || !municipios.length) {
+    const localidades = (await Localidad.all()).toJSON();
+    if (!homeTypes.length || !localidades.length) {
         throw Error('Be sure to execute database initialization script before run this seed.')
     }
     return {
         plan_id: data.plan_id || null,
         price: faker.integer({min: 7000, max: 80000}),
-        address: faker.address(),
         area: faker.integer({min: 90, max: 199}),
-        municipio_id: municipios[faker.integer({min: 0, max: 160})].id,
         home_type_id: homeTypes[faker.integer({min: 0, max: 5})].id,
         bedrooms: faker.integer({min: 1, max: 6}),
         bathrooms: faker.integer({min: 1, max: 3}),
@@ -66,7 +64,12 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
                 "score": 100,
                 "title": "Cocina"
             }
-        ]
+        ],
+        address: {
+            localidad_id: localidades[faker.integer({min: 10, max: 600})].id,
+            street: faker.address(),
+            location: faker.coordinates()
+        }
     }
 });
 

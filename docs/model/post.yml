@@ -7,12 +7,16 @@ definitions:
         type: integer
       user_id:
         $ref: '#/definitions/User'
-      municipio_id:
-        $ref: '#/definitions/Municipio'
+      address_id:
+        $ref: '#/definitions/Address'
       home_type_id:
         $ref: '#/definitions/HomeType'
       plan:
         $ref: '#/definitions/Plan'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Image'
       address:
         type: string
       price:

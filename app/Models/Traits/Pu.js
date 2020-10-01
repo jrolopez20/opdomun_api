@@ -19,7 +19,7 @@ class Pu {
     //     post.calculateOpdo()
     // }
 
-    Model.calculatePu = async function (postId, municipioId, opdo = true) {
+    Model.calculatePu = async function (postId) {
       const varPu = await Database
         .select('post_variables.id', 'post_variables.post_id', 'variables.influencia')
         .from('post_variables')
@@ -30,13 +30,21 @@ class Pu {
         })
         .first();
 
-      const municipio = await Municipio.find(municipioId)
+      const fetchPost = await Post
+          .query()
+          .setVisible(['id'])
+          .with('address.localidad.municipio')
+          .where('id', postId)
+          .first();
+
+      const prospUrbana = fetchPost.toJSON().address.localidad.municipio.prosp_urbana
+
       const postVariable = await Model.find(varPu.id);
-      postVariable.result = municipio.prosp_urbana;
-      postVariable.points = parseFloat(municipio.prosp_urbana * varPu.influencia);
+      postVariable.result = prospUrbana;
+      postVariable.points = parseFloat(prospUrbana * varPu.influencia);
       await postVariable.save();
 
-      let post = await Post.find(postId);
+      const post = await Post.find(postId);
       post.calculateOpdo();
     }
   }

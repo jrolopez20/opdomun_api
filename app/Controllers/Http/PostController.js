@@ -28,6 +28,7 @@ class PostController {
         const filter = {
             provincia_id: request.input('provincia_id'),
             municipio_id: request.input('municipio_id'),
+            localidad_id: request.input('localidad_id'),
             minPrice: request.input('minPrice'),
             maxPrice: request.input('maxPrice'),
             bedrooms: request.input('bedrooms'),
@@ -55,6 +56,7 @@ class PostController {
         const filter = {
             provincia_id: request.input('provincia_id'),
             municipio_id: request.input('municipio_id'),
+            localidad_id: request.input('localidad_id'),
             minPrice: request.input('minPrice'),
             maxPrice: request.input('maxPrice'),
             bedrooms: request.input('bedrooms'),
@@ -78,7 +80,6 @@ class PostController {
         try {
             const {
                 plan_id,
-                municipio_id,
                 address,
                 price,
                 area,
@@ -92,7 +93,6 @@ class PostController {
 
             const post = await PostService.addPost({
                 plan_id,
-                municipio_id,
                 address,
                 price,
                 area,
@@ -207,11 +207,11 @@ class PostController {
     async addFreePost({request, response, auth}) {
         try {
             const {
-                municipio_id, address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
+                address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
             } = request.all();
 
             const post = await PostService.addFreePost({
-                municipio_id, address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
+                address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
             }, auth.user);
 
             return response.status(201).json(post)

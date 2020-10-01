@@ -1,0 +1,21 @@
+definitions:
+  Address:
+    type: object
+    properties:
+      id:
+        type: integer
+        readOnly: true
+      localidad_id:
+        $ref: '#/definitions/Localidad'
+      street:
+        type: string
+      location:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    required:
+      - id
+      - localidad_id
+      - street

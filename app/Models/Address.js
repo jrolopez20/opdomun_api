@@ -22,4 +22,4 @@ class Address extends Model {
     }
 }
 
-module.exports = Municipio
+module.exports = Address
