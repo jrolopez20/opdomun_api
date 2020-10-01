@@ -1,0 +1,14 @@
+/plans:
+  get:
+    tags:
+      - Plan
+    summary: List of plans
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Plan'

@@ -19,6 +19,9 @@ const Route = use('Route');
 // API routes
 Route.group(() => {
     // Home types
+    Route.get('plans', 'PlanController.index');
+
+    // Home types
     Route.get('hometypes', 'HomeTypeController.index');
 
     // Provincias
@@ -80,10 +83,12 @@ Route.group(() => {
     Route.put('posts/:id/publish', 'PostController.publishPost').middleware(['auth']).validator('PublishPost');
     Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice').middleware(['auth']).validator('PublishPost');
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth']);
-    Route.get('published_posts', 'PostController.PublishedPosts');
+    Route.get('published_posts', 'PostController.publishedPosts');
 
     Route.get('appraisals', 'AppraisalController.index').middleware(['auth']);
-    Route.post('free_post', 'PostController.addFreePost').middleware(['auth']);
+    Route.post('free_post', 'PostController.addFreePost')
+        .middleware(['auth'])
+        .validator('StorePost');
 
     Route.get('featured_posts', 'PostController.getFeaturedPosts');
     Route.get('recommended_posts', 'PostController.getRecommendedPosts');

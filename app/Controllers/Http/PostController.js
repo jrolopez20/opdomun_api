@@ -49,7 +49,7 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async PublishedPosts({request, response}) {
+    async publishedPosts({request, response}) {
         const plan_id = request.input('plan_id');
         const page = request.input('page');
         const limit = request.input('limit');

@@ -10,6 +10,10 @@ class Owner extends Model {
         this.addTrait('CastDate')
     }
 
+    static get hidden() {
+        return ['created_at', 'updated_at'];
+    }
+
     post() {
         return this.belongsTo('App/Models/Post')
     }

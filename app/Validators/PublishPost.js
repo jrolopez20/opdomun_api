@@ -27,7 +27,7 @@ const postRequirePictureFn = async (data, field, message, args, get) => {
         .where('post_id', postId)
         .andWhere('default', 1)
         .first();
-    console.log(image)
+
     if(!image) {
         throw message
     }

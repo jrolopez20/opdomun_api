@@ -4,21 +4,11 @@ definitions:
     properties:
       id:
         type: integer
-      title:
+      type:
         type: string
-      price:
-        type: number
-      duration:
-        type: integer
       ranking:
         type: integer
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - title
-      - price
-      - duration
+      - type
       - ranking
