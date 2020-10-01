@@ -32,7 +32,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"javier@gmail.com\",\n\t\"password\": \"javier*123\",\n\t\"remember\": false\n}"
+							"raw": "{\n\t\"email\": \"admin@opdomun.com\",\n\t\"password\": \"123456\",\n\t\"remember\": false\n}"
 						},
 						"url": {
 							"raw": "{{host}}/login",
@@ -75,7 +75,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"numid\": \"567\",\n\t\"fullname\": \"Alejandro\",\n\t\"email\": \"admin@gmail.com\",\n\t\"telephone\": \"+78946546\",\n\t\"address\": \"jaguey grande, matanzas\",\n\t\"password\": \"123456\",\n\t\"repassword\": \"123456\"\n}"
+							"raw": "{\n\t\"numid\": \"567\",\n\t\"fullname\": \"Alejandro\",\n\t\"email\": \"admin@gmail.com\",\n\t\"telephone\": \"+78946546\",\n\t\"address\": \"jaguey grande, matanzas\",\n\t\"office_id\": 1,\n\t\"role\": \"USER\",\n\t\"password\": \"123456\",\n\t\"repassword\": \"123456\"\n}"
 						},
 						"url": {
 							"raw": "{{host}}/users",
@@ -333,7 +333,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/users?limit=20&page=1&filter=ja&role=USER",
+							"raw": "{{host}}/users?limit=20",
 							"host": [
 								"{{host}}"
 							],
@@ -344,18 +344,6 @@
 								{
 									"key": "limit",
 									"value": "20"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "filter",
-									"value": "ja"
-								},
-								{
-									"key": "role",
-									"value": "USER"
 								}
 							]
 						}
@@ -437,22 +425,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/provincias?page=1&limit=10",
+							"raw": "{{host}}/provincias",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"provincias"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "10"
-								}
 							]
 						}
 					},
@@ -498,6 +476,51 @@
 								"provincias",
 								"1",
 								"municipios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Localidad",
+			"item": [
+				{
+					"name": "Localidades",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/municipios/160/localidades",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"municipios",
+								"160",
+								"localidades"
 							]
 						}
 					},
@@ -841,6 +864,11 @@
 								"key": "X-Requested-With",
 								"type": "text",
 								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -848,14 +876,98 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/posts",
+							"raw": "{{host}}/posts?provincia_id=2&municipio_id=12&localidad_id=153&home_type_id=3&plan_id=2",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"posts"
+							],
+							"query": [
+								{
+									"key": "provincia_id",
+									"value": "2"
+								},
+								{
+									"key": "municipio_id",
+									"value": "12"
+								},
+								{
+									"key": "localidad_id",
+									"value": "153"
+								},
+								{
+									"key": "home_type_id",
+									"value": "3"
+								},
+								{
+									"key": "plan_id",
+									"value": "2"
+								}
 							]
-						}
+						},
+						"description": "Public endpoint for posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get published posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"type": "text",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/published_posts?provincia_id=2&municipio_id=12&localidad_id=153&home_type_id=3&plan_id=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"published_posts"
+							],
+							"query": [
+								{
+									"key": "provincia_id",
+									"value": "2"
+								},
+								{
+									"key": "municipio_id",
+									"value": "12"
+								},
+								{
+									"key": "localidad_id",
+									"value": "153"
+								},
+								{
+									"key": "home_type_id",
+									"value": "3"
+								},
+								{
+									"key": "plan_id",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Public endpoint for posts"
 					},
 					"response": []
 				},
@@ -1359,6 +1471,11 @@
 								"key": "X-Requested-With",
 								"type": "text",
 								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1366,7 +1483,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/subscriptions?page=1&limit=20&filter=ejemplo",
+							"raw": "{{host}}/subscriptions?page=1&limit=20",
 							"host": [
 								"{{host}}"
 							],
@@ -1381,10 +1498,6 @@
 								{
 									"key": "limit",
 									"value": "20"
-								},
-								{
-									"key": "filter",
-									"value": "ejemplo"
 								}
 							]
 						}
@@ -1411,6 +1524,11 @@
 								"key": "X-Requested-With",
 								"type": "text",
 								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1450,6 +1568,11 @@
 								"key": "X-Requested-With",
 								"type": "text",
 								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
