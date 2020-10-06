@@ -2,18 +2,20 @@
 
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
+const Plan = use('App/Models/Plan')
 
 class PlanSchema extends Schema {
     up() {
-        this.raw("create type plan_type as enum('PREMIUM', 'FREE')")
-
         this.create('plans', (table) => {
             table.increments()
             table.integer('ranking').notNullable()
             table.timestamps(true, true)
+            table.enu(
+                'type',
+                [Plan.TYPES().PREMIUM, Plan.TYPES().FREE],
+                {useNative: true, enumName: 'plan_type'},
+            ).notNullable().unique()
         })
-
-        this.raw("alter table plans add type plan_type NOT NULL UNIQUE")
     }
 
     down() {

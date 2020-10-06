@@ -5,10 +5,14 @@ const Model = use('Model')
 
 class PostVisit extends Model {
 
+  static get hidden() {
+    return ['postId', 'createdAt', 'updatedAt'];
+  }
+
   static async inrementVisit(postId) {
     const postVisit = await PostVisit.findOrCreate(
-      {post_id: postId},
-      {post_id: postId, total: 0}
+      {postId},
+      {postId, total: 0}
     )
     postVisit.total = 1 + parseInt(postVisit.total);
     await postVisit.save()

@@ -16,12 +16,12 @@ class InfUrbana extends Model {
     static async removeInfUrbana(postVariableId) {
         await InfUrbana
             .query()
-            .where('post_variable_id', postVariableId)
+            .where('postVariableId', postVariableId)
             .delete()
     }
 
     postVariable() {
-        return this.belongsTo('App/Models/PostVariable');
+        return this.belongsTo('App/Models/PostVariable', 'postVariableId', 'id');
     }
 }
 

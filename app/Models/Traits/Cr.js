@@ -14,10 +14,10 @@ class Cr {
 
             const response = {
                 id: result ? result.id : null,
-                relHor: result ? result.rel_hor : null,
-                relVert: result ? result.rel_vert : null,
-                tipoVia: result ? result.tipo_via : null,
-                alturaCercPer: result ? result.altura_cerc_per : null,
+                relHor: result ? result.relHor : null,
+                relVert: result ? result.relVert : null,
+                tipoVia: result ? result.tipoVia : null,
+                alturaCercPer: result ? result.alturaCercPer : null,
                 permeabilidad: result ? result.permeabilidad : null,
                 altura: result ? result.altura : null,
                 distancia: result ? result.distancia : null,
@@ -30,8 +30,8 @@ class Cr {
         Model.prototype.calculateCr = async function calculateCr(relHor, relVert,
                                                                  tipoVia, alturaCercPer, permeabilidad,
                                                                  altura, distancia) {
-            let post = await Post.find(this.post_id);
-            const homeType = await HomeType.find(post.home_type_id);
+            let post = await Post.find(this.postId);
+            const homeType = await HomeType.find(post.homeTypeId);
             const morfoUrb = homeType.value;
 
             let sum = parseFloat(relHor) + parseFloat(relVert) + parseFloat(morfoUrb) + parseFloat(tipoVia);
@@ -99,13 +99,13 @@ class Cr {
 
             await this.colindanciaPrivacidads().delete();
             await this.colindanciaPrivacidads().create({
-                rel_hor: relHor,
-                rel_vert: relVert,
-                tipo_via: tipoVia,
-                altura_cerc_per: alturaCercPer,
-                permeabilidad: permeabilidad,
-                altura: altura,
-                distancia: distancia
+                relHor,
+                relVert,
+                tipoVia,
+                alturaCercPer,
+                permeabilidad,
+                altura,
+                distancia
             });
 
             await this.load('variable')

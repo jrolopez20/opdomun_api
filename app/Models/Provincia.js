@@ -6,7 +6,7 @@ const Model = use('Model')
 class Provincia extends Model {
 
     static get hidden() {
-        return ['created_at', 'updated_at'];
+        return ['createdAt', 'updatedAt'];
     }
 
     static async getProvincias() {
@@ -16,11 +16,11 @@ class Provincia extends Model {
     }
 
     municipios() {
-        return this.hasMany('App/Models/Municipio')
+        return this.hasMany('App/Models/Municipio', 'id', 'provinciaId')
     }
 
     office() {
-        return this.hasOne('App/Models/Office')
+        return this.hasOne('App/Models/Office', 'id', 'provinciaId')
     }
 }
 

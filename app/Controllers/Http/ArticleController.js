@@ -55,12 +55,8 @@ class ArticleController {
      * @param {Response} ctx.response
      */
     async show({params, response}) {
-        try {
-            const article = await Article.getArticle(params.id);
-            return response.json(article);
-        } catch (e) {
-            throw new ResourceNotFoundException();
-        }
+        const article = await Article.getArticle(params.id);
+        return response.json(article);
     }
 
     /**
@@ -72,12 +68,8 @@ class ArticleController {
      * @param {Response} ctx.response
      */
     async update({params, request, response}) {
-        try {
-            const article = await ArticleService.setArticle(params.id, request);
-            return response.json(article);
-        } catch (e) {
-            return response.status(400).json({message: e.message})
-        }
+        const article = await ArticleService.setArticle(params.id, request);
+        return response.json(article);
     }
 
     /**
@@ -89,16 +81,8 @@ class ArticleController {
      * @returns {Promise<*|Promise<any>>}
      */
     async destroy({params, response}) {
-        try {
-            const res = await ArticleService.destroyArticle(params.id);
-            if (res) {
-                return response.status(204).json(null);
-            } else {
-                return response.status(400).json('Cannot delete user');
-            }
-        } catch (e) {
-            return response.status(400).json({message: e.message})
-        }
+        const res = await ArticleService.destroyArticle(params.id);
+        return response.status(204).json(null);
     }
 }
 

@@ -20,7 +20,7 @@ class VariableScController {
             const item = await NomSegCiudadana.findBy('value', postVar.result);
 
             const sc = {
-                seg_cdna: item
+                segCdna: item
             };
 
             return response.json(sc);
@@ -31,7 +31,7 @@ class VariableScController {
 
     async update({params, request, response}) {
         try {
-            const segCdna = request.input("seg_cdna");
+            const segCdna = request.input("segCdna");
 
             const postVariable = await PostVariable.find(params.id)
             await postVariable.calculateSc(segCdna);

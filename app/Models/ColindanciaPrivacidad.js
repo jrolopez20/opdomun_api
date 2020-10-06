@@ -8,7 +8,7 @@ class ColindanciaPrivacidad extends Model {
     static async removeColindanciaPrivacidad(postVariableId) {
         await ColindanciaPrivacidad
             .query()
-            .where('post_variable_id', postVariableId)
+            .where('postVariableId', postVariableId)
             .delete()
     }
 

@@ -13,11 +13,11 @@ class VariableDeController {
     async show({params, response}) {
         try {
             const postVar = await PostVariable.find(params.id);
-            const varDe = await VarDisenoEstetica.findBy('post_id', postVar.post_id)
+            const varDe = await VarDisenoEstetica.findBy('postId', postVar.postId)
 
             const de = {
-                valor_arquitectonico: varDe ? varDe.valor_arquitectonico : null,
-                valor_urbano: varDe ? varDe.valor_urbano : null
+                valorArquitectonico: varDe ? varDe.valorArquitectonico : null,
+                valorUrbano: varDe ? varDe.valorUrbano : null
             };
 
             return response.json(de);
@@ -28,8 +28,8 @@ class VariableDeController {
 
     async update({params, request, response}) {
         try {
-            const valorArquitectonico = request.input("valor_arquitectonico");
-            const valorUrbano = request.input("valor_urbano");
+            const valorArquitectonico = request.input("valorArquitectonico");
+            const valorUrbano = request.input("valorUrbano");
 
             const postVariable = await PostVariable.find(params.id);
             await postVariable.calculateDe(valorArquitectonico, valorUrbano);

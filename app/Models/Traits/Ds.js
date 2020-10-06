@@ -30,7 +30,7 @@ class Ds {
                     title: 'Agromercado',
                     options: options.slice(0,4)
                 },
-                productos_procesados: {
+                productosProcesados: {
                     title: 'Mercado de productos procesados',
                     options: options.slice(0,4)
                 },
@@ -42,7 +42,7 @@ class Ds {
                     title: 'Cafeterías',
                     options: options.slice(0,4)
                 },
-                escuela_guardería: {
+                escuelaGuardería: {
                     title: 'Escuelas / Guarderías',
                     options: options.slice(0,4)
                 },
@@ -50,11 +50,11 @@ class Ds {
                     title: 'Gimnasios',
                     options: options.slice(0,4)
                 },
-                transporte_publico: {
+                transportePublico: {
                     title: 'Parada de transporte público',
                     options: options.slice(0,4)
                 },
-                centro_salud: {
+                centroSalud: {
                     title: 'Centro de Salud',
                     options: options.slice(4,8)
                 },
@@ -66,11 +66,11 @@ class Ds {
                     title: 'Farmacias',
                     options: options.slice(4,8)
                 },
-                salon_belleza: {
+                salonBelleza: {
                     title: 'Salón de belleza',
                     options: options.slice(4,8)
                 },
-                agencia_bancaria: {
+                agenciaBancaria: {
                     title: 'Agencia bancaria / Cajero',
                     options: options.slice(4,8)
                 },
@@ -78,7 +78,7 @@ class Ds {
                     title: 'Servicentro',
                     options: options.slice(4,8)
                 },
-                cine_teatro: {
+                cineTeatro: {
                     title: 'Cine / teatro',
                     options: options.slice(4,8)
                 },
@@ -87,11 +87,11 @@ class Ds {
                     options: options.slice(4,8)
                 },
 
-                estadio_deportivo: {
+                estadioDeportivo: {
                     title: 'Estadio deportivo',
                     options: options.slice(8)
                 },
-                oficina_telefonica: {
+                oficinaTelefonica: {
                     title: 'Oficina de servicio telefónico',
                     options: options.slice(8)
                 },
@@ -103,7 +103,7 @@ class Ds {
                     title: 'Restaurantes',
                     options: options.slice(8)
                 },
-                oficina_tramites: {
+                oficinaTramites: {
                     title: 'Oficinas de trámites públicos',
                     options: options.slice(8)
                 }
@@ -118,9 +118,9 @@ class Ds {
 
             for(const service in request.body.services) {
                 items.push({
-                    post_variable_id: this.id,
+                    postVariableId: this.id,
                     value: request.body.services[service].value,
-                    display_value: request.body.services[service].label,
+                    displayValue: request.body.services[service].label,
                     title: this.getDiccServiciosPublicos()[service].title
                 })
                 sum += parseInt(request.body.services[service].value)
@@ -137,7 +137,7 @@ class Ds {
             this.points = result * variable.influencia;
             await this.save();
 
-            let post = await Post.find(this.post_id);
+            let post = await Post.find(this.postId);
             post.calculateOpdo();
         }
     }

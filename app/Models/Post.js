@@ -14,6 +14,7 @@ const VarConforEficiencia = use('App/Models/VarConforEficiencia')
 const VarMenaje = use('App/Models/VarMenaje')
 const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
+const Address = use('App/Models/Address')
 
 function strToBool(s) {
     const regex = /^\s*(true|1)\s*$/i
@@ -28,7 +29,19 @@ class Post extends Model {
     }
 
     static get hidden() {
-        return ['updated_at'];
+        return ['updatedAt'];
+    }
+
+    static BUILD_STATUS_TYPES() {
+        return {
+            EXCELENT: 'EXCELLENT',
+            VERY_GOOD: 'VERY_GOOD',
+            GODD: 'GOOD',
+            REGULAR: 'REGULAR',
+            BAD: 'BAD',
+            VERY_BAD: 'VERY_BAD',
+            DEMOLITION: 'DEMOLITION',
+        }
     }
 
     static async getPost(id) {
@@ -77,14 +90,13 @@ class Post extends Model {
         const query = Post
             .query()
             .with('user')
-            .with('municipio.provincia')
+            .with('address.localidad.municipio.provincia')
             .with('images', (builder) => {
                 builder.where('default', true)
             })
-            .where('plan_id', 1)
-            .whereNotNull('published_at')
+            .where('planId', 1)
+            .whereNotNull('publishedAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at >= now()')
-
             .where('posts.sold', 0)
             .orderBy('posts.opdo', 'desc');
 
@@ -92,10 +104,10 @@ class Post extends Model {
         return posts;
     }
 
-    static async getPosts(plan_id = null, page = 1, limit = 20, filter, user) {
+    static async getPosts(planId = null, page = 1, limit = 20, filter, user) {
         const query = Post
             .query()
-            .setVisible(['id', 'price', 'published_at', 'closed_at', 'sold'])
+            .setVisible(['id', 'price', 'publishedAt', 'closedAt', 'sold'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'type'])
             })
@@ -103,17 +115,17 @@ class Post extends Model {
             .with('images', (builder) => {
                 builder.where('default', true)
             })
-            .orderBy('updated_at', 'DESC')
+            .orderBy('updatedAt', 'DESC')
 
         if (user.role === User.roles().MANAGER) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN users ON users.id = posts.user_id WHERE users.office_id = ${user.office_id})`
+                INNER JOIN users ON users.id = posts.user_id WHERE users.office_id = ${user.officeId})`
             );
         }
 
         if (user.role === User.roles().AGENT) {
-            query.andWhere('posts.user_id', user.id);
+            query.andWhere('posts.userId', user.id);
         }
 
         if (user.role === User.roles().CLIENT) {
@@ -123,23 +135,23 @@ class Post extends Model {
             );
         }
 
-        if (strToBool(filter.my_posts)) {
+        if (strToBool(filter.myPosts)) {
             query.whereRaw(
                 `posts.user_id = ${user.id} OR posts.id IN (SELECT posts.id FROM posts
                 INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
             );
         }
 
-        if (plan_id) {
-            if (parseInt(plan_id) === -1) {
-                query.whereNull('posts.plan_id')
+        if (planId) {
+            if (parseInt(planId) === -1) {
+                query.whereNull('posts.planId')
             } else {
-                query.andWhere('posts.plan_id', parseInt(plan_id));
+                query.andWhere('posts.planId', parseInt(planId));
             }
         }
 
-        if (filter.home_type_id) {
-            query.andWhere('posts.home_type_id', filter.home_type_id);
+        if (filter.homeTypeId) {
+            query.andWhere('posts.homeTypeId', filter.homeTypeId);
         }
         if (filter.bedrooms) {
             query.andWhere('posts.bedrooms', filter.bedrooms);
@@ -154,27 +166,27 @@ class Post extends Model {
             query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
-        if (filter.localidad_id) {
+        if (filter.localidadId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
-                WHERE addresses.localidad_id = ${filter.localidad_id})`
+                WHERE addresses.localidad_id = ${filter.localidadId})`
             );
         }
 
-        if (filter.municipio_id) {
+        if (filter.municipioId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
                 INNER JOIN localidads ON localidads.id = addresses.localidad_id 
-                WHERE localidads.municipio_id = ${filter.municipio_id})`
+                WHERE localidads.municipio_id = ${filter.municipioId})`
             );
         }
 
-        if (filter.provincia_id) {
+        if (filter.provinciaId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
                 INNER JOIN localidads ON localidads.id = addresses.localidad_id 
                 INNER JOIN municipios ON municipios.id = localidads.municipio_id 
-                WHERE municipios.provincia_id = ${filter.provincia_id})`
+                WHERE municipios.provincia_id = ${filter.provinciaId})`
             );
         }
 
@@ -182,10 +194,10 @@ class Post extends Model {
         return posts.toJSON();
     }
 
-    static async getPublishedPosts(plan_id = null, page = 1, limit = 20, filter) {
+    static async getPublishedPosts(planId = null, page = 1, limit = 20, filter) {
         const query = Post
             .query()
-            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'published_at', 'sold'])
+            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'sold'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'type'])
             })
@@ -193,18 +205,18 @@ class Post extends Model {
             .with('images', (builder) => {
                 builder.where('default', true)
             })
-            .whereNotNull('posts.published_at')
-            .andWhere('posts.closed_at', '>=', new Date())
-            .orderBy('posts.plan_id', 'ASC')
+            .whereNotNull('posts.publishedAt')
+            .andWhere('posts.closedAt', '>=', new Date())
+            .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC');
 
 
-        if (plan_id) {
-            query.andWhere('posts.plan_id', parseInt(plan_id));
+        if (planId) {
+            query.andWhere('posts.planId', planId);
         }
 
-        if (filter.home_type_id) {
-            query.andWhere('posts.home_type_id', filter.home_type_id);
+        if (filter.homeTypeId) {
+            query.andWhere('posts.homeTypeId', filter.homeTypeId);
         }
         if (filter.bedrooms) {
             query.andWhere('posts.bedrooms', filter.bedrooms);
@@ -219,27 +231,27 @@ class Post extends Model {
             query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
-        if (filter.localidad_id) {
+        if (filter.localidadId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
-                WHERE addresses.localidad_id = ${filter.localidad_id})`
+                WHERE addresses.localidad_id = ${filter.localidadId})`
             );
         }
 
-        if (filter.municipio_id) {
+        if (filter.municipioId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
                 INNER JOIN localidads ON localidads.id = addresses.localidad_id 
-                WHERE localidads.municipio_id = ${filter.municipio_id})`
+                WHERE localidads.municipio_id = ${filter.municipioId})`
             );
         }
 
-        if (filter.provincia_id) {
+        if (filter.provinciaId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
                 INNER JOIN localidads ON localidads.id = addresses.localidad_id 
                 INNER JOIN municipios ON municipios.id = localidads.municipio_id 
-                WHERE municipios.provincia_id = ${filter.provincia_id})`
+                WHERE municipios.provincia_id = ${filter.provinciaId})`
             );
         }
 
@@ -251,8 +263,8 @@ class Post extends Model {
         const query = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan_id', 'plans.type as plan_title', 'posts.opdo', 'posts.price', 'posts.area',
-                'posts.address', 'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'images.url as image',
+                'posts.id', 'posts.plan_id', 'plans.type', 'posts.opdo', 'posts.price', 'posts.area',
+                'posts.address', 'posts.published_at as publishedAt', 'posts.bedrooms', 'posts.bathrooms', 'images.url as image',
                 'municipios.title as municipio', 'provincias.cod as provincia'
             )
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
@@ -271,81 +283,18 @@ class Post extends Model {
             .limit(limit)
 
         const posts = await query;
-        // const posts = await query.paginate(1, limit);
         return posts;
-    }
-
-    static async getPostsAux(request) {
-        const provincia = request.input('provincia');
-        const municipio = request.input('municipio');
-        const homeType = request.input('homeType');
-        const plan_id = request.input('plan_id');
-        const bedrooms = request.input('bedrooms');
-        const bathrooms = request.input('bathrooms');
-        const minPrice = request.input('minPrice');
-        const maxPrice = request.input('maxPrice');
-        const page = request.input('page') ? request.input('page') : 1;
-
-        const query = Database
-            .from('posts')
-            .select(
-                'posts.id', 'posts.plan_id', 'plans.type as plan_title', 'posts.opdo', 'posts.price', 'posts.area', 'posts.address',
-                'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.sold', 'images.url as image',
-                'municipios.title as municipio', 'provincias.cod as provincia'
-            )
-            .leftJoin('users', 'users.id', 'posts.user_id')
-            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
-            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .innerJoin('plans', 'plans.id', 'posts.plan_id')
-            .leftJoin('images', function () {
-                this
-                    .on('posts.id', 'images.post_id')
-                    .andOn('images.default', true)
-            })
-            .whereNotNull('posts.published_at')
-            //.whereRaw('posts.closed_at >= now()')
-            .orderBy('plans.ranking', 'ASC')
-            .orderBy('posts.opdo', 'DESC')
-            .orderBy('posts.published_at', 'DESC');
-
-        if (provincia) {
-            query.andWhere('provincias.id', provincia)
-        }
-        if (municipio) {
-            query.andWhere('municipios.id', municipio)
-        }
-        if (homeType) {
-            query.andWhere('posts.home_type_id', homeType);
-        }
-        if (plan_id) {
-            query.andWhere('posts.plan_id', plan_id);
-        }
-        if (bedrooms) {
-            query.andWhere('posts.bedrooms', bedrooms);
-        }
-        if (bathrooms) {
-            query.andWhere('posts.bathrooms', bathrooms);
-        }
-        if (minPrice) {
-            query.andWhere('posts.price', '>=', minPrice);
-        }
-        if (maxPrice) {
-            query.andWhere('posts.price', '<=', maxPrice);
-        }
-
-        const posts = await query.paginate(page, 24);
-        return posts
     }
 
     static async getPostDetail(id) {
         const post = await Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan_id', 'plans.type as plan_title', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
-                'posts.published_at', 'posts.bedrooms', 'posts.bathrooms', 'posts.built_year', 'posts.build_status',
+                'posts.id', 'posts.plan_id as planId', 'plans.type', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
+                'posts.published_at as publishedAt', 'posts.bedrooms', 'posts.bathrooms', 'posts.built_year as builtYear', 'posts.build_status as buildStatus',
                 'posts.summary', 'home_types.title as homeType',
-                'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provincia_title',
-                'posts.user_id', 'users.fullname as agent_name', 'users.email as agent_email', 'users.telephone as agent_phone',
+                'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provinciaTitle',
+                'posts.userId', 'users.fullname as agentName', 'users.email as agentEmail', 'users.telephone as agentPhone',
                 'owners.fullname as owner_name', 'owners.email as owner_email', 'owners.telephone as owner_phone',
                 'var_flexibilidads.area_crecimiento', 'post_visits.total as visits',
                 'vde.valor_arquitectonico', 'vde.valor_urbano'
@@ -558,7 +507,7 @@ class Post extends Model {
                                     bold: true
                                 },
                                 {
-                                    text: post.built_year,
+                                    text: post.builtYear,
                                     border: [false, false, false, true],
                                     alignment: 'right'
                                 },
@@ -569,7 +518,7 @@ class Post extends Model {
                                     bold: true
                                 },
                                 {
-                                    text: post.build_status,
+                                    text: post.buildStatus,
                                     border: [false, false, false, true],
                                     alignment: 'right'
                                 }
@@ -592,7 +541,7 @@ class Post extends Model {
                                     bold: true
                                 },
                                 {
-                                    text: post.published_at ? post.published_at.toLocaleDateString() : '',
+                                    text: post.publishedAt ? post.publishedAt.toLocaleDateString() : '',
                                     border: [false, false, false, true],
                                     alignment: 'right'
                                 }
@@ -616,7 +565,7 @@ class Post extends Model {
                     text: post.summary,
                 }
             ]
-            if (post.plan_id != 4) {
+            if (post.planId != 2) {
                 body[2].table.body.unshift([
                     {
                         text: 'Índice Op:',
@@ -683,8 +632,8 @@ class Post extends Model {
                 })
                 const dicc = VarConforEficiencia.getDicc()
                 let windowsCategory = '';
-                dicc.windows_category.forEach(item => {
-                    if (item.value == confortAmbiental.window_category) {
+                dicc.windowsCategory.forEach(item => {
+                    if (item.value == confortAmbiental.windowCategory) {
                         windowsCategory = item.text;
                     }
                 });
@@ -695,8 +644,8 @@ class Post extends Model {
                     }
                 });
                 let solarProtection = '';
-                dicc.solar_protection.forEach(item => {
-                    if (item.value == confortAmbiental.solar_protection) {
+                dicc.solarProtection.forEach(item => {
+                    if (item.value == confortAmbiental.solarProtection) {
                         solarProtection = item.text;
                     }
                 });
@@ -725,7 +674,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.window_area + ' m2',
+                                    text: confortAmbiental.windowArea + ' m2',
                                     border: [false, false, false, true]
                                 },
                             ],
@@ -755,7 +704,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.east_protection == 100 ? 'Elemento Vertical ' : 'Sin protección',
+                                    text: confortAmbiental.eastProtection == 100 ? 'Elemento Vertical ' : 'Sin protección',
                                     border: [false, false, false, true]
                                 },
                             ],
@@ -765,7 +714,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.south_protection == 100 ? 'Elemento Horizontal ' : 'Sin protección',
+                                    text: confortAmbiental.southProtection == 100 ? 'Elemento Horizontal ' : 'Sin protección',
                                     border: [false, false, false, true]
                                 },
                             ],
@@ -775,7 +724,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.west_protection == 100 ? 'Elemento Vertical ' : 'Sin protección',
+                                    text: confortAmbiental.westProtection == 100 ? 'Elemento Vertical ' : 'Sin protección',
                                     border: [false, false, false, true]
                                 },
                             ]
@@ -809,7 +758,7 @@ class Post extends Model {
                                 border: [false, false, false, true]
                             },
                             {
-                                text: item.display_value,
+                                text: item.displayValue,
                                 border: [false, false, false, true]
                             },
                         ]
@@ -932,20 +881,20 @@ class Post extends Model {
                 })
             }
 
-            if (post.area_crecimiento) {
+            if (post.areaCrecimiento) {
                 body.push({
                     text: [
                         {
                             text: 'Área de posible crecimiento:  ',
                             bold: true
                         },
-                        post.area_crecimiento + ' m2'
+                        post.areaCrecimiento + ' m2'
                     ],
                     margin: [0, 10, 0, 0]
                 })
             }
 
-            if (post.valor_arquitectonico && post.valor_urbano) {
+            if (post.valorArquitectonico && post.valorUrbano) {
                 const scale = {
                     '100': 'Muy alto',
                     '80': 'Alto',
@@ -973,7 +922,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: scale[post.valor_arquitectonico],
+                                    text: scale[post.valorArquitectonico],
                                     border: [false, false, false, true]
                                 },
                             ],
@@ -983,7 +932,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: scale[post.valor_urbano],
+                                    text: scale[post.valorUrbano],
                                     border: [false, false, false, true]
                                 },
                             ]
@@ -1037,12 +986,13 @@ class Post extends Model {
         }
     }
 
-    static async getMatchedPremiumPost({provinciaId, municipios, minPrice, maxPrice, homeTypes}) {
+    static async getMatchedPremiumPost({provinciaId, municipio, minPrice, maxPrice, homeType}) {
         const posts = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms', 'posts.home_type_id',
-                'posts.municipio_id', 'municipios.provincia_id', 'owners.fullname', 'owners.email', 'owners.telephone'
+                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms', 'posts.home_type_id as homeTypeId',
+                'posts.municipio_id as municipioId', 'municipios.provincia_id as provinciaId', 'owners.fullname',
+                'owners.email', 'owners.telephone'
             )
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('owners', 'posts.id', 'owners.post_id')
@@ -1056,12 +1006,12 @@ class Post extends Model {
             posts.andWhere('municipios.provincia_id', provinciaId);
         }
 
-        if (municipios) {
-            posts.whereIn('posts.municipio_id', municipios.split(','))
+        if (municipio) {
+            posts.whereIn('posts.municipio_id', municipio.split(','))
         }
 
-        if (homeTypes) {
-            posts.whereIn('posts.home_type_id', homeTypes.split(','))
+        if (homeType) {
+            posts.whereIn('posts.home_type_id', homeType.split(','))
         }
 
         if (minPrice) {
@@ -1076,8 +1026,13 @@ class Post extends Model {
     }
 
     async calculatePrice() {
-        const municipio = await Municipio.find(this.municipio_id);
-        this.opdo = await this.getAvgOpdo(this.municipio_id, municipio.provincia_id);
+        const address = await Address
+            .query()
+            .with('localidad.municipio')
+            .where('id', this.addressId)
+            .first();
+
+        this.opdo = await this.getAvgOpdo(address.localidad.municipioId, address.localidad.municipio.provinciaId);
         await this.load('postVariables');
         let postVariables = await this.getRelated('postVariables');
         postVariables = postVariables.toJSON();
@@ -1097,63 +1052,55 @@ class Post extends Model {
     }
 
     user() {
-        return this.belongsTo('App/Models/User');
-    }
-
-    post() {
-        return this.belongsTo('App/Models/Post');
+        return this.belongsTo('App/Models/User', 'userId', 'id');
     }
 
     address() {
-        return this.belongsTo('App/Models/Address');
+        return this.belongsTo('App/Models/Address', 'addressId', 'id');
     }
 
     homeType() {
-        return this.belongsTo('App/Models/HomeType');
+        return this.belongsTo('App/Models/HomeType', 'homeTypeId', 'id');
     }
 
     plan() {
-        return this.belongsTo('App/Models/Plan')
+        return this.belongsTo('App/Models/Plan', 'planId', 'id')
     }
 
     images() {
-        return this.hasMany('App/Models/Image')
+        return this.hasMany('App/Models/Image', 'id', 'postId')
     }
 
     postVariables() {
-        return this.hasMany('App/Models/PostVariable')
+        return this.hasMany('App/Models/PostVariable', 'id', 'postId')
     }
 
     postPlaces() {
-        return this.hasMany('App/Models/PostPlace')
-    }
-
-    hisPosts() {
-        return this.hasMany('App/Models/HisPost')
+        return this.hasMany('App/Models/PostPlace', 'id', 'postId')
     }
 
     varFlexibilidad() {
-        return this.hasOne('App/Models/VarFlexibilidad')
+        return this.hasOne('App/Models/VarFlexibilidad', 'id', 'postId')
     }
 
     varConforEficiencia() {
-        return this.hasOne('App/Models/VarConforEficiencia')
+        return this.hasOne('App/Models/VarConforEficiencia', 'id', 'postId')
     }
 
     varDisenoEstetica() {
-        return this.hasOne('App/Models/VarDisenoEstetica')
+        return this.hasOne('App/Models/VarDisenoEstetica', 'id', 'postId')
     }
 
     varMenaje() {
-        return this.hasOne('App/Models/VarMenaje')
+        return this.hasOne('App/Models/VarMenaje', 'id', 'postId')
     }
 
     owner() {
-        return this.hasOne('App/Models/Owner')
+        return this.hasOne('App/Models/Owner', 'id', 'postId')
     }
 
     postVisit() {
-        return this.hasOne('App/Models/PostVisit')
+        return this.hasOne('App/Models/PostVisit', 'id', 'postId')
     }
 }
 

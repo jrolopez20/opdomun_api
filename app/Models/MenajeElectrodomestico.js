@@ -6,10 +6,11 @@ const Model = use('Model')
 class MenajeElectrodomestico extends Model {
 
   varMenaje() {
-    return this.belongsTo('App/Models/VarMenaje');
+    return this.belongsTo('App/Models/VarMenaje', 'menajeId', 'id');
   }
+
   nomElectrodomestico() {
-    return this.belongsTo('App/Models/NomElectrodomestico');
+    return this.belongsTo('App/Models/NomElectrodomestico', 'electrodomesticoId', 'id');
   }
 
 }

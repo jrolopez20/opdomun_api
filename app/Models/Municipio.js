@@ -6,13 +6,13 @@ const Model = use('Model')
 class Municipio extends Model {
 
     static get hidden() {
-        return ['created_at', 'updated_at'];
+        return ['createdAt', 'updatedAt'];
     }
 
     static async getMunicipios(provinciaId) {
         const municipios = await Municipio
             .query()
-            .setVisible(['id', 'title', 'prosp_urbana'])
+            .setVisible(['id', 'title', 'prospUrbana'])
             .where('provincia_id', provinciaId)
             .fetch();
 
@@ -20,11 +20,11 @@ class Municipio extends Model {
     }
 
     provincia() {
-        return this.belongsTo('App/Models/Provincia');
+        return this.belongsTo('App/Models/Provincia', 'provinciaId', 'id');
     }
 
     localidads() {
-        return this.hasMany('App/Models/Localidad')
+        return this.hasMany('App/Models/Localidad', 'id', 'municipioId')
     }
 }
 

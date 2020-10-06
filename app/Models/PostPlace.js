@@ -2,16 +2,24 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
-const Database = use('Database')
 
 class PostPlace extends Model {
 
+    static get hidden() {
+        return ['postId', 'createdAt', 'updatedAt'];
+    }
+
     static async getPostPLaces(id) {
-        return await Database.select('id', 'title').from('post_places').where('post_id', id)
+        const postPlaces = await PostPlace
+            .query()
+            .setVisible(['id', 'title'])
+            .where('postId', id)
+            .fetch()
+        return postPlaces;
     }
 
     post() {
-        return this.belongsTo('App/Models/Post');
+        return this.belongsTo('App/Models/Post', 'postId', 'id');
     }
 }
 

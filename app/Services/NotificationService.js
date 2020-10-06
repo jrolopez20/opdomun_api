@@ -17,10 +17,10 @@ class NotificationService {
         } else {
             // Find all subscriptions that match to post's attribute
             const subscriptors = await Subscription.getMatchedSubscriptions({
-                provinciaId: post.municipio.provincia_id,
-                municipioId: post.municipio_id,
+                provinciaId: post.municipio.provinciaId,
+                municipioId: post.municipioId,
                 price: post.price,
-                homeType: post.home_type_id
+                homeType: post.homeTypeId
             });
 
             // Finally if there is at least one subcription matched to the post attributes dispatch email
@@ -35,15 +35,15 @@ class NotificationService {
     static async dispatchSubscriptorNotification(post) {
         // Find all subscriptions that match to post's attribute
         const subscriptions = await Subscription.getMatchedSubscriptions({
-            provinciaId: post.municipio.provincia_id,
-            municipioId: post.municipio_id,
+            provinciaId: post.address.localidad.municipio.provinciaId,
+            municipioId: post.address.localidad.municipioId,
             price: post.price,
-            homeType: post.home_type_id
+            homeType: post.homeTypeId
         });
 
-        for (const subscription of subscriptions) {
-            await MailNotification.notifySubcriptor(subscription, post);
-        }
+        // for (const subscription of subscriptions) {
+        //     await MailNotification.notifySubcriptor(subscription, post);
+        // }
     }
 
 }

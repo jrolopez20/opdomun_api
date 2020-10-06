@@ -12,7 +12,7 @@ class SubscriptionSchema extends Schema {
       table.string('municipio').notNullable()
       table.string('home_type').notNullable()
       table.float('min_price').notNullable()
-      table.float('max_type').notNullable()
+      table.float('max_price').notNullable()
       table.integer('bedrooms')
       table.integer('bathrooms')
       table.timestamps(true, true)

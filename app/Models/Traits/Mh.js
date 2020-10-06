@@ -8,7 +8,7 @@ class Mh {
     const options = Object.assign(defaultOptions, customOptions);
 
     Model.prototype.calculateMh = async function (moviliario, electrodomesticos) {
-      const post = await Post.find(this.post_id);
+      const post = await Post.find(this.postId);
       let promedioMoviliario = 0;
       let promedioElectrodomestico = 0;
       if (moviliario && moviliario.length) {

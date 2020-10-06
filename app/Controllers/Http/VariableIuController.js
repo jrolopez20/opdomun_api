@@ -14,11 +14,11 @@ class VariableIuController {
             agua: {title: 'Abastecimiento de agua potable'},
             electricidad: {title: 'Abastecimiento de electricidad'},
             internet: {title: 'Acceso a Internet'},
-            cobertura_movil: {title: 'Cobertura Móvil'},
-            saneamiento_sanitario: {title: 'Saneamiento sanitario'},
-            calle_acera: {title: 'Calles y aceras'},
-            gas_licuado: {title: 'Abastecimiento de Gas Licuado (calle)'},
-            trasporte_publico: {title: 'Transporte público'}
+            coberturaMovil: {title: 'Cobertura Móvil'},
+            saneamientoSanitario: {title: 'Saneamiento sanitario'},
+            calleAcera: {title: 'Calles y aceras'},
+            gasLicuado: {title: 'Abastecimiento de Gas Licuado (calle)'},
+            trasportePublico: {title: 'Transporte público'}
         };
         return diccCalInfUrb;
     }
@@ -51,7 +51,7 @@ class VariableIuController {
 
             for (let service in services) {
                 items.push({
-                    post_variable_id: postVariable.id,
+                    postVariableId: postVariable.id,
                     value: services[service],
                     title: this.getDiccCalInfUrb()[service].title
                 });

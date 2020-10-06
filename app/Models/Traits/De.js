@@ -8,16 +8,16 @@ class De {
     const options = Object.assign(defaultOptions, customOptions);
 
     Model.prototype.calculateDe = async function (valorArquitectonico, valorUrbano) {
-      const post = await Post.find(this.post_id);
+      const post = await Post.find(this.postId);
 
       await VarDisenoEstetica.query()
-        .where('post_id', this.post_id)
+        .where('postId', this.postId)
         .delete()
 
       const varDisenoEstetica = new VarDisenoEstetica();
-      varDisenoEstetica.post_id = this.post_id;
-      varDisenoEstetica.valor_arquitectonico = valorArquitectonico;
-      varDisenoEstetica.valor_urbano = valorUrbano;
+      varDisenoEstetica.postId = this.postId;
+      varDisenoEstetica.valorArquitectonico = valorArquitectonico;
+      varDisenoEstetica.valorUrbano = valorUrbano;
       await varDisenoEstetica.save();
 
       const result = parseInt(valorArquitectonico) + parseInt(valorUrbano);

@@ -6,9 +6,9 @@ const Model = use('Model')
 class Office extends Model {
 
     static get hidden() {
-        return ['created_at', 'updated_at'];
+        return ['createdAt', 'updatedAt'];
     }
-    
+
     static async getOffices (page, limit) {
         const query = Office
             .query()
@@ -22,11 +22,11 @@ class Office extends Model {
     }
 
     provincia() {
-        return this.belongsTo('App/Models/Provincia');
+        return this.belongsTo('App/Models/Provincia', 'provinciaId', 'id');
     }
 
     users() {
-        return this.hasMany('App/Models/User')
+        return this.hasMany('App/Models/User', 'id', 'officeId')
     }
 }
 

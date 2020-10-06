@@ -27,7 +27,7 @@ class VarMenaje extends Model {
     }
 
     static async getMenaje(postId) {
-        const menaje = await this.findBy('post_id', postId);
+        const menaje = await this.findBy('postId', postId);
         if (menaje && menaje.exist) {
             const moviliario = await Database.select('nm.id', 'nm.title')
                 .from('var_menajes as m')
@@ -52,15 +52,15 @@ class VarMenaje extends Model {
     }
 
     menajeMoviliario() {
-        return this.hasMany('App/Models/MenajeMoviliario');
+        return this.hasMany('App/Models/MenajeMoviliario', 'id', 'menajeId');
     }
 
     menajeElectrodomestico() {
-        return this.hasMany('App/Models/MenajeElectrodomestico');
+        return this.hasMany('App/Models/MenajeElectrodomestico', 'id', 'menajeId');
     }
 
     post() {
-        return this.belongsTo('App/Models/Post');
+        return this.belongsTo('App/Models/Post', 'postId', 'id');
     }
 
 }

@@ -2,8 +2,15 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const Env = use('Env')
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
 
 class Article extends Model {
+    static articlePictureFolder = 'images/article_pictures/'
+
+    static pictureBaseUrl() {
+        return `${Env.get('APP_URL')}/${Article.articlePictureFolder}`;
+    }
 
     static boot() {
         super.boot()
@@ -11,13 +18,23 @@ class Article extends Model {
     }
 
     static get hidden() {
-        return ['user_id', 'updated_at'];
+        return ['userId', 'updatedAt'];
+    }
+
+    /**
+     * Picture getter
+     *
+     * @param value
+     * @returns {string} full url to picture
+     */
+    getPicture(value) {
+        return value ? Article.pictureBaseUrl() + value : null
     }
 
     static async getArticles(page = 1, limit = 20, filter = null) {
         const query = Article
             .query()
-            .setVisible(['id', 'title', 'sumary', 'created_at'])
+            .setVisible(['id', 'title', 'sumary', 'picture', 'createdAt'])
             .with('user', (builder) => {
                 builder.setVisible(['id', 'fullname'])
             })
@@ -33,17 +50,21 @@ class Article extends Model {
     }
 
     static async getArticle(id) {
-        const query = Article
+        const article = await Article
             .query()
             .with('user')
             .where('id', id)
+            .first()
 
+        if (!article) {
+            throw new ResourceNotFoundException();
+        }
 
-        return await query.firstOrFail();
+        return await article;
     }
 
     user() {
-        return this.belongsTo('App/Models/User');
+        return this.belongsTo('App/Models/User', 'userId', 'id');
     }
 
 }

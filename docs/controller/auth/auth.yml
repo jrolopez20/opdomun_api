@@ -22,3 +22,42 @@
         description: Login
       401:
         description: Invalid login attemp
+
+/register:
+  post:
+    tags:
+      - Auth
+    summary: Register client
+    description: Register user as client
+    produces:
+      - application/json
+    parameters:
+      - name: email
+        in: formData
+        required: true
+        type: string
+      - name: password
+        in: formData
+        required: true
+        type: string
+      - name: repassword
+        in: formData
+        required: true
+        type: string
+      - name: numid
+        in: formData
+        required: true
+        type: string
+      - name: fullname
+        in: formData
+        required: true
+        type: string
+      - name: telephone
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/User'

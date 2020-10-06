@@ -11,7 +11,7 @@ class Ec {
       var age = parseInt(actualyear) - parseInt(builtYear);
 
       const dicc = {
-        'Excelente': {
+        [Post.BUILD_STATUS_TYPES().EXCELENT]: {
           '1': 100,
           '5': 96.255,
           '10': 92.02,
@@ -28,7 +28,7 @@ class Ec {
           '65': 10.255,
           '70': 1.495
         },
-        'Muy buena': {
+        [Post.BUILD_STATUS_TYPES().VERY_GOOD]: {
           '1': 99.968,
           '5': 96.224,
           '10': 91.991,
@@ -45,7 +45,7 @@ class Ec {
           '65': 10.252,
           '70': 1.495
         },
-        'Buena': {
+        [Post.BUILD_STATUS_TYPES().GODD]: {
           '1': 97.48,
           '5': 93.83,
           '10': 89.7,
@@ -62,7 +62,7 @@ class Ec {
           '65': 10,
           '70': 1.46
         },
-        'Regular': {
+        [Post.BUILD_STATUS_TYPES().REGULAR]: {
           '1': 81.9,
           '5': 78.83,
           '10': 75.37,
@@ -79,7 +79,7 @@ class Ec {
           '65': 8.41,
           '70': 1.22
         },
-        'Malo': {
+        [Post.BUILD_STATUS_TYPES().BAD]: {
           '1': 66.8,
           '5': 64.3,
           '10': 61.48,
@@ -96,7 +96,7 @@ class Ec {
           '65': 6.85,
           '70': 1
         },
-        'Muy malo': {
+        [Post.BUILD_STATUS_TYPES().VERY_BAD]: {
           '1': 47.4,
           '5': 45.62,
           '10': 43.62,
@@ -113,7 +113,7 @@ class Ec {
           '65': 4.86,
           '70': 0.71
         },
-        'Demolición': {
+        [Post.BUILD_STATUS_TYPES().DEMOLITION]: {
           '1': 24.8,
           '5': 23.87,
           '10': 22.82,
@@ -147,9 +147,9 @@ class Ec {
       this.points = result * variable.influencia;
       await this.save();
 
-      let post = await Post.find(this.post_id);
-      post.built_year = builtYear;
-      post.build_status = buildStatus;
+      let post = await Post.find(this.postId);
+      post.builtYear = builtYear;
+      post.buildStatus = buildStatus;
       post.calculateOpdo();
     }
   }

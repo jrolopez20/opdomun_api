@@ -6,7 +6,7 @@ const Model = use('Model')
 class VarFlexibilidad extends Model {
 
     post() {
-        return this.belongsTo('App/Models/Post');
+        return this.belongsTo('App/Models/Post', 'postId', 'id');
     }
 
 }

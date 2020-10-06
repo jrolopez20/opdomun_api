@@ -6,19 +6,32 @@ const Model = use('Model')
 class Address extends Model {
 
     static get hidden() {
-        return ['created_at', 'updated_at'];
+        return ['createdAt', 'updatedAt'];
+    }
+
+    /**
+     * Coordinates getter
+     *
+     * @param coordinates
+     * @returns {{latitude: number, longitude: number}}
+     */
+    getCoordinates (coordinates) {
+        return {
+            longitude: coordinates.x,
+            latitude: coordinates.y
+        }
     }
 
     localidad() {
-        return this.belongsTo('App/Models/Localidad');
+        return this.belongsTo('App/Models/Localidad', 'localidadId', 'id');
     }
 
     post() {
-        return this.hasOne('App/Models/Post')
+        return this.hasOne('App/Models/Post', 'id', 'addressId')
     }
 
     user() {
-        return this.hasOne('App/Models/User')
+        return this.hasOne('App/Models/User', 'id', 'addressId')
     }
 }
 

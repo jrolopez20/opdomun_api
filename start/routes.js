@@ -37,15 +37,21 @@ Route.group(() => {
     Route.get('offices', 'OfficeController.index');
 
     // Images
-    Route.resource('posts.images', 'ImageController').apiOnly();
+    Route.resource('posts.images', 'ImageController')
+        .middleware(new Map([
+            [['store', 'update', 'destroy'], ['auth']]
+        ]))
+        .apiOnly();
 
     // Articles
-    Route.resource('articles', 'ArticleController').validator(new Map([
+    Route.resource('articles', 'ArticleController')
+        .validator(new Map([
             [['articles.store', 'articles.update'], ['SaveArticle']]
         ]))
         .middleware(new Map([
-            [['store', 'update', 'destroy'], ['auth']]
-        ])).apiOnly();
+            [['store', 'update', 'destroy'], ['auth', 'access:ADMIN']]
+        ]))
+        .apiOnly();
 
     // Subscriptions
     Route.resource('subscriptions', 'SubscriptionController')
@@ -56,15 +62,25 @@ Route.group(() => {
         .apiOnly();
 
     // Users
-    Route.resource('users', 'UserController').validator(new Map([
+    Route.resource('users', 'UserController')
+        .validator(new Map([
             [['users.store'], ['StoreUser']],
             [['users.update'], ['UpdateUser']]
         ]))
-        .middleware(['auth'])
+        .middleware(new Map([
+            [['index', 'store', 'update', 'destroy'], ['auth']],
+            [['index'], ['access:ADMIN,MANAGER,AGENT']]
+        ]))
         .apiOnly();
-    Route.post('users/:id/password', 'UserController.changePassword').middleware(['auth']);
-    Route.put('users/:id/toggle_enable', 'UserController.toggleEnable').middleware(['auth']);
-    Route.get('roles', 'UserController.roles').middleware(['auth']);
+
+    Route.post('users/:id/password', 'UserController.changePassword')
+        .middleware(['auth']);
+
+    Route.put('users/:id/toggle_enable', 'UserController.toggleEnable')
+        .middleware(['auth', 'access:ADMIN,MANAGER']);
+
+    Route.get('roles', 'UserController.roles')
+        .middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
 
     Route.resource('posts/:postId/owner', 'OwnerController')
         .middleware(new Map([
@@ -80,15 +96,22 @@ Route.group(() => {
             [['index', 'store', 'update', 'destroy'], ['auth']],
             [['show'], ['visitors_count']]
         ])).apiOnly();
-    Route.put('posts/:id/publish', 'PostController.publishPost').middleware(['auth']).validator('PublishPost');
-    Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice').middleware(['auth']).validator('PublishPost');
+
+    Route.put('posts/:id/publish', 'PostController.publishPost')
+        .middleware(['auth'])
+        .validator('PublishPost');
+
+    Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice')
+        .middleware(['auth', 'access:ADMIN,MANAGER,AGENT'])
+        .validator('PublishPost');
+
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth']);
     Route.get('published_posts', 'PostController.publishedPosts');
 
-    Route.get('appraisals', 'AppraisalController.index').middleware(['auth']);
+    Route.get('appraisals', 'AppraisalController.index').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
     Route.post('free_post', 'PostController.addFreePost')
         .middleware(['auth'])
-        .validator('StorePost');
+        .validator('StoreFreePost');
 
     Route.get('featured_posts', 'PostController.getFeaturedPosts');
     Route.get('recommended_posts', 'PostController.getRecommendedPosts');
@@ -134,6 +157,7 @@ Route.group(() => {
 // Authentication routes
 Route.group(() => {
     Route.post('login', 'AuthController.login').validator('Auth')
+    Route.post('register', 'AuthController.register').validator('StoreUser')
 }).prefix('api').namespace('Auth');
 
 

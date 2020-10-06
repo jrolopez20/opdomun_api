@@ -11,7 +11,7 @@ class Owner extends Model {
     }
 
     static get hidden() {
-        return ['created_at', 'updated_at'];
+        return ['createdAt', 'updatedAt'];
     }
 
     post() {
@@ -24,11 +24,9 @@ class Owner extends Model {
 
     static async addOwner({postId, userId, fullname, telephone, email}) {
         const owner = new Owner();
-        owner.post_id = postId;
-        owner.user_id = userId;
-        owner.fullname = fullname;
-        owner.telephone = telephone;
-        owner.email = email;
+        owner.fill({
+            postId, userId, fullname, telephone, email
+        })
         await owner.save();
 
         return owner;

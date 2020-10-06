@@ -1,5 +1,6 @@
 'use strict'
 const PostVariable = use('App/Models/PostVariable');
+const Plan = use('App/Models/Plan');
 const Database = use('Database')
 
 class Opdo {
@@ -12,7 +13,7 @@ class Opdo {
         Model.prototype.calculateOpdo = async function () {
             const postVariable = await PostVariable
                 .query()
-                .where('post_id', this.id)
+                .where('postId', this.id)
                 .fetch();
 
             const listVar = postVariable.toJSON();
@@ -23,7 +24,7 @@ class Opdo {
                 }
             }
             this.evi = parseFloat(this.area) * 12.33 * sum;
-            if (this.plan_id) {
+            if (this.planId) {
                 this.opdo = parseFloat(this.evi / parseFloat(this.price));
             }
             await this.save();
@@ -32,39 +33,42 @@ class Opdo {
 
         /**
          * Devuelve el promedio opdo a usar
-         * @param municipio
+         * @param municipioId
          * @returns {Promise<number>}
          */
-        Model.prototype.getAvgOpdo = async function (municipio, provincia) {
+        Model.prototype.getAvgOpdo = async function (municipioId, provinciaId) {
             let queryMunicipio = Database
                 .select('posts.opdo')
                 .from('posts')
+                .innerJoin('plans', 'plans.id', 'posts.plan_id')
                 .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('posts.plan_id', [1, 2, 3])
-                .andWhere('municipios.id', municipio)
+                .whereIn('plans.type', [Plan.TYPES().PREMIUM, Plan.TYPES().FREE])
+                .andWhere('municipios.id', municipioId)
                 .orderBy('opdo', 'DESC')
                 .limit(5);
 
             let queryProvincia = Database
                 .select('posts.opdo')
                 .from('posts')
+                .innerJoin('plans', 'plans.id', 'posts.plan_id')
                 .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
                 .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('posts.plan_id', [1, 2, 3])
-                .andWhere('municipios.provincia_id', provincia)
+                .whereIn('plans.type', [Plan.TYPES().PREMIUM, Plan.TYPES().FREE])
+                .andWhere('municipios.provincia_id', provinciaId)
                 .orderBy('opdo', 'DESC')
                 .limit(5);
 
             const queryCountry = Database
                 .select('posts.opdo')
                 .table('posts')
+                .innerJoin('plans', 'plans.id', 'posts.plan_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('posts.plan_id', [1, 2, 3])
+                .whereIn('plans.type', [Plan.TYPES().PREMIUM, Plan.TYPES().FREE])
                 .orderBy('opdo', 'desc')
                 .limit(5);
 
@@ -110,9 +114,9 @@ class Opdo {
         };
 
         /**
-         * Devuelve el promedio opdo de la provincia a partir de un rango
-         * @param provincia
-         * @returns {Promise<void>}
+         *
+         * @param value
+         * @returns {string|string|string}
          */
         Model.parsePrice = function (value) {
             if (value) {

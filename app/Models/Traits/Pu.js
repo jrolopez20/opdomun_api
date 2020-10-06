@@ -8,20 +8,9 @@ class Pu {
     const defaultOptions = {};
     const options = Object.assign(defaultOptions, customOptions);
 
-    // Model.prototype.calculatePu = async function (municipioId, influencia) {
-    //     const municipio = await Municipio.find(municipioId)
-    //
-    //     this.result = municipio.prosp_urbana;
-    //     this.points = this.result * influencia;
-    //     await this.save();
-    //
-    //     let post = await Post.find(this.post_id);
-    //     post.calculateOpdo()
-    // }
-
     Model.calculatePu = async function (postId) {
       const varPu = await Database
-        .select('post_variables.id', 'post_variables.post_id', 'variables.influencia')
+        .select('post_variables.id', 'post_variables.post_id as postId', 'variables.influencia')
         .from('post_variables')
         .innerJoin('variables', 'variables.id', 'post_variables.variable_id')
         .where({
@@ -37,7 +26,7 @@ class Pu {
           .where('id', postId)
           .first();
 
-      const prospUrbana = fetchPost.toJSON().address.localidad.municipio.prosp_urbana
+      const prospUrbana = fetchPost.toJSON().address.localidad.municipio.prospUrbana
 
       const postVariable = await Model.find(varPu.id);
       postVariable.result = prospUrbana;

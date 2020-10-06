@@ -27,7 +27,7 @@ class VariableMhController {
     async show({params, response}) {
         try {
             const postVariable = await PostVariable.find(params.id);
-            const menaje = await VarMenaje.findBy('post_id', postVariable.post_id);
+            const menaje = await VarMenaje.findBy('postId', postVariable.postId);
             let moviliario = null;
             let electrodomesticos = null;
 
@@ -35,15 +35,15 @@ class VariableMhController {
                 moviliario = [];
                 electrodomesticos = [];
 
-                const moviliarioResponse = await VarMenaje.listMoviliario(postVariable.post_id);
+                const moviliarioResponse = await VarMenaje.listMoviliario(postVariable.postId);
                 moviliarioResponse.map(item => moviliario.push(item.id));
 
-                const electrodomesticoResponse = await VarMenaje.listElectrodomesticos(postVariable.post_id)
+                const electrodomesticoResponse = await VarMenaje.listElectrodomesticos(postVariable.postId)
                 electrodomesticoResponse.map(item => electrodomesticos.push(item.id));
             }
 
             const mh = {
-                sold_with_menaje: menaje ? menaje.exist : false,
+                soldWithMenaje: menaje ? menaje.exist : false,
                 moviliario: moviliario,
                 electrodomesticos: electrodomesticos
             };
@@ -56,26 +56,26 @@ class VariableMhController {
 
     async update({params, request, response}) {
         try {
-            const soldWithMenaje = request.input("sold_with_menaje");
+            const soldWithMenaje = request.input("soldWithMenaje");
             const moviliario = request.input("moviliario");
             const electrodomesticos = request.input("electrodomesticos");
 
             let postVariable = await PostVariable.find(params.id);
 
-            let menaje = await VarMenaje.findBy('post_id', postVariable.post_id)
+            let menaje = await VarMenaje.findBy('postId', postVariable.postId)
             if (!menaje) {
                 menaje = new VarMenaje();
-                menaje.post_id = postVariable.post_id;
+                menaje.postId = postVariable.postId;
             }
             menaje.exist = soldWithMenaje;
             await menaje.save();
 
             await MenajeMoviliario.query()
-                .where('menaje_id', menaje.id)
+                .where('menajeId', menaje.id)
                 .delete();
 
             await MenajeElectrodomestico.query()
-                .where('menaje_id', menaje.id)
+                .where('menajeId', menaje.id)
                 .delete();
 
             const trx = await Database.beginTransaction();
@@ -84,8 +84,8 @@ class VariableMhController {
                 if (moviliario && moviliario.length > 0) {
                     const arrMoviliario = moviliario.map((item) => {
                         return {
-                            menaje_id: menaje.id,
-                            moviliario_id: item
+                            menajeId: menaje.id,
+                            moviliarioId: item
                         }
                     });
                     await MenajeMoviliario.createMany(arrMoviliario, trx);
@@ -94,8 +94,8 @@ class VariableMhController {
                 if (electrodomesticos && electrodomesticos.length > 0) {
                     const arrElectrodomestico = electrodomesticos.map((item) => {
                         return {
-                            menaje_id: menaje.id,
-                            electrodomestico_id: item
+                            menajeId: menaje.id,
+                            electrodomesticoId: item
                         }
                     });
                     await MenajeElectrodomestico.createMany(arrElectrodomestico, trx);

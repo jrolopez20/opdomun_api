@@ -10,12 +10,16 @@ class HomeType extends Model {
         return value;
     }
 
+    static get hidden(){
+        return ['createdAt', 'updatedAt']
+    }
+
     static async getHomeTypes() {
-        return await Database.select('id', 'title', 'value').from('home_types')
+        return await HomeType.all()
     }
 
     posts() {
-        return this.hasMany('App/Models/Post')
+        return this.hasMany('App/Models/Post', 'id', 'homeTypeId')
     }
 }
 

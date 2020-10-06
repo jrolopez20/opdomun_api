@@ -27,7 +27,11 @@ class PostVariable extends Model {
         const postVar = await Database
             .table('post_variables')
             .select(
-                'post_variables.*',
+                'post_variables.id',
+                'post_variables.post_id as postId',
+                'post_variables.variable_id as variableId',
+                'post_variables.result',
+                'post_variables.points',
                 'variables.title',
                 'posts.address',
                 'municipios.title as municipio',

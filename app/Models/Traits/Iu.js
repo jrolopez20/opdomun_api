@@ -25,7 +25,7 @@ class Iu {
       this.points = result * variable.influencia;
       await this.save();
 
-      let post = await Post.find(this.post_id);
+      let post = await Post.find(this.postId);
       post.calculateOpdo();
     }
   }

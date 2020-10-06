@@ -7,10 +7,7 @@ const Database = use('Database')
 class VarConforEficiencia extends Model {
   static getDicc() {
     return {
-      /*
-
-      * */
-      windows_category: [
+      windowsCategory: [
         {
           value: '0.8', text: 'Miami sencilla de madera'
         }, {
@@ -40,7 +37,7 @@ class VarConforEficiencia extends Model {
           value: '40', text: 'Menor de 2.50m'
         }
       ],
-      solar_protection: [
+      solarProtection: [
         {
           value: '100', text: '100%'
         }, {
@@ -57,14 +54,14 @@ class VarConforEficiencia extends Model {
   }
 
   static async getConfortAmbiental(postId) {
-    return await Database.select('*')
-      .from('var_confor_eficiencias')
-      .where('post_id', postId)
-      .first()
+    return await VarConforEficiencia
+        .query()
+        .where('postId', postId)
+        .first()
   }
 
   post() {
-    return this.belongsTo('App/Models/Post');
+    return this.belongsTo('App/Models/Post', 'postId', 'id');
   }
 
 }

@@ -30,12 +30,20 @@
         type: string
     responses:
       200:
-        description: Users
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/User'
+        headers:
+          $ref: '#/definitions/PaginationData'
 
   post:
     tags:
       - User
     description: Create a new user
+    security:
+        - bearerAuth: []
     produces:
       - application/json
     parameters:
@@ -59,9 +67,6 @@
       - name: role
         in: formData
         required: true
-        type: string
-      - name: address
-        in: formData
         type: string
       - name: office_id
         in: formData
@@ -223,4 +228,8 @@
       - application/json
     responses:
       200:
-        description: Roles
+        description: Success
+        schema:
+          type: array
+          items:
+            type: string

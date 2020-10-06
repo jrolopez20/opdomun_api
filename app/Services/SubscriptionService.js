@@ -16,31 +16,29 @@ class SubscriptionService {
     }
 
     static async addSubscription(request, user) {
-        const provinciaId = request.input('provincia_id');
-        const municipios = request.input('municipio').join(',');
-        const homeTypes = request.input('home_type').join(',');
-        const minPrice = request.input('min_price');
-        const maxPrice = request.input('max_price');
+        const {
+            provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms, telephone, fullname, email
+        } = request.all();
 
         const subscription = new Subscription();
 
-        subscription.user_id = user.id;
-        subscription.provincia_id = provinciaId;
-        subscription.min_price = minPrice;
-        subscription.max_price = maxPrice;
-        subscription.bedrooms = request.input('bedrooms');
-        subscription.bathrooms = request.input('bathrooms');
-        subscription.telephone = request.input('telephone');
-        subscription.fullname = request.input('fullname');
-        subscription.email = request.input('email');
-        subscription.municipio = municipios;
-        subscription.home_type = homeTypes;
+        subscription.userId = user.id;
+        subscription.provinciaId = provinciaId;
+        subscription.municipio = municipio.join(',');
+        subscription.homeType = homeType.join(',');
+        subscription.minPrice = minPrice;
+        subscription.maxPrice = maxPrice;
+        subscription.bedrooms = bedrooms;
+        subscription.bathrooms = bathrooms;
+        subscription.telephone = telephone;
+        subscription.fullname = fullname;
+        subscription.email = email;
 
         await subscription.save();
 
         // Get all posts that match to subscription attribute
         const posts = await Post.getMatchedPremiumPost({
-            provinciaId, municipios, minPrice, maxPrice, homeTypes
+            provinciaId, municipio, minPrice, maxPrice, homeType
         });
         for (const post of posts) {
             // Notify owner about matched subscriptions

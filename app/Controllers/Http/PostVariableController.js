@@ -11,7 +11,7 @@ class PostVariableController {
         const postVariables = await PostVariable
             .query()
             .with('variable')
-            .where('post_id', params.id)
+            .where('postId', params.id)
             .fetch();
 
         return response.json(postVariables);

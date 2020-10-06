@@ -31,7 +31,7 @@ class OwnerController {
         try {
             const owner = await Owner.addOwner({
                 postId: params.postId,
-                userId: request.input('user_id'),
+                userId: request.input('userId'),
                 fullname: request.input('fullname'),
                 telephone: request.input('telephone'),
                 email: request.input('email'),
@@ -71,7 +71,7 @@ class OwnerController {
     async update({params, request, response}) {
         try {
             const owner = await Owner.find(params.id);
-            owner.user_id = request.input('user_id');
+            owner.userId = request.input('userId');
             owner.fullname = request.input('fullname');
             owner.telephone = request.input('telephone');
             owner.email = request.input('email');

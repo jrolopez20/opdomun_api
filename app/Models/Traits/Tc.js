@@ -73,9 +73,9 @@ class Tc {
                     displayValue += item.label + ', '
                 });
                 items.push({
-                    post_variable_id: this.id,
-                    display_value: displayValue,
-                    title: 'Carpinteria'
+                    postVariableId: this.id,
+                    title: 'Carpinteria',
+                    displayValue
                 })
             }
 
@@ -86,9 +86,9 @@ class Tc {
                     displayValue += item.label + ', '
                 });
                 items.push({
-                    post_variable_id: this.id,
-                    display_value: displayValue,
-                    title: 'Cubierta'
+                    postVariableId: this.id,
+                    title: 'Cubierta',
+                    displayValue
                 })
             }
 
@@ -99,8 +99,8 @@ class Tc {
                     displayValue += item.label + ', '
                 });
                 items.push({
-                    post_variable_id: this.id,
-                    display_value: displayValue,
+                    postVariableId: this.id,
+                    displayValue,
                     title: 'Enchape'
                 })
             }
@@ -112,8 +112,8 @@ class Tc {
                     displayValue += item.label + ', '
                 });
                 items.push({
-                    post_variable_id: this.id,
-                    display_value: displayValue,
+                    postVariableId: this.id,
+                    displayValue,
                     title: 'Instalacion'
                 })
             }
@@ -125,8 +125,8 @@ class Tc {
                     displayValue += item.label + ', '
                 });
                 items.push({
-                    post_variable_id: this.id,
-                    display_value: displayValue,
+                    postVariableId: this.id,
+                    displayValue,
                     title: 'Muros'
                 })
             }
@@ -138,8 +138,8 @@ class Tc {
                     displayValue += item.label + ', '
                 });
                 items.push({
-                    post_variable_id: this.id,
-                    display_value: displayValue,
+                    postVariableId: this.id,
+                    displayValue,
                     title: 'Piso'
                 })
             }
@@ -154,7 +154,7 @@ class Tc {
             this.points = result * variable.influencia;
             await this.save();
 
-            let post = await Post.find(this.post_id);
+            let post = await Post.find(this.postId);
             post.calculateOpdo();
         }
     }

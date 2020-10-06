@@ -8,13 +8,13 @@ class Vs {
         const options = Object.assign(defaultOptions, customOptions)
 
         const DICC_VISUALES = {
-            hitos_arquitectonicos: 'Hitos arquitectónicos',
-            obras_artisticas_urbanas: 'Obras artísticas urbanas',
-            hitos_naturales: 'Hitos naturales',
-            paisaje_natural: 'Paisaje natural (Valle, Sierras, Montañas, Ríos, etc)',
-            paisaje_costero: 'Paisaje costero (Bahía, Playa, Costa, etc)',
-            trama_hurbana: 'Trama urbana',
-            paisaje_agricola: 'Paisaje agrícola'
+            hitosArquitectonicos: 'Hitos arquitectónicos',
+            obrasArtisticasUrbanas: 'Obras artísticas urbanas',
+            hitosNaturales: 'Hitos naturales',
+            paisajeNatural: 'Paisaje natural (Valle, Sierras, Montañas, Ríos, etc)',
+            paisajeCostero: 'Paisaje costero (Bahía, Playa, Costa, etc)',
+            tramaHurbana: 'Trama urbana',
+            paisajeAgricola: 'Paisaje agrícola'
         };
 
         Model.prototype.getVisualesValues = async function () {
@@ -39,7 +39,7 @@ class Vs {
             for(const visual in visuales) {
                 result += visuales[visual];
                 items.push({
-                    post_variable_id: this.id,
+                    postVariableId: this.id,
                     value: visuales[visual],
                     title: DICC_VISUALES[visual]
                 });
@@ -53,7 +53,7 @@ class Vs {
             this.result = result;
             this.points = result * variable.influencia;
             await this.save();
-            let post = await Post.find(this.post_id);
+            let post = await Post.find(this.postId);
             post.calculateOpdo();
         }
     }

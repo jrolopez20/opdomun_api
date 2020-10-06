@@ -22,7 +22,7 @@ class VariableTcController {
             const tc = {};
 
             estConstructivas.map(item => {
-                const labels = item.display_value.split(', ');
+                const labels = item.displayValue.split(', ');
                 const key = this.removeAccent(item.title.toLowerCase());
                 tc[key] = dicc[key].filter(obj => labels.find(label => label === obj.label ));
             });

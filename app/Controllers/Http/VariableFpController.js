@@ -12,10 +12,10 @@ class VariableFpController {
     async show({params, response}) {
         try {
             const postVar = await PostVariable.find(params.id);
-            const varFlex = await VarFlexibilidad.findBy('post_id', postVar.post_id)
+            const varFlex = await VarFlexibilidad.findBy('postId', postVar.postId)
 
             const fp = {
-                area_crecimiento: varFlex ? varFlex.area_crecimiento : null
+                areaCrecimiento: varFlex ? varFlex.areaCrecimiento : null
             };
 
             return response.json(fp);
@@ -27,14 +27,14 @@ class VariableFpController {
     async update({params, request, response}) {
         try {
             const postVariable = await PostVariable.find(params.id)
-            const areaCrecimiento = request.input("area_crecimiento");
+            const areaCrecimiento = request.input("areaCrecimiento");
 
-            let varFlex = await VarFlexibilidad.findBy('post_id', postVariable.post_id)
+            let varFlex = await VarFlexibilidad.findBy('postId', postVariable.postId)
             if (!varFlex) {
                 varFlex = new VarFlexibilidad()
-                varFlex.post_id = postVariable.post_id;
+                varFlex.postId = postVariable.postId;
             }
-            varFlex.area_crecimiento = areaCrecimiento;
+            varFlex.areaCrecimiento = areaCrecimiento;
 
             await varFlex.save();
             await postVariable.calculateFp(areaCrecimiento);

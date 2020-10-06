@@ -25,7 +25,7 @@ class User extends Model {
     }
 
     static get hidden() {
-        return ['password'];
+        return ['password', 'picture', 'createdAt', 'updatedAt', 'closedAt'];
     }
 
     static roles() {
@@ -41,13 +41,6 @@ class User extends Model {
         const query = User
             .query()
             .with('office.provincia')
-
-        // const query = Database
-        //     .from('users')
-        //     .select('users.id', 'users.email', 'users.role', 'users.fullname', 'users.numid', 'users.telephone',
-        //         'users.address', 'users.picture', 'users.created_at', 'users.closed_at', 'provincias.title as office_title')
-        //     .leftJoin('offices', 'offices.id', 'users.office_id')
-        //     .leftJoin('provincias', 'provincias.id', 'offices.provincia_id');
 
         if (role) {
             query.where({role})
@@ -88,27 +81,31 @@ class User extends Model {
      * @return {Object}
      */
     tokens() {
-        return this.hasMany('App/Models/Token')
+        return this.hasMany('App/Models/Token', 'id', 'userId')
+    }
+
+    address() {
+        return this.belongsTo('App/Models/Address', 'addressId', 'id');
     }
 
     posts() {
-        return this.hasMany('App/Models/Post')
+        return this.hasMany('App/Models/Post', 'id', 'userId')
     }
 
     owners() {
-        return this.hasMany('App/Models/Owner')
+        return this.hasMany('App/Models/Owner', 'id', 'userId')
     }
 
     articles() {
-        return this.hasMany('App/Models/Article')
+        return this.hasMany('App/Models/Article', 'id', 'userId')
     }
 
     subscriptions() {
-        return this.hasMany('App/Models/Subscription')
+        return this.hasMany('App/Models/Subscription', 'id', 'userId')
     }
 
     office() {
-        return this.belongsTo('App/Models/Office');
+        return this.belongsTo('App/Models/Office', 'officeId', 'id');
     }
 }
 

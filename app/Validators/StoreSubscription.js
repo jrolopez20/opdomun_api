@@ -3,11 +3,11 @@
 class StoreSubscription {
     get rules() {
         return {
-            provincia_id: 'required|number',
+            provinciaId: 'required|number',
             municipio: 'required|array',
-            home_type: 'required|array',
-            min_price: 'required|number',
-            max_price: 'required|number',
+            homeType: 'required|array',
+            minPrice: 'required|number',
+            maxPrice: 'required|number',
             bedrooms: 'required|number',
             bathrooms: 'required|number',
             fullname: 'required',
@@ -18,16 +18,16 @@ class StoreSubscription {
 
     get messages() {
         return {
-            'provincia_id.required': 'You must provide a provincia_id',
-            'provincia_id.number': 'The field provincia_id must be a number',
+            'provinciaId.required': 'You must provide a provinciaId',
+            'provinciaId.number': 'The field provinciaId must be a number',
             'municipio.required': 'You must provide at least one municipio',
             'municipio.array': 'The field municipio must be an array',
-            'home_type.required': 'You must provide at leat one home_type',
-            'home_type.array': 'The field home_type must be an array',
-            'min_price.required': 'The field min_price is required',
-            'min_price.number': 'The field min_price must be a number',
-            'max_price.required': 'The field max_price is required',
-            'max_price.number': 'The field max_price must be a number',
+            'homeType.required': 'You must provide at leat one homeType',
+            'homeType.array': 'The field homeType must be an array',
+            'minPrice.required': 'The field minPrice is required',
+            'minPrice.number': 'The field minPrice must be a number',
+            'maxPrice.required': 'The field maxPrice is required',
+            'maxPrice.number': 'The field maxPrice must be a number',
             'bedrooms.required': 'The field bedrooms is required',
             'bedrooms.number': 'The field bedrooms must be a number',
             'bathrooms.required': 'The field bathrooms is required',

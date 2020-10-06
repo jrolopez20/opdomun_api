@@ -7,7 +7,7 @@ class Fp {
     const options = Object.assign(defaultOptions, customOptions);
 
     Model.prototype.calculateFp = async function (areaCrecimiento) {
-      const post = await Post.find(this.post_id);
+      const post = await Post.find(this.postId);
       const result = parseFloat(areaCrecimiento) / parseFloat(post.area) * 100
 
       await this.load('variable');

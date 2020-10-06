@@ -4,7 +4,7 @@ definitions:
     properties:
       id:
         type: integer
-      office_id:
+      office:
         $ref: '#/definitions/Office'
       numid:
         type: string
@@ -21,10 +21,6 @@ definitions:
       address:
         type: string
       picture:
-        type: string
-      created_at:
-        type: string
-      updated_at:
         type: string
     required:
       - id

@@ -7,7 +7,7 @@ const Database = use('Database')
 class ServPublico extends Model {
 
     static async getServPublicos(postId) {
-        return await Database.select('s.id', 's.value', 's.display_value', 's.title')
+        return await Database.select('s.id', 's.value', 's.display_value as displayValue', 's.title')
             .from('serv_publicos as s')
             .innerJoin('post_variables as pv', 'pv.id', 's.post_variable_id')
             .where('pv.post_id', postId)
@@ -16,12 +16,12 @@ class ServPublico extends Model {
     static async removeServPublicos(postVariableId) {
         await ServPublico
             .query()
-            .where('post_variable_id', postVariableId)
+            .where('postVariableId', postVariableId)
             .delete()
     }
 
     postVariable() {
-        return this.belongsTo('App/Models/PostVariable');
+        return this.belongsTo('App/Models/PostVariable', 'postVariableId', 'id');
     }
 }
 

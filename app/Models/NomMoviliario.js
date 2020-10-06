@@ -6,7 +6,7 @@ const Model = use('Model')
 class NomMoviliario extends Model {
 
     menajeMoviliario() {
-        return this.hasMany('App/Models/MenajeMoviliario');
+        return this.hasMany('App/Models/MenajeMoviliario', 'id', 'moviliarioId');
     }
 
 }

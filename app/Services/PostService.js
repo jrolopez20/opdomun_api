@@ -5,53 +5,52 @@ const Image = use('App/Models/Image');
 const Variable = use('App/Models/Variable');
 const PostVariable = use('App/Models/PostVariable');
 const Database = use('Database');
-const HisPost = use('App/Models/HisPost')
 const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
 const NotificationService = use('App/Services/NotificationService')
 const AddressService = use('App/Services/AddressService')
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 
 class PostService {
 
     static async addPost(
         {
-            plan_id,
+            planId,
             address,
             price,
             area,
             bedrooms,
             bathrooms,
-            home_type_id,
+            homeTypeId,
             summary,
-            other_places,
-            active_months
+            otherPlaces,
+            activeMonths
         },
         author) {
         const addressObj = await AddressService.addAddress(address)
         let post = new Post();
 
         post = Object.assign(post, {
-            user_id: author.id,
-            address_id: addressObj.id,
-            plan_id,
+            userId: author.id,
+            addressId: addressObj.id,
+            planId,
             price,
             area,
             bedrooms,
             bathrooms,
-            home_type_id,
+            homeTypeId,
             summary
         });
 
         await post.save();
-
-        if (post.plan_id) {
+        if (planId && activeMonths) {
             // Add expiration date to post
-            await this.setExpirationDate(post.id, active_months);
+            await this.setExpirationDate(post.id, activeMonths);
         }
 
         await this.initPostVariable(post);
-        await this.setAu(post, other_places);
+        await this.setAu(post, otherPlaces);
 
         post = await post.calculateOpdo();
         return post;
@@ -64,9 +63,9 @@ class PostService {
             area,
             bedrooms,
             bathrooms,
-            home_type_id,
+            homeTypeId,
             summary,
-            other_places
+            otherPlaces
         },
         user
     ) {
@@ -76,15 +75,15 @@ class PostService {
 
         let post = new Post();
         post = Object.assign(post, {
-            plan_id: freePlan.id,
-            address_id: addressObj.id,
+            planId: freePlan.id,
+            addressId: addressObj.id,
             price,
             area,
             bedrooms,
             bathrooms,
-            home_type_id,
+            homeTypeId,
             summary,
-            published_at: new Date()
+            publishedAt: new Date()
         });
 
         await post.save();
@@ -101,8 +100,8 @@ class PostService {
         });
 
         await this.initPostVariable(post);
-        if (other_places) {
-            await this.setAu(post, other_places);
+        if (otherPlaces) {
+            await this.setAu(post, otherPlaces);
         }
 
         post = await post.calculateOpdo();
@@ -122,18 +121,18 @@ class PostService {
         const area = request.input('area');
         const bedrooms = request.input('bedrooms');
         const bathrooms = request.input('bathrooms');
-        const homeTypeId = request.input('home_type_id');
+        const homeTypeId = request.input('homeTypeId');
         const summary = request.input('summary');
         const sold = request.input('sold');
         const inputOwner = request.input('owner');
-        const otherPlaces = request.input('other_places');
+        const otherPlaces = request.input('otherPlaces');
 
         post.address = address;
         post.price = price;
         post.area = area;
         post.bedrooms = bedrooms;
         post.bathrooms = bathrooms;
-        post.home_type_id = homeTypeId;
+        post.homeTypeId = homeTypeId;
         post.summary = summary;
         post.sold = sold;
 
@@ -154,7 +153,8 @@ class PostService {
         let post = await Post.find(postId);
         if (post) {
             await Image.removeAllImgOnDrive(post.id);
-            return await post.delete();
+            // This destroy the address and automatically destroy in cascade the post
+            return await AddressService.destroyAddress(post.addressId)
         } else {
             throw new Error('Post not found');
         }
@@ -167,7 +167,7 @@ class PostService {
 
         for (let variable of variables) {
             postVariables.push({
-                variable_id: variable.id
+                variableId: variable.id
             });
         }
         await post
@@ -181,7 +181,7 @@ class PostService {
     static async setAu(post, otherPlaces) {
         await PostPlace
             .query()
-            .where('post_id', post.id)
+            .where('postId', post.id)
             .delete();
 
         await post
@@ -198,17 +198,12 @@ class PostService {
             throw new Error('Post not found');
         }
 
-        const hisPost = new HisPost();
-        hisPost.post_id = postId;
-        hisPost.action = 1;
-        await hisPost.save();
+        post.publishedAt = new Date();
 
-        post.published_at = new Date();
-
-        if (!post.plan_id) {
+        if (!post.planId) {
             // Case when is an appraisal set plan to premium
             const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
-            post.plan_id = premiumPlan.id;
+            post.planId = premiumPlan.id;
             const activeMonths = 3;
             await this.setExpirationDate(post.id, activeMonths);
         }
@@ -236,7 +231,7 @@ class PostService {
             throw new Error('Post not found');
         }
 
-        if (!post.plan_id) {
+        if (!post.planId) {
             await post.calculatePrice();
         }
 
@@ -246,10 +241,11 @@ class PostService {
     static async markAsSold(postId) {
         let post = await Post.find(postId);
         if (!post) {
-            throw new Error('Post not found');
+            throw new ResourceNotFoundException();
         }
 
         post.sold = true;
+        post.soldAt = new Date();;
         await post.save();
 
         return await Post.getPost(postId);

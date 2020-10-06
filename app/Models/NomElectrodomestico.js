@@ -6,7 +6,7 @@ const Model = use('Model')
 class NomElectrodomestico extends Model {
 
     menajeElectrodomestico() {
-        return this.hasMany('App/Models/MenajeElectrodomestico');
+        return this.hasMany('App/Models/MenajeElectrodomestico', 'id', 'electrodomesticoId');
     }
 }
 

@@ -5,17 +5,17 @@ definitions:
       id:
         type: integer
         readOnly: true
-      localidad_id:
+      localidad:
         $ref: '#/definitions/Localidad'
       street:
         type: string
       location:
-        type: string
+        $ref: '#/definitions/Point'
       created_at:
         type: string
       updated_at:
         type: string
     required:
       - id
-      - localidad_id
+      - localidad
       - street

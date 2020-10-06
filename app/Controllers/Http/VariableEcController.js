@@ -11,11 +11,11 @@ class VariableEcController {
     async show({params, response}) {
         try {
             const postVar = await PostVariable.find(params.id);
-            const post = await Post.find(postVar.post_id);
+            const post = await Post.find(postVar.postId);
 
             const ec = {
-                built_year: post.built_year,
-                build_status: post.build_status,
+                builtYear: post.builtYear,
+                buildStatus: post.buildStatus,
             };
 
             return response.json(ec);
@@ -28,8 +28,8 @@ class VariableEcController {
         try {
             const postVariable = await PostVariable.find(params.id)
             await postVariable.calculateEc(
-                request.input('built_year'),
-                request.input('build_status')
+                request.input('builtYear'),
+                request.input('buildStatus')
             );
 
             return response.json(postVariable);

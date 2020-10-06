@@ -10,7 +10,7 @@ class Variable extends Model {
     }
 
     postVariables() {
-        return this.hasMany('App/Models/PostVariable')
+        return this.hasMany('App/Models/PostVariable', 'id', 'variableId')
     }
 }
 

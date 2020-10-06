@@ -15,7 +15,7 @@ class PostVisitorsCount {
     async handle({params, response, session}, next) {
         try {
             const post = await Post.find(params.id)
-            if (post && post.published_at) {
+            if (post && post.publishedAt) {
                 await PostVisit.inrementVisit(params.id);
             }
             // call next to advance the request

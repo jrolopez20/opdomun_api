@@ -1,16 +1,14 @@
 'use strict'
 
 const Article = use('App/Models/Article');
-const Database = use('Database');
 const Drive = use('Drive');
 const Helpers = use('Helpers');
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
 
 class ArticleService {
 
-    static async addArticle(request, authorId) {
-        const title = request.input("title");
-        const summary = request.input("summary");
-        const text = request.input("text");
+    static async addArticle(request, userId) {
+        const {title, summary, text} = request.all();
 
         const articlePicture = request.file('picture', {
             types: ['image'],
@@ -19,14 +17,16 @@ class ArticleService {
         });
 
         let article = new Article();
-        article.user_id = authorId;
-        article.title = title;
-        article.summary = summary;
-        article.text = text;
+        article.fill({
+            userId,
+            title,
+            summary,
+            text
+        })
 
         if (articlePicture) {
             const pictureName = new Date().getTime() + '.jpg';
-            await articlePicture.move(Helpers.publicPath('images/article_pictures'), {
+            await articlePicture.move(Helpers.publicPath(Article.articlePictureFolder), {
                 name: pictureName
             });
             if (!articlePicture.moved()) {
@@ -34,15 +34,13 @@ class ArticleService {
             }
             article.picture = pictureName;
         }
-
         await article.save();
-        return article;
+
+        return await Article.find(article.id);
     }
 
     static async setArticle(articleId, request) {
-        const title = request.input("title");
-        const summary = request.input("summary");
-        const text = request.input("text");
+        const {title, summary, text} = request.all();
 
         const articlePicture = request.file('picture', {
             types: ['image'],
@@ -52,23 +50,23 @@ class ArticleService {
 
         let article = await Article.find(articleId);
         if (!article) {
-            throw new Error('Article not found');
+            throw new ResourceNotFoundException()
         }
-        article.title = title;
-        article.summary = summary;
-        article.text = text;
+        article.title = title
+        article.summary = summary
+        article.text = text
 
         if (articlePicture) {
             const pictureName = new Date().getTime() + '.jpg';
 
             if (article.picture) {
-                const actualPicturePath = Helpers.publicPath('images/article_pictures/') + article.picture;
+                const actualPicturePath = Helpers.publicPath(Article.articlePictureFolder) + article.picture;
                 const exists = await Drive.exists(actualPicturePath);
                 if (exists) {
                     await Drive.delete(actualPicturePath)
                 }
             }
-            await articlePicture.move(Helpers.publicPath('images/article_pictures'), {
+            await articlePicture.move(Helpers.publicPath(Article.articlePictureFolder), {
                 name: pictureName
             });
             if (!articlePicture.moved()) {
@@ -77,21 +75,22 @@ class ArticleService {
             }
             article.picture = pictureName
         }
-
         await article.save();
-        return article;
+
+        return Article.find(article.id);
     }
 
     static async destroyArticle(articleId) {
-        let article = await Article.find(articleId);
-        if (article) {
+        try {
+            let article = await Article.findOrFail(articleId);
             if (article.picture) {
-                const picPath = Helpers.publicPath('images/user_pictures/') + article.picture;
+                const picPath = Helpers.publicPath(Article.articlePictureFolder) + article.picture;
                 await Drive.delete(picPath)
             }
             return await article.delete();
-        } else {
-            throw new Error('Article not found');
+        }
+        catch (e) {
+            throw new ResourceNotFoundException()
         }
     }
 

@@ -2,16 +2,15 @@
 
 use('App/Validators/AddressValidator');
 
-class StorePost {
+class StoreFreePost {
     get rules() {
         return {
             address: 'required|object|address',
-            price: 'number',
+            price: 'required|number',
             area: 'required|number',
             bedrooms: 'required|number',
             bathrooms: 'required|number',
             homeTypeId: 'required|number',
-            planId: 'number'
         }
     }
 
@@ -19,6 +18,7 @@ class StorePost {
         return {
             'address.required': 'You must provide address info',
             'address.object': 'The field address must be a valid address object',
+            'price.required': 'You must provide a price.',
             'price.number': 'The field price must be a number',
             'area.required': 'You must provide an area.',
             'area.number': 'The field area must be a number',
@@ -28,8 +28,6 @@ class StorePost {
             'bathrooms.number': 'The field bathrooms must be a number',
             'homeTypeId.required': 'You must provide a homeTypeId.',
             'homeTypeId.number': 'The field homeTypeId must be a number',
-            'builtYear.number': 'The field builtYear must be a number',
-            'planId.number': 'The field planId must be a number'
         }
     }
 
@@ -38,4 +36,4 @@ class StorePost {
     }
 }
 
-module.exports = StorePost;
+module.exports = StoreFreePost;

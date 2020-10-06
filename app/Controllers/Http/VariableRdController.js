@@ -15,8 +15,8 @@ class VariableRdController {
             const riesgo = await postVar.getRelated('riesgo')
 
             const rd = {
-                risk_zone: riesgo ? riesgo.value : null,
-                risk_type: riesgo ? riesgo.type : null
+                riskZone: riesgo ? riesgo.value : null,
+                riskType: riesgo ? riesgo.type : null
             };
 
             return response.json(rd);
@@ -28,8 +28,8 @@ class VariableRdController {
     async update({params, request, response}) {
         try {
             const postVariable = await PostVariable.find(params.id)
-            const riskZone = request.input("risk_zone");
-            const riskType = request.input("risk_type");
+            const riskZone = request.input("riskZone");
+            const riskType = request.input("riskType");
             let tcResult = 0;
             let ecResult = 0;
 

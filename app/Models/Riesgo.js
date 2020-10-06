@@ -27,7 +27,7 @@ class Riesgo extends Model {
   }
 
   postVariable() {
-    return this.belongsTo('App/Models/PostVariable');
+    return this.belongsTo('App/Models/PostVariable', 'postVariableId', 'id');
   }
 
 }

@@ -8,8 +8,8 @@ class StatisticsController {
         try {
             const services = await StatisticsService.getServices(
                 auth.user,
-                request.input("start_at"),
-                request.input("end_at")
+                request.input("startAt"),
+                request.input("endAt")
             );
             return response.json(services);
         } catch (e) {
@@ -20,8 +20,8 @@ class StatisticsController {
     async servicesByOffice({request, response}) {
         try {
             const services = await StatisticsService.servicesByOffice(
-                request.input("start_at"),
-                request.input("end_at")
+                request.input("startAt"),
+                request.input("endAt")
             );
             return response.json(services);
         } catch (e) {
@@ -32,9 +32,9 @@ class StatisticsController {
     async servicesByUser({request, response}) {
         try {
             const services = await StatisticsService.servicesByUser(
-                request.input("start_at"),
-                request.input("end_at"),
-                request.input("office_id")
+                request.input("startAt"),
+                request.input("endAt"),
+                request.input("officeId")
             );
             return response.json(services);
         } catch (e) {

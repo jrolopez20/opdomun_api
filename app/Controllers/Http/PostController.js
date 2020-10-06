@@ -22,22 +22,15 @@ class PostController {
      * @param {Response} ctx.response
      */
     async index({request, response, auth}) {
-        const plan_id = request.input('plan_id');
-        const page = request.input('page');
-        const limit = request.input('limit');
+        const {
+            planId, page, limit, provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId, myPosts
+        } = request.all();
+
         const filter = {
-            provincia_id: request.input('provincia_id'),
-            municipio_id: request.input('municipio_id'),
-            localidad_id: request.input('localidad_id'),
-            minPrice: request.input('minPrice'),
-            maxPrice: request.input('maxPrice'),
-            bedrooms: request.input('bedrooms'),
-            bathrooms: request.input('bathrooms'),
-            home_type_id: request.input('home_type_id'),
-            my_posts: request.input('my_posts')
+            provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId, myPosts
         };
 
-        const result = await Post.getPosts(plan_id, page, limit, filter, auth.user);
+        const result = await Post.getPosts(planId, page, limit, filter, auth.user);
         return PaginatedResponse.parse(response, result)
     }
 
@@ -50,21 +43,15 @@ class PostController {
      * @param {Response} ctx.response
      */
     async publishedPosts({request, response}) {
-        const plan_id = request.input('plan_id');
-        const page = request.input('page');
-        const limit = request.input('limit');
+        const {
+            planId, page, limit, provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId
+        } = request.all();
+
         const filter = {
-            provincia_id: request.input('provincia_id'),
-            municipio_id: request.input('municipio_id'),
-            localidad_id: request.input('localidad_id'),
-            minPrice: request.input('minPrice'),
-            maxPrice: request.input('maxPrice'),
-            bedrooms: request.input('bedrooms'),
-            bathrooms: request.input('bathrooms'),
-            home_type_id: request.input('home_type_id')
+            provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId
         };
 
-        const result = await Post.getPublishedPosts(plan_id, page, limit, filter);
+        const result = await Post.getPublishedPosts(planId, page, limit, filter);
         return PaginatedResponse.parse(response, result)
     }
 
@@ -79,29 +66,29 @@ class PostController {
     async store({request, response, auth}) {
         try {
             const {
-                plan_id,
+                planId,
                 address,
                 price,
                 area,
                 bedrooms,
                 bathrooms,
-                home_type_id,
+                homeTypeId,
                 summary,
-                other_places,
-                active_months
+                otherPlaces,
+                activeMonths
             } = request.all();
 
             const post = await PostService.addPost({
-                plan_id,
+                planId,
                 address,
                 price,
                 area,
                 bedrooms,
                 bathrooms,
-                home_type_id,
+                homeTypeId,
                 summary,
-                other_places,
-                active_months
+                otherPlaces,
+                activeMonths
             }, auth.user);
 
             return response.status(201).json(post)
@@ -196,22 +183,18 @@ class PostController {
     }
 
     async markAsSold({params, response}) {
-        try {
-            const post = await PostService.markAsSold(params.id);
-            return response.json(post);
-        } catch (e) {
-            return response.status(400).json({message: e.message})
-        }
+        const post = await PostService.markAsSold(params.id);
+        return response.json(post);
     }
 
     async addFreePost({request, response, auth}) {
         try {
             const {
-                address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
+                address, price, area, bedrooms, bathrooms, homeTypeId, summary, otherPlaces
             } = request.all();
 
             const post = await PostService.addFreePost({
-                address, price, area, bedrooms, bathrooms, home_type_id, summary, other_places
+                address, price, area, bedrooms, bathrooms, homeTypeId, summary, otherPlaces
             }, auth.user);
 
             return response.status(201).json(post)

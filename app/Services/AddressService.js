@@ -4,30 +4,30 @@ const Address = use('App/Models/Address');
 
 class AddressService {
 
-    static async addAddress({localidad_id, street, location}) {
+    static async addAddress({localidadId, description, coordinates}) {
         let address = new Address();
         address = Object.assign(address, {
-            localidad_id,
-            street,
-            location
+            localidadId,
+            description,
+            coordinates
         });
         await address.save();
         return address;
     }
 
-    static async setAddress(address_id, {localidad_id, street, location}) {
-        let address = await Address.find(address_id);
+    static async setAddress(addressId, {localidadId, description, coordinates}) {
+        let address = await Address.find(addressId);
         address = Object.assign(address, {
-            localidad_id,
-            street,
-            location
+            localidadId,
+            description,
+            coordinates
         });
         await address.save();
         return address;
     }
 
-    static async destroyAddress(address_id) {
-        const address = await Address.find(address_id);
+    static async destroyAddress(addressId) {
+        const address = await Address.find(addressId);
         if (address) {
             return await address.delete();
         } else {

@@ -22,7 +22,7 @@ class ImageService {
                     await postPictures.moveAll(publicPath, (file) => {
                         const picName = `${new Date().getTime()}_${file.clientName}`;
                         pictures.push({
-                            'post_id': postId,
+                            postId,
                             'url': picName,
                             'default': null
                         });
@@ -47,7 +47,7 @@ class ImageService {
                     })
 
                     pictures.push({
-                        'post_id': postId,
+                        postId,
                         'url': picName
                     });
 
@@ -81,7 +81,7 @@ class ImageService {
         // Deactivate the current image active
         await Image.query()
             .where({
-                'post_id': postId,
+                postId,
                 'default': 1
             })
             .update({'default': null});

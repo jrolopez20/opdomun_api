@@ -1,6 +1,7 @@
 'use strict'
 
 const User = use('App/Models/User');
+const UserService = use('App/Services/UserService');
 
 class AuthController {
 
@@ -11,13 +12,16 @@ class AuthController {
             if (await auth.attempt(email, password)) {
                 const user = await User.findBy('email', email);
                 const accessToken = await auth.generate(user);
-                return response.json({'access_token': accessToken})
+                return response.json({...accessToken})
             }
-
-            return response.status(401).json({message: 'Invalid login attemp!'})
         } catch (e) {
-            return response.status(401).json({message: e.message})
+            return response.status(400).json({message: 'Invalid login attemp!'})
         }
+    }
+
+    async register({request, response}) {
+        const user = await UserService.addUser(request);
+        return response.status(201).json(user)
     }
 
 }

@@ -5,11 +5,11 @@ definitions:
     properties:
       id:
         type: integer
-      user_id:
+      user:
         $ref: '#/definitions/User'
-      address_id:
+      address:
         $ref: '#/definitions/Address'
-      home_type_id:
+      homeType:
         $ref: '#/definitions/HomeType'
       plan:
         $ref: '#/definitions/Plan'
@@ -17,8 +17,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Image'
-      address:
-        type: string
       price:
         type: number
       area:
@@ -33,25 +31,26 @@ definitions:
         type: number
       opdo:
         type: number
-      built_year:
+      builtYear:
         type: integer
-      built_status:
+      builtStatus:
         type: string
       sold:
         type: integer
-      created_at:
+      soldAt:
         type: string
-      updated_at:
+      createdAt:
         type: string
-      published_at:
+      updatedAt:
         type: string
-      closed_at:
+      publisheAt:
+        type: string
+      closedAt:
         type: string
     required:
       - id
-      - user_id
-      - municipio_id
-      - home_type_id
+      - user
+      - homeType
       - address
       - area
       - bedrooms

@@ -17,13 +17,13 @@ class Subscription extends Model {
 
         if (filter) {
             if (filter.provincia) {
-                query.andWhere('provincia_id', filter.provincia)
+                query.andWhere('provinciaId', filter.provincia)
             }
             if (filter.municipio) {
-                query.whereRaw(`${filter.municipio} = ANY (string_to_array(municipio))`);
+                query.whereRaw(`${filter.municipio} = ANY (regexp_split_to_array(municipio, ',')::int[])`);
             }
             if (filter.homeType) {
-                query.whereRaw(`${filter.homeType} = ANY (string_to_array(home_type))`);
+                query.whereRaw(`${filter.homeType} = ANY (regexp_split_to_array(home_type, ',')::int[])`);
             }
             if (filter.bedrooms) {
                 query.andWhere('bedrooms', filter.bedrooms);
@@ -32,10 +32,10 @@ class Subscription extends Model {
                 query.andWhere('bathrooms', filter.bathrooms);
             }
             if (filter.minPrice) {
-                query.andWhere('min_price', '>=', filter.minPrice);
+                query.andWhere('minPrice', '>=', filter.minPrice);
             }
             if (filter.maxPrice) {
-                query.andWhere('max_price', '<=', filter.maxPrice);
+                query.andWhere('maxPrice', '<=', filter.maxPrice);
             }
         }
 
@@ -47,15 +47,16 @@ class Subscription extends Model {
         const subscriptions = Database
             .from('subscriptions')
             .select(
-                'id', 'email', 'telephone', 'fullname', 'subscriptions.municipio'
-            );
+                'subscriptions.id', 'users.email', 'users.telephone', 'users.fullname', 'subscriptions.municipio'
+            )
+            .innerJoin('users', 'users.id', 'subscriptions.user_id');
 
         if (provinciaId) {
             subscriptions.where('provincia_id', provinciaId);
         }
 
         if (municipioId) {
-            subscriptions.whereRaw(`${municipioId} = ANY (string_to_array(municipio))`);
+            subscriptions.whereRaw(`${municipioId} = ANY (regexp_split_to_array(municipio, ',')::int[])`);
         }
 
         if (price) {
@@ -64,7 +65,7 @@ class Subscription extends Model {
         }
 
         if (homeType) {
-            subscriptions.whereRaw(`${homeType} = ANY (string_to_array(home_type))`);
+            subscriptions.whereRaw(`${homeType} = ANY (regexp_split_to_array(home_type, ',')::int[])`);
         }
 
         return await subscriptions;
@@ -84,10 +85,10 @@ class Subscription extends Model {
 
         const homeTypes = await Database
             .from('home_types')
-            .whereRaw(`id in (${subscription.home_type})`);
+            .whereRaw(`id in (${subscription.homeType})`);
 
         subscription.municipios = municipios
-        subscription.home_types = homeTypes
+        subscription.homeTypes = homeTypes
 
         return subscription;
     }
@@ -95,19 +96,19 @@ class Subscription extends Model {
     static async getTotalSubscriptions(startAt, endAt) {
         const query = Subscription
             .query()
-            .where('created_at', '>=', startAt)
-            .where('created_at', '<=', endAt)
+            .where('createdAt', '>=', startAt)
+            .where('createdAt', '<=', endAt)
             .getCount()
-
-        return await query;
+        const r = await query
+        return r || 0;
     }
 
     provincia() {
-        return this.belongsTo('App/Models/Provincia');
+        return this.belongsTo('App/Models/Provincia', 'provinciaId', 'id');
     }
 
     user() {
-        return this.belongsTo('App/Models/User');
+        return this.belongsTo('App/Models/User', 'userId', 'id');
     }
 }
 

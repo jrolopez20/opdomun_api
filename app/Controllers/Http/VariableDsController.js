@@ -19,7 +19,7 @@ class VariableDsController {
             servPublicos.map(item => {
                 for(const service in dicc){
                     if(item.title === dicc[service].title){
-                        tc[service] = dicc[service].options.find(o => o.label === item.display_value)
+                        tc[service] = dicc[service].options.find(o => o.label === item.displayValue)
                     }
                 }
             });

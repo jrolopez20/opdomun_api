@@ -16,7 +16,7 @@ class EnvElement extends Model {
     static async removeEnvElement(postVariableId) {
         await EnvElement
             .query()
-            .where('post_variable_id', postVariableId)
+            .where('postVariableId', postVariableId)
             .delete()
     }
 

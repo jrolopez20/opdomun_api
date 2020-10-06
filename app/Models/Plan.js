@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Plan extends Model {
     static get hidden() {
-        return ['created_at', 'updated_at'];
+        return ['createdAt', 'updatedAt'];
     }
 
     static TYPES() {
@@ -16,7 +16,7 @@ class Plan extends Model {
     }
 
     posts() {
-        return this.hasMany('App/Models/Post')
+        return this.hasMany('App/Models/Post', 'id', 'planId')
     }
 }
 

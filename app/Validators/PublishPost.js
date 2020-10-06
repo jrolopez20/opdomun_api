@@ -9,7 +9,7 @@ const postCompleteFn = async (data, field, message, args, get) => {
     const postVariables = await PostVariable
         .query()
         .with('variable')
-        .where('post_id', postId)
+        .where('postId', postId)
         .fetch();
 
     for (let postVar of postVariables.toJSON()) {
@@ -24,7 +24,7 @@ const postRequirePictureFn = async (data, field, message, args, get) => {
     const [postId] = args;
     const image = await Image
         .query()
-        .where('post_id', postId)
+        .where('postId', postId)
         .andWhere('default', 1)
         .first();
 
@@ -39,14 +39,14 @@ class PublishPost {
     get rules() {
         const postId = this.ctx.params.id;
         return {
-            post_id: `complete:${postId}|picture_required:${postId}`
+            postId: `complete:${postId}|pictureRequired:${postId}`
         }
     }
 
     get messages() {
         return {
-            'post_id.complete': 'Debe completar todos los indicadores.',
-            'post_id.picture_required': 'El anuncio debe tener una imagen de portada para ser publicado.'
+            'postId.complete': 'Debe completar todos los indicadores.',
+            'postId.pictureRequired': 'El anuncio debe tener una imagen de portada para ser publicado.'
         }
     }
 }

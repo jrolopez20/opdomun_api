@@ -8,16 +8,16 @@
     parameters:
       - $ref: '#/parameters/page'
       - $ref: '#/parameters/limit'
-      - name: plan_id
+      - name: planId
         in: query
         type: integer
-      - name: provincia_id
+      - name: provinciaId
         in: query
         type: integer
-      - name: municipio_id
+      - name: municipioId
         in: query
         type: integer
-      - name: home_type_id
+      - name: homeTypeId
         in: query
         type: integer
       - name: minPrice
@@ -54,16 +54,16 @@
     parameters:
       - $ref: '#/parameters/page'
       - $ref: '#/parameters/limit'
-      - name: plan_id
+      - name: planId
         in: query
         type: integer
-      - name: provincia_id
+      - name: provinciaId
         in: query
         type: integer
-      - name: municipio_id
+      - name: municipioId
         in: query
         type: integer
-      - name: home_type_id
+      - name: homeTypeId
         in: query
         type: integer
       - name: minPrice
@@ -78,7 +78,7 @@
       - name: bathrooms
         in: query
         type: integer
-      - name: my_posts
+      - name: myPosts
         in: query
         type: boolean
     responses:
@@ -108,13 +108,13 @@
         schema:
           type: object
           properties:
-            localidad_id:
+            localidadId:
               required: true
               type: string
-            street:
+            description:
               type: string
               required: true
-            location:
+            coordinates:
               type: string
       - name: price
         in: inForm
@@ -132,7 +132,7 @@
         in: inForm
         required: true
         type: integer
-      - name: home_type_id
+      - name: homeTypId
         in: inForm
         required: true
         type: integer
@@ -140,7 +140,7 @@
         in: inForm
         required: true
         type: string
-      - name: other_places
+      - name: otherPlaces
         required: true
         in: body
         schema:
