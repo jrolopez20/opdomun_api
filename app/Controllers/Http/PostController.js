@@ -105,9 +105,9 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async show({params, request, response}) {
+    async show({params, request, response, auth}) {
         try {
-            const post = await Post.getPost(params.id);
+            const post = await Post.getPost(params.id, auth);
             return response.json(post);
         } catch (e) {
             throw new ResourceNotFoundException();
@@ -152,11 +152,11 @@ class PostController {
         }
     }
 
-    async getFeaturedPosts({request, response}) {
+    async getFeaturedPosts({request, response, auth}) {
         try {
             const page = request.input('page');
             const limit = request.input('limit');
-            const posts = await Post.getFeaturedPosts(page, limit);
+            const posts = await Post.getFeaturedPosts(page, limit, auth);
             return response.json(posts);
         } catch (e) {
             return response.status(400).json({message: e.message})

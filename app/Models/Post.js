@@ -68,8 +68,8 @@ class Post extends Model {
         }
     }
 
-    static async getPost(id) {
-        const post = await Post
+    static async getPost(id, auth) {
+        let post = await Post
             .query()
             .with('managedBy')
             .with('address.localidad.municipio.provincia')
@@ -83,7 +83,13 @@ class Post extends Model {
             .where('id', id)
             .firstOrFail();
 
-        return post;
+        try {
+            const user = await auth.getUser();
+            post = CurrencyService.formatPostPrice(post.toJSON(), user)
+        }
+        finally {
+            return post
+        }
     }
 
     static async getBestPosts() {
@@ -110,7 +116,7 @@ class Post extends Model {
         return posts;
     }
 
-    static async getFeaturedPosts(page = 1, limit = 3) {
+    static async getFeaturedPosts(page = 1, limit = 3, auth) {
         const query = Post
             .query()
             .with('managedBy')
@@ -124,8 +130,13 @@ class Post extends Model {
             .where('posts.sold', 0)
             .orderBy('posts.opdo', 'desc');
 
-        const posts = await query.paginate(page, limit);
-        return posts;
+        const posts = (await query.paginate(page, limit)).toJSON();
+
+        try {
+            posts.data.map(post => CurrencyService.formatPostPrice(post, user))
+        } finally {
+            return posts
+        }
     }
 
     static async getPosts(planId = null, page = 1, limit = 20, filter, user) {
@@ -214,8 +225,13 @@ class Post extends Model {
             );
         }
 
-        const posts = await query.paginate(page, limit);
-        return posts.toJSON();
+        const posts = (await query.paginate(page, limit)).toJSON();
+
+        try {
+            posts.data.map(post => CurrencyService.formatPostPrice(post, user))
+        } finally {
+            return posts
+        }
     }
 
     static async getPublishedPosts(planId = null, page = 1, limit = 20, filter, auth) {
