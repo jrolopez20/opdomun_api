@@ -42,7 +42,7 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async publishedPosts({request, response}) {
+    async publishedPosts({request, response, auth}) {
         const {
             planId, page, limit, provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId
         } = request.all();
@@ -51,7 +51,7 @@ class PostController {
             provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId
         };
 
-        const result = await Post.getPublishedPosts(planId, page, limit, filter);
+        const result = await Post.getPublishedPosts(planId, page, limit, filter, auth);
         return PaginatedResponse.parse(response, result)
     }
 

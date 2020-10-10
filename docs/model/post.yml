@@ -5,8 +5,10 @@ definitions:
     properties:
       id:
         type: integer
-      user:
+      managedBy:
         $ref: '#/definitions/User'
+      owner:
+        $ref: '#/definitions/Owner'
       address:
         $ref: '#/definitions/Address'
       homeType:

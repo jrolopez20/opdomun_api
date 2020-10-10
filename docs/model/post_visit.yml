@@ -4,15 +4,11 @@ definitions:
     properties:
       id:
         type: integer
-      post_id:
+      post:
         $ref: '#/definitions/Post'
       total:
         type: integer
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - post_id
+      - post
       - total

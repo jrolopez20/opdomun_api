@@ -68,7 +68,7 @@
         in: formData
         required: true
         type: string
-      - name: office_id
+      - name: officeId
         in: formData
         type: integer
       - name: password

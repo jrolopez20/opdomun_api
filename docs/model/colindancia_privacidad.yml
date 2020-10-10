@@ -4,15 +4,15 @@ definitions:
     properties:
       id:
         type: integer
-      post_variable_id:
+      postVariable:
         $ref: '#/definitions/PostVariable'
-      rel_hor:
+      relHor:
         type: integer
-      rel_vert:
+      relVert:
         type: integer
-      tipo_via:
+      tipoVia:
         type: integer
-      altura_cerc_per:
+      alturaCercPer:
         type: string
       permeabilidad:
         type: integer
@@ -20,17 +20,13 @@ definitions:
         type: integer
       distancia:
         type: string
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - post_variable_id
-      - rel_hor
-      - rel_vert
-      - tipo_via
-      - altura_cerc_per
+      - postVariable
+      - relHor
+      - relVert
+      - tipoVia
+      - alturaCercPer
       - permeabilidad
       - altura
       - distancia

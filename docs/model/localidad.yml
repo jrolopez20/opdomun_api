@@ -5,15 +5,11 @@ definitions:
       id:
         type: integer
         readOnly: true
-      municipio_id:
+      municipio:
         $ref: '#/definitions/Municipio'
       title:
         type: string
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - municipio_id
+      - municipio
       - title

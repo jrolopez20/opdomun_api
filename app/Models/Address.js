@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
 
 class Address extends Model {
 

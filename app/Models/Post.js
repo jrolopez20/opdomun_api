@@ -15,6 +15,8 @@ const VarMenaje = use('App/Models/VarMenaje')
 const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
 const Address = use('App/Models/Address')
+const BadRequestException = use('App/Exceptions/BadRequestException')
+const CurrencyService = use('App/Services/CurrencyService')
 
 function strToBool(s) {
     const regex = /^\s*(true|1)\s*$/i
@@ -44,10 +46,32 @@ class Post extends Model {
         }
     }
 
+    /**
+     * Return price as object
+     * @param price
+     * @returns {{currency: string, value: number}}
+     */
+    getPrice(price) {
+        return {
+            value: price,
+            currency: CurrencyService.DEFAULT_CURRENCY(),
+        }
+    }
+
+    setPrice(price) {
+        if (typeof price === 'number') {
+            return price
+        } else if (typeof price === 'object') {
+            return price.value
+        } else {
+            throw new BadRequestException('Invalid format for price.')
+        }
+    }
+
     static async getPost(id) {
         const post = await Post
             .query()
-            .with('user')
+            .with('managedBy')
             .with('address.localidad.municipio.provincia')
             .with('homeType')
             .with('postPlaces')
@@ -89,7 +113,7 @@ class Post extends Model {
     static async getFeaturedPosts(page = 1, limit = 3) {
         const query = Post
             .query()
-            .with('user')
+            .with('managedBy')
             .with('address.localidad.municipio.provincia')
             .with('images', (builder) => {
                 builder.where('default', true)
@@ -120,12 +144,12 @@ class Post extends Model {
         if (user.role === User.roles().MANAGER) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN users ON users.id = posts.user_id WHERE users.office_id = ${user.officeId})`
+                INNER JOIN users ON users.id = posts.managed_by_id WHERE users.office_id = ${user.officeId})`
             );
         }
 
         if (user.role === User.roles().AGENT) {
-            query.andWhere('posts.userId', user.id);
+            query.andWhere('posts.managedById', user.id);
         }
 
         if (user.role === User.roles().CLIENT) {
@@ -137,7 +161,7 @@ class Post extends Model {
 
         if (strToBool(filter.myPosts)) {
             query.whereRaw(
-                `posts.user_id = ${user.id} OR posts.id IN (SELECT posts.id FROM posts
+                `posts.managed_by_id = ${user.id} OR posts.id IN (SELECT posts.id FROM posts
                 INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
             );
         }
@@ -194,7 +218,7 @@ class Post extends Model {
         return posts.toJSON();
     }
 
-    static async getPublishedPosts(planId = null, page = 1, limit = 20, filter) {
+    static async getPublishedPosts(planId = null, page = 1, limit = 20, filter, auth) {
         const query = Post
             .query()
             .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'sold'])
@@ -255,8 +279,14 @@ class Post extends Model {
             );
         }
 
-        const posts = await query.paginate(page, limit);
-        return posts.toJSON();
+        const posts = (await query.paginate(page, limit)).toJSON();
+
+        try {
+            const user = await auth.getUser();
+            posts.data.map(post => CurrencyService.formatPostPrice(post, user))
+        } finally {
+            return posts
+        }
     }
 
     static async getRecommendedPost(limit = 6) {
@@ -294,14 +324,14 @@ class Post extends Model {
                 'posts.published_at as publishedAt', 'posts.bedrooms', 'posts.bathrooms', 'posts.built_year as builtYear', 'posts.build_status as buildStatus',
                 'posts.summary', 'home_types.title as homeType',
                 'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provinciaTitle',
-                'posts.userId', 'users.fullname as agentName', 'users.email as agentEmail', 'users.telephone as agentPhone',
+                'posts.managed_by_id', 'users.fullname as agentName', 'users.email as agentEmail', 'users.telephone as agentPhone',
                 'owners.fullname as owner_name', 'owners.email as owner_email', 'owners.telephone as owner_phone',
                 'var_flexibilidads.area_crecimiento', 'post_visits.total as visits',
                 'vde.valor_arquitectonico', 'vde.valor_urbano'
             )
             .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .leftJoin('users', 'users.id', 'posts.user_id')
+            .leftJoin('users', 'users.id', 'posts.managed_by_id')
             .innerJoin('home_types', 'home_types.id', 'posts.home_type_id')
             .leftJoin('plans', 'plans.id', 'posts.plan_id')
             .leftJoin('owners', 'owners.post_id', 'posts.id')
@@ -416,7 +446,7 @@ class Post extends Model {
                     fontSize: 11,
                 },
                 {
-                    text: 'Agente: ' + (post.user_id ? post.agent_name : '(No tiene)'),
+                    text: 'Agente: ' + (post.managed_by_id ? post.agent_name : '(No tiene)'),
                     absolutePosition: {x: 45, y: 770},
                     fontSize: 11,
                 },
@@ -1051,8 +1081,8 @@ class Post extends Model {
         }
     }
 
-    user() {
-        return this.belongsTo('App/Models/User', 'userId', 'id');
+    managedBy() {
+        return this.belongsTo('App/Models/User', 'managedById', 'id');
     }
 
     address() {

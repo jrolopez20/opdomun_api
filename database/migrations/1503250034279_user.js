@@ -2,6 +2,7 @@
 
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
+const CurrencyService = use('App/Services/CurrencyService')
 
 class UserSchema extends Schema {
   up () {
@@ -18,6 +19,7 @@ class UserSchema extends Schema {
       table.string('picture', 254)
       table.timestamps(true, true)
       table.timestamp('closed_at', true)
+      table.string('preferred_currency', 3).defaultTo(CurrencyService.DEFAULT_CURRENCY())
     })
   }
 

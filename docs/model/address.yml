@@ -9,13 +9,9 @@ definitions:
         $ref: '#/definitions/Localidad'
       street:
         type: string
-      location:
+      coordinates:
         $ref: '#/definitions/Point'
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - localidad
+      - coordinates
       - street

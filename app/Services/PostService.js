@@ -27,12 +27,12 @@ class PostService {
             otherPlaces,
             activeMonths
         },
-        author) {
+        user) {
         const addressObj = await AddressService.addAddress(address)
         let post = new Post();
 
         post = Object.assign(post, {
-            userId: author.id,
+            managedById: user.id,
             addressId: addressObj.id,
             planId,
             price,
@@ -212,8 +212,9 @@ class PostService {
         const publishedPost = await Post.getPost(postId);
         const postObj = publishedPost.toJSON();
 
+        // TODO dispatch event to notify subscriptors about the new created post
         // Notify subscriptors about the new property
-        await NotificationService.dispatchSubscriptorNotification(postObj);
+        // await NotificationService.dispatchSubscriptorNotification(postObj);
 
         return publishedPost;
     }

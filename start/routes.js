@@ -156,8 +156,8 @@ Route.group(() => {
 
 // Authentication routes
 Route.group(() => {
-    Route.post('login', 'AuthController.login').validator('Auth')
-    Route.post('register', 'AuthController.register').validator('StoreUser')
+    Route.post('login', 'AuthController.login').validator('Auth').middleware(['guest'])
+    Route.post('register', 'AuthController.register').validator('StoreUser').middleware(['guest'])
 }).prefix('api').namespace('Auth');
 
 

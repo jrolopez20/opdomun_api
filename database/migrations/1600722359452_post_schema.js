@@ -8,7 +8,7 @@ class PostSchema extends Schema {
     up() {
         this.create('posts', (table) => {
             table.increments()
-            table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+            table.integer('managed_by_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
             table.integer('address_id').unsigned().notNullable().references('id').inTable('addresses').onDelete('CASCADE')
             table.integer('home_type_id').unsigned().notNullable().references('id').inTable('home_types').onDelete('RESTRICT')
             table.integer('plan_id').unsigned().references('id').inTable('plans').onDelete('RESTRICT')
@@ -38,7 +38,6 @@ class PostSchema extends Schema {
             )
             table.boolean('sold')
             table.timestamp('sold_at', true)
-
         })
     }
 

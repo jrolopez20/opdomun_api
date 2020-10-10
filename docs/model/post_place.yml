@@ -12,6 +12,6 @@ definitions:
         type: number
     required:
       - id
-      - post_id
+      - postId
       - title
       - score

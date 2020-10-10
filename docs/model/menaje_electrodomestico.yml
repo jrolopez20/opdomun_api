@@ -4,15 +4,11 @@ definitions:
     properties:
       id:
         type: integer
-      menage_id:
+      menage:
         $ref: '#/definitions/VarMenaje'
-      electrodomestico_id:
+      electrodomestico:
         $ref: '#/definitions/NomElectrodomestico'
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - menage_id
-      - electrodomestico_id
+      - menage
+      - electrodomestico

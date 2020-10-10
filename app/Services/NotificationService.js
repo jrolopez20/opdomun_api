@@ -37,7 +37,7 @@ class NotificationService {
         const subscriptions = await Subscription.getMatchedSubscriptions({
             provinciaId: post.address.localidad.municipio.provinciaId,
             municipioId: post.address.localidad.municipioId,
-            price: post.price,
+            price: post.price.value,
             homeType: post.homeTypeId
         });
 

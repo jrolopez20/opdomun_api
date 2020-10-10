@@ -89,7 +89,7 @@ class User extends Model {
     }
 
     posts() {
-        return this.hasMany('App/Models/Post', 'id', 'userId')
+        return this.hasMany('App/Models/Post', 'id', 'managedById')
     }
 
     owners() {

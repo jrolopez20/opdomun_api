@@ -4,15 +4,11 @@ definitions:
     properties:
       id:
         type: integer
-      menage_id:
+      menage:
         $ref: '#/definitions/VarMenaje'
-      moviliario_id:
+      moviliario:
         $ref: '#/definitions/NomMoviliario'
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - menage_id
-      - moviliario_id
+      - menage
+      - moviliario

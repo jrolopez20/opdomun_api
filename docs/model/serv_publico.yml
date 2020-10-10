@@ -4,21 +4,17 @@ definitions:
     properties:
       id:
         type: integer
-      post_variable_id:
+      postVariable:
         $ref: '#/definitions/PostVariable'
       value:
         type: integer
-      display_value:
+      displayValue:
         type: string
       title:
         type: string
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - post_variable_id
+      - postVariable
       - value
-      - display_value
+      - displayValue
       - title

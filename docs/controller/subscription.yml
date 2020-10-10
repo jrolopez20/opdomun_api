@@ -33,7 +33,7 @@
     produces:
       - application/json
     parameters:
-      - name: provincia_id
+      - name: provinciaId
         in: formData
         required: true
         type: integer
@@ -42,16 +42,16 @@
         required: true
         type: string
         description: 'Number array'
-      - name: home_type
+      - name: homeType
         in: formData
         required: true
         type: string
         description: 'Number array'
-      - name: min_price
+      - name: minPrice
         in: formData
         required: true
         type: number
-      - name: max_price
+      - name: maxPrice
         in: formData
         required: true
         type: number
@@ -110,7 +110,7 @@
           type: integer
           format: int64
           minimum: 1
-      - name: provincia_id
+      - name: provinciaId
         in: formData
         required: true
         type: integer
@@ -119,16 +119,16 @@
         required: true
         type: array
         description: 'Number array'
-      - name: home_type
+      - name: homeType
         in: formData
         required: true
         type: array
         description: 'Number array'
-      - name: min_price
+      - name: minPrice
         in: formData
         required: true
         type: number
-      - name: max_price
+      - name: maxPrice
         in: formData
         required: true
         type: number

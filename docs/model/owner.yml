@@ -19,3 +19,4 @@ definitions:
       - post
       - fullname
       - telephone
+      - email

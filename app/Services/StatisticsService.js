@@ -18,7 +18,7 @@ class StatisticsService {
             .select('posts.plan_id as planId', 'plans.type')
             .leftJoin('plans', 'posts.plan_id', 'plans.id')
             .whereRaw('(posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.published_at >= ? AND posts.published_at <= ?)', [startAt, endAt, startAt, endAt])
-            .leftJoin('users', 'posts.user_id', 'users.id')
+            .leftJoin('users', 'posts.managed_by_id', 'users.id')
             .orderBy('plan_id', 'plans.type')
             .count('posts.id as total')
             .groupBy('posts.plan_id', 'plans.type')
@@ -31,7 +31,7 @@ class StatisticsService {
         }
 
         if (user.role === User.roles().AGENT) {
-            query.andWhere('posts.user_id', user.id)
+            query.andWhere('posts.managed_by_id', user.id)
             query.whereIn('posts.plan_id', [null, 1])
         }
 
@@ -80,7 +80,7 @@ class StatisticsService {
             .count('posts.id as total')
             .select('posts.plan_id as planId', 'plans.type', 'users.fullname')
             .leftJoin('plans', 'posts.plan_id', 'plans.id')
-            .innerJoin('users', 'posts.user_id', 'users.id')
+            .innerJoin('users', 'posts.managed_by_id', 'users.id')
             .whereRaw("users.office_id = ? AND ((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (plans.type = 'PREMIUM' AND posts.published_at >= ? AND posts.published_at <= ?))", [officeId, startAt, endAt, startAt, endAt])
             .groupBy('users.fullname', 'posts.plan_id', 'plans.type')
         ;
@@ -112,7 +112,7 @@ class StatisticsService {
             .table('posts')
             .select('posts.plan_id as planId', 'plans.type')
             .leftJoin('plans', 'posts.plan_id', 'plans.id')
-            .innerJoin('users', 'posts.user_id', 'users.id')
+            .innerJoin('users', 'posts.managed_by_id', 'users.id')
             .whereRaw("users.office_id = ? AND ((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (plans.type = 'PREMIUM' AND posts.published_at >= ? AND posts.published_at <= ?))", [officeId, startAt, endAt, startAt, endAt])
             .orderBy('plan_id', 'plans.type')
             .count('posts.id as total')
@@ -145,7 +145,7 @@ class StatisticsService {
             .table('posts')
             .select('posts.plan_id as planId', 'plans.type')
             .leftJoin('plans', 'posts.plan_id', 'plans.id')
-            .innerJoin('users', 'posts.user_id', 'users.id')
+            .innerJoin('users', 'posts.managed_by_id', 'users.id')
             .whereRaw("users.id = ? AND ((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (plans.type = 'PREMIUM' AND posts.published_at >= ? AND posts.published_at <= ?))", [userId, startAt, endAt, startAt, endAt])
             .orderBy('plan_id', 'plans.type')
             .count('posts.id as total')

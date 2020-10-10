@@ -4,35 +4,31 @@ definitions:
     properties:
       id:
         type: integer
-      user_id:
+      user:
         $ref: '#/definitions/User'
-      provincia_id:
+      provincia:
         $ref: '#/definitions/Provincia'
       municipio:
         type: string
-        description: 'List of comma separated of municipio_id'
-      home_type:
+        description: 'List of comma separated of municipio'
+      homeType:
         type: string
-        description: 'List of comma separated of home_type_id'
-      min_price:
+        description: 'List of comma separated of homeType'
+      minPrice:
         type: number
-      max_price:
+      maxPrice:
         type: number
       bedrooms:
         type: integer
       bathrooms:
         type: integer
-      created_at:
-        type: string
-      updated_at:
-        type: string
     required:
       - id
-      - user_id
-      - provincia_id
+      - user
+      - provincia
       - municipio
-      - home_type
-      - min_price
-      - max_price
+      - homeType
+      - minPrice
+      - maxPrice
       - bedrooms
       - bathrooms
