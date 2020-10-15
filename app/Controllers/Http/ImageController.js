@@ -24,8 +24,7 @@ class ImageController {
     async index({params, request, response}) {
         const page = request.input('page');
         const limit = request.input('limit');
-
-        const result = await Image.getImages(params.postsId, page, limit);
+        const result = await Image.getImages(params.posts_id, page, limit);
         return PaginatedResponse.parse(response, result)
     }
 
@@ -44,7 +43,7 @@ class ImageController {
                 extnames: ['jpg', 'jpeg', 'png'],
                 size: '1mb'
             });
-            const images = await ImageService.addImages(params.postId, postPictures);
+            const images = await ImageService.addImages(params.posts_id, postPictures);
             return response.status(201).json(images)
         } catch (e) {
             return response.status(400).json({message: e.message})
@@ -61,7 +60,7 @@ class ImageController {
      */
     async show({params, response}) {
         try {
-            const image = await Image.getImage(params.postId, params.id);
+            const image = await Image.getImage(params.posts_id, params.id);
             return response.json(image);
         } catch (e) {
             throw new ResourceNotFoundException();
@@ -78,7 +77,7 @@ class ImageController {
      */
     async update({params, request, response}) {
         try {
-            const image = await ImageService.toogleActiveImage(params.postId, params.id);
+            const image = await ImageService.toogleActiveImage(params.posts_id, params.id);
             return response.json(image);
         } catch (e) {
             return response.status(400).json({message: e.message})
@@ -95,7 +94,7 @@ class ImageController {
      */
     async destroy({params, response}) {
         try {
-            const res = await ImageService.destroyImage(params.postId, params.id);
+            const res = await ImageService.destroyImage(params.posts_id, params.id);
             if (res) {
                 return response.status(204).json(null);
             } else {

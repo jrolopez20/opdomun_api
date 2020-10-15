@@ -5,6 +5,7 @@ definitions:
     properties:
       id:
         type: integer
+        readOnly: true
       managedBy:
         $ref: '#/definitions/User'
       owner:

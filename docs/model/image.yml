@@ -4,8 +4,7 @@ definitions:
     properties:
       id:
         type: integer
-      post:
-        $ref: '#/definitions/Post'
+        readOnly: true
       url:
         type: string
       default:

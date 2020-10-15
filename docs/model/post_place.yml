@@ -2,16 +2,10 @@ definitions:
   PostPlace:
     type: object
     properties:
-      id:
-        type: integer
-      postId:
-        type: integer
       title:
         type: string
       score:
-        type: number
+        type: integer
     required:
-      - id
-      - postId
       - title
       - score

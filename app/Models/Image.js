@@ -15,7 +15,7 @@ class Image extends Model {
     }
 
     static get hidden() {
-        return ['createdAt', 'updatedAt'];
+        return ['postId', 'createdAt', 'updatedAt'];
     }
 
     post() {

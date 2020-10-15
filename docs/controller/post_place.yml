@@ -1,0 +1,14 @@
+/otherplaces:
+  get:
+    tags:
+      - Posts
+    summary: List of post places
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/PostPlace'

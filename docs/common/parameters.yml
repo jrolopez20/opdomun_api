@@ -10,6 +10,16 @@ parameters:
       format: int64
       minimum: 1
 
+  postId:
+    name: postId
+    in: path
+    required: true
+    description: Post id
+    schema:
+      type: integer
+      format: int64
+      minimum: 1
+
   page:
     name: page
     in: query

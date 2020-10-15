@@ -1,0 +1,107 @@
+/posts/{postId}/images:
+  get:
+    tags:
+      - Image
+    summary: List of images
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/postId'
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Image'
+        headers:
+          $ref: '#/definitions/PaginationData'
+
+  post:
+    tags:
+      - Image
+    summary: Add image
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: postImages
+        in: body
+        description: Array of images objects
+#        schema:
+#          $ref: "#/definitions/Image"
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Image'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+
+/posts/{postId}/images/{id}:
+  get:
+    tags:
+      - Image
+    summary: Return image
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/postId'
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Image'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  put:
+    tags:
+      - Image
+    summary: Set default image
+    description: Toggle active image
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/postId'
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Image'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  delete:
+    tags:
+      - Image
+    summary: Remove image
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/postId'
+      - $ref: '#/parameters/id'
+    responses:
+      204:
+        description: Null

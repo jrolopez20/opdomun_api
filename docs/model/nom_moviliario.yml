@@ -4,6 +4,7 @@ definitions:
     properties:
       id:
         type: integer
+        readOnly: true
       title:
         type: string
       value:
