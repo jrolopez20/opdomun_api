@@ -20,6 +20,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Image'
+      postPlaces:
+        type: array
+        items:
+          $ref: '#/definitions/PostPlace'
       price:
         type: number
       area:

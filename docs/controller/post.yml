@@ -91,6 +91,29 @@
         headers:
           $ref: '#/definitions/PaginationData'
 
+/posts/{id}:
+  get:
+    tags:
+      - Posts
+    summary: Return post by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Post'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+      404:
+        $ref: '#/responses/404NotFound'
+
 /free_post:
   post:
     tags:
