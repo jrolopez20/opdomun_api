@@ -195,7 +195,7 @@ class PostController {
 
             const post = await PostService.addFreePost({
                 address, price, area, bedrooms, bathrooms, homeTypeId, summary, otherPlaces
-            }, auth.user);
+            }, auth);
 
             return response.status(201).json(post)
         } catch (e) {

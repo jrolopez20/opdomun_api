@@ -12,20 +12,13 @@ class PostVisitorsCount {
      * @param {Request} ctx.request
      * @param {Function} next
      */
-    async handle({params, response, session}, next) {
-        try {
-            const post = await Post.find(params.id)
-            if (post && post.publishedAt) {
-                await PostVisit.inrementVisit(params.id);
-            }
-            // call next to advance the request
-            await next()
-        } catch (e) {
-            // session.withErrors({'error': 'Error interno del sistema, contacte al administrador.'});
-            session.withErrors({'error': e.message});
-            return response.redirect('/not-found')
+    async handle({params, response}, next) {
+        const post = await Post.find(params.id)
+        if (post && post.publishedAt) {
+            await PostVisit.inrementVisit(params.id);
         }
-
+        // call next to advance the request
+        await next()
     }
 }
 

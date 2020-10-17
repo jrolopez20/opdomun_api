@@ -10,6 +10,7 @@ const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
 const NotificationService = use('App/Services/NotificationService')
 const AddressService = use('App/Services/AddressService')
+const CurrencyService = use('App/Services/CurrencyService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 
 class PostService {
@@ -67,17 +68,19 @@ class PostService {
             summary,
             otherPlaces
         },
-        user
+        auth
     ) {
         const freePlan = await Plan.findBy('type', Plan.TYPES().FREE)
         const activeMonths = 1;
         const addressObj = await AddressService.addAddress(address)
+        const rawPrice = CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
 
         let post = new Post();
+
         post = Object.assign(post, {
             planId: freePlan.id,
             addressId: addressObj.id,
-            price,
+            price: rawPrice,
             area,
             bedrooms,
             bathrooms,
@@ -87,16 +90,15 @@ class PostService {
         });
 
         await post.save();
-
         // Define post close date
         await this.setExpirationDate(post.id, activeMonths);
 
         const owner = await Owner.addOwner({
             postId: post.id,
-            userId: user.id,
-            email: user.telephone,
-            fullname: user.fullname,
-            telephone: user.telephone
+            userId: auth.user.id,
+            email: auth.user.telephone,
+            fullname: auth.user.fullname,
+            telephone: auth.user.telephone
         });
 
         await this.initPostVariable(post);

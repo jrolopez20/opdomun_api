@@ -1,15 +1,12 @@
 'use strict'
 
-const Post = use('App/Models/Post');
-
 class CurrencyService {
 
     static CURRENCIES() {
         return {
             CUC: 'CUC',
             CUP: 'CUP',
-            USD: 'USD',
-            EUR: 'EUR'
+            USD: 'USD'
         }
     }
 
@@ -32,14 +29,25 @@ class CurrencyService {
     }
 
     /**
-     * Convert
+     * Tranform price value between currencies
      * @param value
      * @param from
      * @param to
      * @returns {*}
      */
     static transform(value, from, to) {
-        // TODO apply conversion rates
+        from = from.toUpperCase();
+        to = to.toUpperCase();
+        if (from === CurrencyService.BASE_CURRENCY() || from === CurrencyService.CURRENCIES().CUC) {
+            if (to === CurrencyService.CURRENCIES().CUP) {
+                value = value * 25;
+            }
+        } else if (to === CurrencyService.BASE_CURRENCY() || to === CurrencyService.CURRENCIES().CUC) {
+            if (from === CurrencyService.CURRENCIES().CUP) {
+                value = value / 25;
+            }
+        }
+
         return value;
     }
 
