@@ -82,6 +82,9 @@ Route.group(() => {
     Route.get('roles', 'UserController.roles')
         .middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
 
+    Route.get('authenticated_user', 'UserController.getAuthenticatedUser')
+        .middleware(['auth']);
+
     Route.resource('posts/:postId/owner', 'OwnerController')
         .middleware(new Map([
             [['store', 'update', 'destroy'], ['auth']]

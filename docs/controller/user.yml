@@ -233,3 +233,18 @@
           type: array
           items:
             type: string
+
+/authenticated_user:
+  get:
+    tags:
+      - Auth
+    summary: Return authenticated user
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/User'
