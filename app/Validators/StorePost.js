@@ -1,12 +1,13 @@
 'use strict'
 
 use('App/Validators/AddressValidator');
+use('App/Validators/PriceValidator');
 
 class StorePost {
     get rules() {
         return {
             address: 'required|object|address',
-            price: 'number',
+            price: 'object|price',
             area: 'required|number',
             bedrooms: 'required|number',
             bathrooms: 'required|number',
@@ -19,7 +20,7 @@ class StorePost {
         return {
             'address.required': 'You must provide address info',
             'address.object': 'The field address must be a valid address object',
-            'price.number': 'The field price must be a number',
+            'price.object': 'The field price must be a valid price object',
             'area.required': 'You must provide an area.',
             'area.number': 'The field area must be a number',
             'bedrooms.required': 'You must provide a bedrooms.',

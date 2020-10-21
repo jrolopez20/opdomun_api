@@ -62,7 +62,7 @@ class Post extends Model {
         if (typeof price === 'number') {
             return price
         } else if (typeof price === 'object') {
-            return price.value
+            return CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
         } else {
             throw new BadRequestException('Invalid format for price.')
         }

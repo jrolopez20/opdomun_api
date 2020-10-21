@@ -74,7 +74,8 @@ class PostController {
                 bathrooms,
                 homeTypeId,
                 summary,
-                otherPlaces,
+                postPlaces,
+                owner,
                 activeMonths
             } = request.all();
 
@@ -87,7 +88,8 @@ class PostController {
                 bathrooms,
                 homeTypeId,
                 summary,
-                otherPlaces,
+                postPlaces,
+                owner,
                 activeMonths
             }, auth.user);
 
@@ -124,7 +126,29 @@ class PostController {
      */
     async update({params, request, response, auth}) {
         try {
-            const post = await PostService.setPost(params.id, request);
+            const {
+                address,
+                price,
+                area,
+                bedrooms,
+                bathrooms,
+                homeTypeId,
+                summary,
+                postPlaces,
+                owner
+            } = request.all();
+
+            const post = await PostService.setPost(params.id, {
+                address,
+                price,
+                area,
+                bedrooms,
+                bathrooms,
+                homeTypeId,
+                summary,
+                postPlaces,
+                owner
+            });
             return response.json(post);
         } catch (e) {
             return response.status(400).json({message: e.message})

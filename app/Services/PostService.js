@@ -26,6 +26,7 @@ class PostService {
             homeTypeId,
             summary,
             postPlaces,
+            owner,
             activeMonths
         },
         user) {
@@ -45,6 +46,15 @@ class PostService {
         });
 
         await post.save();
+
+        const ownerObj = await Owner.addOwner({
+            postId: post.id,
+            userId: user.id,
+            email: owner.email,
+            fullname: owner.fullname,
+            telephone: owner.telephone
+        });
+
         if (planId && activeMonths) {
             // Add expiration date to post
             await this.setExpirationDate(post.id, activeMonths);
@@ -54,6 +64,7 @@ class PostService {
         await this.setAu(post, postPlaces);
 
         post = await post.calculateOpdo();
+        post.owner = ownerObj;
         return post;
     }
 
@@ -74,14 +85,13 @@ class PostService {
         const freePlan = await Plan.findBy('type', Plan.TYPES().FREE)
         const activeMonths = 1;
         const addressObj = await AddressService.addAddress(address)
-        const rawPrice = CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
 
         let post = new Post();
 
         post = Object.assign(post, {
             planId: freePlan.id,
             addressId: addressObj.id,
-            price: rawPrice,
+            price,
             area,
             bedrooms,
             bathrooms,
@@ -129,10 +139,8 @@ class PostService {
             throw new ResourceNotFoundException();
         }
 
-        const rawPrice = CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
-
         post = Object.assign(post, {
-            price: rawPrice,
+            price,
             area,
             bedrooms,
             bathrooms,
@@ -150,7 +158,7 @@ class PostService {
         await post.load('address');
         const addressObj = await post.getRelated('address');
         addressObj.description = address.description;
-        if(address.coordinates) {
+        if (address.coordinates) {
             addressObj.coordinates = address.coordinates;
         }
         await addressObj.save()
@@ -161,40 +169,48 @@ class PostService {
         return post;
     }
 
-    static async setPost(postId, request) {
+    static async setPost(
+        postId,
+        {
+            address,
+            price,
+            area,
+            bedrooms,
+            bathrooms,
+            homeTypeId,
+            summary,
+            postPlaces,
+            owner,
+        }) {
         let post = await Post.find(postId);
         if (!post) {
             throw new Error('Post not found');
         }
 
-        const address = request.input('address');
-        const price = request.input('price');
-        const area = request.input('area');
-        const bedrooms = request.input('bedrooms');
-        const bathrooms = request.input('bathrooms');
-        const homeTypeId = request.input('homeTypeId');
-        const summary = request.input('summary');
-        const sold = request.input('sold');
-        const inputOwner = request.input('owner');
-        const otherPlaces = request.input('otherPlaces');
-
-        post.address = address;
         post.price = price;
         post.area = area;
         post.bedrooms = bedrooms;
         post.bathrooms = bathrooms;
         post.homeTypeId = homeTypeId;
         post.summary = summary;
-        post.sold = sold;
 
         await post.load('owner');
-        const owner = await post.getRelated('owner');
-        owner.fullname = inputOwner.fullname;
-        owner.telephone = inputOwner.telephone;
-        owner.email = inputOwner.email;
-        await owner.save()
 
-        await this.setAu(post, otherPlaces);
+        const ownerObj = await post.getRelated('owner');
+        ownerObj.fullname = owner.fullname;
+        ownerObj.telephone = owner.telephone;
+        ownerObj.email = owner.email;
+        await ownerObj.save()
+
+        await post.load('address');
+        const addressObj = await post.getRelated('address');
+        addressObj.description = address.description;
+        if (address.coordinates) {
+            addressObj.coordinates = address.coordinates;
+        }
+        await addressObj.save()
+
+        await this.setAu(post, postPlaces);
 
         post = await post.calculateOpdo();
         return post;
