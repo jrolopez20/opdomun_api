@@ -115,6 +115,9 @@ Route.group(() => {
     Route.post('free_post', 'PostController.addFreePost')
         .middleware(['auth'])
         .validator('StoreFreePost');
+    Route.put('free_post/:id', 'PostController.setFreePost')
+        .middleware(['auth'])
+        .validator('UpdateFreePost');
 
     Route.get('featured_posts', 'PostController.getFeaturedPosts');
     Route.get('recommended_posts', 'PostController.getRecommendedPosts');

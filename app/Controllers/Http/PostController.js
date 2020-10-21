@@ -190,14 +190,30 @@ class PostController {
     async addFreePost({request, response, auth}) {
         try {
             const {
-                address, price, area, bedrooms, bathrooms, homeTypeId, summary, otherPlaces
+                address, price, area, bedrooms, bathrooms, homeTypeId, summary, postPlaces, owner
             } = request.all();
 
             const post = await PostService.addFreePost({
-                address, price, area, bedrooms, bathrooms, homeTypeId, summary, otherPlaces
+                address, price, area, bedrooms, bathrooms, homeTypeId, summary, postPlaces, owner
             }, auth);
 
             return response.status(201).json(post)
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async setFreePost({request, response, params, auth}) {
+        try {
+            const {
+                address, price, area, bedrooms, bathrooms, homeTypeId, summary, postPlaces, owner
+            } = request.all();
+
+            const post = await PostService.setFreePost(params.id, {
+                address, price, area, bedrooms, bathrooms, homeTypeId, summary, postPlaces, owner
+            }, auth);
+
+            return response.status(200).json(post)
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

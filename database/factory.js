@@ -48,14 +48,17 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
     }
     return {
         planId: data.planId || null,
-        price: faker.integer({min: 7000, max: 80000}),
+        price: {
+            value: faker.integer({min: 7000, max: 80000}),
+            currency: 'USD'
+        },
         area: faker.integer({min: 90, max: 199}),
         homeTypeId: homeTypes[faker.integer({min: 0, max: 5})].id,
         bedrooms: faker.integer({min: 1, max: 6}),
         bathrooms: faker.integer({min: 1, max: 3}),
         summary: faker.paragraph({sentences: 4}),
         builtYear: faker.year({min: 1940, max: 2020}),
-        otherPlaces: [
+        postPlaces: [
             {
                 "score": 100,
                 "title": "Sala"
@@ -69,6 +72,11 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
             localidadId: localidades[faker.integer({min: 10, max: 600})].id,
             description: faker.address(),
             coordinates: faker.coordinates()
+        },
+        owner: {
+            fullname: faker.name(),
+            email: faker.email(),
+            telephone: faker.phone({formatted: false})
         }
     }
 });

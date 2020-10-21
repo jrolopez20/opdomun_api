@@ -114,69 +114,166 @@
       404:
         $ref: '#/responses/404NotFound'
 
-/free_post:
-  post:
+  delete:
     tags:
       - Posts
-    summary: Create a free post
+    summary: Remove post by ID
     security:
       - bearerAuth: []
     produces:
       - application/json
     parameters:
-      - name: address
-        required: true
+      - $ref: '#/parameters/id'
+    responses:
+      204:
+        description: Null
+
+/free_post:
+  post:
+    tags:
+      - Posts
+    summary: Add free post
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: body
         in: body
-        description: Address info
         schema:
           type: object
           properties:
-            localidadId:
+            address:
+              required: true
+              type: object
+              description: Address info
+              properties:
+                localidadId:
+                  required: true
+                  type: string
+                description:
+                  type: string
+                  required: true
+            owner:
+              required: true
+              type: object
+              description: Owner info
+              properties:
+                fullname:
+                  required: true
+                  type: string
+                email:
+                  required: true
+                  type: string
+                telephone:
+                  required: true
+                  type: string
+            price:
+              required: true
+              type: number
+            area:
+              required: true
+              type: integer
+            bedrooms:
+              required: true
+              type: integer
+            bathrooms:
+              required: true
+              type: integer
+            homeTypId:
+              required: true
+              type: integer
+            summary:
               required: true
               type: string
-            description:
-              type: string
+            postPlaces:
               required: true
-            coordinates:
-              type: string
-      - name: price
-        in: inForm
-        required: true
-        type: float
-      - name: area
-        in: inForm
-        required: true
-        type: integer
-      - name: bedrooms
-        in: inForm
-        required: true
-        type: integer
-      - name: bathrooms
-        in: inForm
-        required: true
-        type: integer
-      - name: homeTypId
-        in: inForm
-        required: true
-        type: integer
-      - name: summary
-        in: inForm
-        required: true
-        type: string
-      - name: otherPlaces
-        required: true
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    required: true
+                    type: string
+                  score:
+                    required: true
+                    type: integer
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/Post'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+
+/free_post/{id}:
+  put:
+    tags:
+      - Posts
+    summary: Update free post
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: body
         in: body
         schema:
-          type: array
-          items:
-            type: object
-            properties:
-              title:
-                required: true
-                type: string
-              score:
-                required: true
-                type: integer
+          type: object
+          properties:
+            address:
+              required: true
+              type: object
+              description: Address info
+              properties:
+                description:
+                  type: string
+                  required: true
+            owner:
+              required: true
+              type: object
+              description: Owner info
+              properties:
+                fullname:
+                  required: true
+                  type: string
+                email:
+                  required: true
+                  type: string
+                telephone:
+                  required: true
+                  type: string
+            price:
+              required: true
+              type: number
+            area:
+              required: true
+              type: integer
+            bedrooms:
+              required: true
+              type: integer
+            bathrooms:
+              required: true
+              type: integer
+            homeTypId:
+              required: true
+              type: integer
+            summary:
+              required: true
+              type: string
+            postPlaces:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    required: true
+                    type: string
+                  score:
+                    required: true
+                    type: integer
     responses:
       200:
         description: Success

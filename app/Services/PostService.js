@@ -25,7 +25,7 @@ class PostService {
             bathrooms,
             homeTypeId,
             summary,
-            otherPlaces,
+            postPlaces,
             activeMonths
         },
         user) {
@@ -51,7 +51,7 @@ class PostService {
         }
 
         await this.initPostVariable(post);
-        await this.setAu(post, otherPlaces);
+        await this.setAu(post, postPlaces);
 
         post = await post.calculateOpdo();
         return post;
@@ -66,7 +66,8 @@ class PostService {
             bathrooms,
             homeTypeId,
             summary,
-            otherPlaces
+            postPlaces,
+            owner
         },
         auth
     ) {
@@ -93,22 +94,70 @@ class PostService {
         // Define post close date
         await this.setExpirationDate(post.id, activeMonths);
 
-        const owner = await Owner.addOwner({
+        const ownerObj = await Owner.addOwner({
             postId: post.id,
             userId: auth.user.id,
-            email: auth.user.telephone,
-            fullname: auth.user.fullname,
-            telephone: auth.user.telephone
+            email: owner.email,
+            fullname: owner.fullname,
+            telephone: owner.telephone
         });
 
         await this.initPostVariable(post);
-        if (otherPlaces) {
-            await this.setAu(post, otherPlaces);
+        if (postPlaces) {
+            await this.setAu(post, postPlaces);
         }
 
         post = await post.calculateOpdo();
-        post.owner = owner;
+        post.owner = ownerObj;
 
+        return post;
+    }
+
+    static async setFreePost(postId, {
+        address,
+        price,
+        area,
+        bedrooms,
+        bathrooms,
+        homeTypeId,
+        summary,
+        postPlaces,
+        owner
+    }) {
+        let post = await Post.find(postId);
+        if (!post) {
+            throw new ResourceNotFoundException();
+        }
+
+        const rawPrice = CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
+
+        post = Object.assign(post, {
+            price: rawPrice,
+            area,
+            bedrooms,
+            bathrooms,
+            homeTypeId,
+            summary
+        });
+
+        await post.load('owner');
+        const ownerObj = await post.getRelated('owner');
+        ownerObj.fullname = owner.fullname;
+        ownerObj.telephone = owner.telephone;
+        ownerObj.email = owner.email;
+        await ownerObj.save()
+
+        await post.load('address');
+        const addressObj = await post.getRelated('address');
+        addressObj.description = address.description;
+        if(address.coordinates) {
+            addressObj.coordinates = address.coordinates;
+        }
+        await addressObj.save()
+
+        await this.setAu(post, postPlaces);
+
+        post = await post.calculateOpdo();
         return post;
     }
 
@@ -180,7 +229,7 @@ class PostService {
         await PostVariable.calculatePu(post.id)
     }
 
-    static async setAu(post, otherPlaces) {
+    static async setAu(post, postPlaces) {
         await PostPlace
             .query()
             .where('postId', post.id)
@@ -188,10 +237,10 @@ class PostService {
 
         await post
             .postPlaces()
-            .createMany(otherPlaces);
+            .createMany(postPlaces);
 
         // Calcula automaticamente la variable Au
-        await PostVariable.calculateAu(post.id, post.bedrooms, post.bathrooms, otherPlaces);
+        await PostVariable.calculateAu(post.id, post.bedrooms, post.bathrooms, postPlaces);
     }
 
     static async publishPost(postId) {
@@ -248,7 +297,8 @@ class PostService {
         }
 
         post.sold = true;
-        post.soldAt = new Date();;
+        post.soldAt = new Date();
+        ;
         await post.save();
 
         return await Post.getPost(postId);

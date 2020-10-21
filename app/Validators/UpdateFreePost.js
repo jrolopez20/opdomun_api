@@ -3,10 +3,9 @@
 use('App/Validators/AddressValidator');
 use('App/Validators/PriceValidator');
 
-class StoreFreePost {
+class UpdateFreePost {
     get rules() {
         return {
-            address: 'required|object|address',
             owner: 'required|object',
             price: 'required|object|price',
             area: 'required|number',
@@ -18,8 +17,6 @@ class StoreFreePost {
 
     get messages() {
         return {
-            'address.required': 'You must provide address info',
-            'address.object': 'The field address must be a valid address object',
             'owner.required': 'You must provide owner info',
             'owner.object': 'The field owner must be a valid owner object',
             'price.required': 'You must provide a price.',
@@ -40,4 +37,4 @@ class StoreFreePost {
     }
 }
 
-module.exports = StoreFreePost;
+module.exports = UpdateFreePost;
