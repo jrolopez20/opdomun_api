@@ -23,9 +23,9 @@ class PostSeeder {
         await Address.query().delete();
         // Create FREE dummy posts
         let clients = await User.query().where('role', User.roles().CLIENT).fetch();
-        for (const client of clients.toJSON()) {
+        for (const user of clients.toJSON()) {
             const post = await Factory.model('App/Models/Post').make()
-            await PostService.addFreePost(post.toJSON(), client);
+            await PostService.addFreePost(post.toJSON(), {user});
         }
 
         // Create PREMIUM dummy posts
