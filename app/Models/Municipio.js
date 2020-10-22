@@ -13,6 +13,7 @@ class Municipio extends Model {
         const municipios = await Municipio
             .query()
             .setVisible(['id', 'title', 'prospUrbana'])
+            .with('provincia')
             .where('provincia_id', provinciaId)
             .fetch();
 

@@ -11,8 +11,8 @@ class StorePost {
             area: 'required|number',
             bedrooms: 'required|number',
             bathrooms: 'required|number',
-            homeTypeId: 'required|number',
-            planId: 'number'
+            homeType: 'required|object',
+            plan: 'object',
         }
     }
 
@@ -27,10 +27,10 @@ class StorePost {
             'bedrooms.number': 'The field bedrooms must be a number',
             'bathrooms.required': 'You must provide a bathrooms.',
             'bathrooms.number': 'The field bathrooms must be a number',
-            'homeTypeId.required': 'You must provide a homeTypeId.',
-            'homeTypeId.number': 'The field homeTypeId must be a number',
+            'homeType.required': 'You must provide a homeType.',
+            'homeType.object': 'The field homeType must be a valid homeType object',
             'builtYear.number': 'The field builtYear must be a number',
-            'planId.number': 'The field planId must be a number'
+            'plan.object': 'The field plan must be a valid plan object'
         }
     }
 

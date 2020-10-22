@@ -2,6 +2,7 @@
 
 use('App/Validators/AddressValidator');
 use('App/Validators/PriceValidator');
+// use('App/Validators/HomeType');
 
 class StoreFreePost {
     get rules() {
@@ -12,7 +13,7 @@ class StoreFreePost {
             area: 'required|number',
             bedrooms: 'required|number',
             bathrooms: 'required|number',
-            homeTypeId: 'required|number',
+            homeType: 'required|object',
         }
     }
 
@@ -30,8 +31,8 @@ class StoreFreePost {
             'bedrooms.number': 'The field bedrooms must be a number',
             'bathrooms.required': 'You must provide a bathrooms.',
             'bathrooms.number': 'The field bathrooms must be a number',
-            'homeTypeId.required': 'You must provide a homeTypeId.',
-            'homeTypeId.number': 'The field homeTypeId must be a number',
+            'homeType.required': 'You must provide a homeTypeId.',
+            'homeType.object': 'The field homeType must be a valid homeType object',
         }
     }
 
