@@ -1,20 +1,20 @@
 'use strict'
 
 const PostVariable = use('App/Models/PostVariable');
-
+const Database = use('Database')
 /**
  * Resourceful controller for interacting with posts
  */
 class PostVariableController {
 
     async getPostVariables({request, response, params}) {
-        const postVariables = await PostVariable
+        const variables = await PostVariable
             .query()
             .with('variable')
             .where('postId', params.id)
             .fetch();
 
-        return response.json(postVariables);
+        return response.json(variables);
     }
 }
 

@@ -14,7 +14,6 @@
 const Factory = use('Factory')
 const User = use('App/Models/User')
 const Office = use('App/Models/Office')
-const ArticleSeeder = use('/ArticleSeeder')
 
 class UserSeeder {
 

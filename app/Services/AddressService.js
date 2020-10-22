@@ -4,24 +4,20 @@ const Address = use('App/Models/Address');
 
 class AddressService {
 
-    static async addAddress({localidadId, description, coordinates}) {
+    static async addAddress({localidad, description, coordinates = null}) {
         let address = new Address();
-        address = Object.assign(address, {
-            localidadId,
-            description,
-            coordinates
-        });
+        address.localidadId = localidad.id
+        address.description = description
+        address.coordinates = coordinates
         await address.save();
         return address;
     }
 
-    static async setAddress(addressId, {localidadId, description, coordinates}) {
+    static async setAddress(addressId, {localidad, description, coordinates = null}) {
         let address = await Address.find(addressId);
-        address = Object.assign(address, {
-            localidadId,
-            description,
-            coordinates
-        });
+        address.localidadId = localidad.id
+        address.description = description
+        address.coordinates = coordinates
         await address.save();
         return address;
     }

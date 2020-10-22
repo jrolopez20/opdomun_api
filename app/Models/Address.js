@@ -16,11 +16,20 @@ class Address extends Model {
      * @param coordinates
      * @returns {{latitude: number, longitude: number}}
      */
-    getCoordinates (coordinates) {
-        return {
+    getCoordinates(coordinates) {
+        return coordinates ? {
             longitude: coordinates.x,
             latitude: coordinates.y
-        }
+        } : null
+    }
+
+    /**
+     * Coordinates setter
+     * @param coordinates
+     * @returns {string}
+     */
+    setCoordinates(coordinates) {
+        return coordinates ? `${coordinates.longitude}, ${coordinates.latitude}` : null
     }
 
     localidad() {
@@ -36,4 +45,4 @@ class Address extends Model {
     }
 }
 
-module.exports = Address
+module.exports = Address;

@@ -56,7 +56,7 @@ definitions:
         type: string
     required:
       - id
-      - user
+      - owner
       - homeType
       - address
       - area

@@ -17,13 +17,13 @@ class PostService {
 
     static async addPost(
         {
-            planId,
+            plan,
             address,
             price,
             area,
             bedrooms,
             bathrooms,
-            homeTypeId,
+            homeType,
             summary,
             postPlaces,
             owner,
@@ -36,12 +36,12 @@ class PostService {
         post = Object.assign(post, {
             managedById: user.id,
             addressId: addressObj.id,
-            planId,
+            planId: plan ? plan.id : null,
             price,
             area,
             bedrooms,
             bathrooms,
-            homeTypeId,
+            homeTypeId: homeType.id,
             summary
         });
 
@@ -55,7 +55,7 @@ class PostService {
             telephone: owner.telephone
         });
 
-        if (planId && activeMonths) {
+        if (plan && activeMonths) {
             // Add expiration date to post
             await this.setExpirationDate(post.id, activeMonths);
         }
@@ -75,7 +75,7 @@ class PostService {
             area,
             bedrooms,
             bathrooms,
-            homeTypeId,
+            homeType,
             summary,
             postPlaces,
             owner
@@ -95,7 +95,7 @@ class PostService {
             area,
             bedrooms,
             bathrooms,
-            homeTypeId,
+            homeTypeId: homeType.id,
             summary,
             publishedAt: new Date()
         });
@@ -129,7 +129,7 @@ class PostService {
         area,
         bedrooms,
         bathrooms,
-        homeTypeId,
+        homeType,
         summary,
         postPlaces,
         owner
@@ -144,7 +144,7 @@ class PostService {
             area,
             bedrooms,
             bathrooms,
-            homeTypeId,
+            homeTypeId: homeType.id,
             summary
         });
 
@@ -177,7 +177,7 @@ class PostService {
             area,
             bedrooms,
             bathrooms,
-            homeTypeId,
+            homeType,
             summary,
             postPlaces,
             owner,
@@ -191,7 +191,7 @@ class PostService {
         post.area = area;
         post.bedrooms = bedrooms;
         post.bathrooms = bathrooms;
-        post.homeTypeId = homeTypeId;
+        post.homeTypeId = homeType.id;
         post.summary = summary;
 
         await post.load('owner');

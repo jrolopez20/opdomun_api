@@ -6,12 +6,19 @@ definitions:
         type: integer
         readOnly: true
       localidad:
+        required: true
         $ref: '#/definitions/Localidad'
-      street:
+      description:
         type: string
+        required: true
       coordinates:
-        $ref: '#/definitions/Point'
+        type: object
+        properties:
+          longitude:
+            type: double
+          latitude:
+            type: double
     required:
-      - id
-      - coordinates
-      - street
+          - id
+          - localidad
+          - description

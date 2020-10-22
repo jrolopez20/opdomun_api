@@ -148,12 +148,18 @@
               type: object
               description: Address info
               properties:
-                localidadId:
+                localidad:
                   required: true
-                  type: string
+                  type: object
+                  properties:
+                    id:
+                      required: true
+                      type: number
                 description:
                   type: string
                   required: true
+                coordinates:
+                  $ref: '#/definitions/Coordinates'
             owner:
               required: true
               type: object
@@ -169,8 +175,7 @@
                   required: true
                   type: string
             price:
-              required: true
-              type: number
+              $ref: '#/definitions/Price'
             area:
               required: true
               type: integer
@@ -180,9 +185,9 @@
             bathrooms:
               required: true
               type: integer
-            homeTypId:
+            homeType:
               required: true
-              type: integer
+              $ref: '#/definitions/HomeType'
             summary:
               required: true
               type: string
@@ -228,9 +233,18 @@
               type: object
               description: Address info
               properties:
+                localidad:
+                  required: true
+                  type: object
+                  properties:
+                    id:
+                      required: true
+                      type: number
                 description:
                   type: string
                   required: true
+                coordinates:
+                  $ref: '#/definitions/Coordinates'
             owner:
               required: true
               type: object
@@ -246,8 +260,7 @@
                   required: true
                   type: string
             price:
-              required: true
-              type: number
+              $ref: '#/definitions/Price'
             area:
               required: true
               type: integer
@@ -257,13 +270,14 @@
             bathrooms:
               required: true
               type: integer
-            homeTypId:
+            homeType:
               required: true
-              type: integer
+              $ref: '#/definitions/HomeType'
             summary:
               required: true
               type: string
             postPlaces:
+              required: true
               type: array
               items:
                 type: object

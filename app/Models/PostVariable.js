@@ -48,15 +48,16 @@ class PostVariable extends Model {
     }
 
     variable() {
-        return this.belongsTo('App/Models/Variable');
+        return this.belongsTo('App/Models/Variable', 'variableId', 'id');
+
     }
 
     post() {
-        return this.belongsTo('App/Models/Post');
+        return this.belongsTo('App/Models/Post', 'postId', 'id');
     }
 
     riesgo() {
-        return this.hasOne('App/Models/Riesgo');
+        return this.hasOne('App/Models/Riesgo', 'id', 'postVariableId');
     }
 
     estConstructivas() {

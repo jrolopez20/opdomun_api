@@ -8,7 +8,7 @@ class RoleAuthotization {
    * @param {Function} next
    */
   async handle ({ auth, request }, next, schemes) {
-    if(schemes.find(item => item === auth.current.managedBy.role)) {
+    if(schemes.find(item => item === auth.current.user.role)) {
       // call next to advance the request
       await next()
     } else {
@@ -17,4 +17,4 @@ class RoleAuthotization {
   }
 }
 
-module.exports = RoleAuthotization
+module.exports = RoleAuthotization;

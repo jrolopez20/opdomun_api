@@ -47,13 +47,17 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
         throw Error('Be sure to execute database initialization script before run this seed.')
     }
     return {
-        planId: data.planId || null,
+        plan: {
+            id: data.planId || null,
+        },
         price: {
             value: faker.integer({min: 7000, max: 80000}),
             currency: 'USD'
         },
         area: faker.integer({min: 90, max: 199}),
-        homeTypeId: homeTypes[faker.integer({min: 0, max: 5})].id,
+        homeType: {
+            id: homeTypes[faker.integer({min: 0, max: 5})].id
+        },
         bedrooms: faker.integer({min: 1, max: 6}),
         bathrooms: faker.integer({min: 1, max: 3}),
         summary: faker.paragraph({sentences: 4}),
@@ -69,9 +73,14 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
             }
         ],
         address: {
-            localidadId: localidades[faker.integer({min: 10, max: 600})].id,
+            localidad: {
+                id: localidades[faker.integer({min: 10, max: 600})].id,
+            },
             description: faker.address(),
-            coordinates: faker.coordinates()
+            coordinates: {
+                longitude: faker.longitude(),
+                latitude: faker.latitude()
+            }
         },
         owner: {
             fullname: faker.name(),

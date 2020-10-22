@@ -40,3 +40,27 @@ definitions:
         type: string
       errors:
         $ref: '#/definitions/Errors'
+
+  Price:
+    type: object
+    properties:
+      value:
+        type: number
+      currency:
+        type: string
+    required:
+      - value
+      - currency
+
+  Coordinates:
+    type: object
+    properties:
+      latitude:
+        required: true
+        type: number
+      logitude:
+        required: true
+        type: string
+    required:
+      - value
+      - currency

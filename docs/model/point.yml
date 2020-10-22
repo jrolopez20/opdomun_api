@@ -1,8 +1,0 @@
-definitions:
-  Point:
-    type: object
-    properties:
-      x:
-        type: double
-      y:
-        type: double

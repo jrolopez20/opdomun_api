@@ -53,19 +53,18 @@ class Post extends Model {
      */
     getPrice(price) {
         return {
-            value: price,
+            value: CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY()),
             currency: CurrencyService.DEFAULT_CURRENCY(),
         }
     }
 
+    /**
+     * Price setter
+     * @param price
+     * @returns {*}
+     */
     setPrice(price) {
-        if (typeof price === 'number') {
-            return price
-        } else if (typeof price === 'object') {
-            return CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
-        } else {
-            throw new BadRequestException('Invalid format for price.')
-        }
+        return CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
     }
 
     static async getPost(id, auth) {
