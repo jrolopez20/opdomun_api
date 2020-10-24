@@ -159,6 +159,7 @@ Route.group(() => {
     Route.get('electrodomestico_options', 'VariableMhController.getElectrodomesticoOptions').middleware(['auth']);
 
     Route.get('tax_calculator', 'BenchmarkPriceController.index')
+        .validator('TaxCalculator');
 
 }).prefix('api');
 
