@@ -47,7 +47,7 @@ class PostService {
 
         await post.save();
 
-        const ownerObj = await Owner.addOwner({
+        await Owner.addOwner({
             postId: post.id,
             userId: user.id,
             email: owner.email,
@@ -63,8 +63,9 @@ class PostService {
         await this.initPostVariable(post);
         await this.setAu(post, postPlaces);
 
-        post = await post.calculateOpdo();
-        post.owner = ownerObj;
+        await post.calculateOpdo();
+        post = await Post.getPost(post.id, auth.user.id);
+
         return post;
     }
 
@@ -104,7 +105,7 @@ class PostService {
         // Define post close date
         await this.setExpirationDate(post.id, activeMonths);
 
-        const ownerObj = await Owner.addOwner({
+        await Owner.addOwner({
             postId: post.id,
             userId: auth.user.id,
             email: owner.email,
@@ -117,8 +118,8 @@ class PostService {
             await this.setAu(post, postPlaces);
         }
 
-        post = await post.calculateOpdo();
-        post.owner = ownerObj;
+        await post.calculateOpdo();
+        post = await Post.getPost(post.id, auth.user.id);
 
         return post;
     }
@@ -165,7 +166,9 @@ class PostService {
 
         await this.setAu(post, postPlaces);
 
-        post = await post.calculateOpdo();
+        await post.calculateOpdo();
+        post = await Post.getPost(post.id, auth.user.id);
+
         return post;
     }
 

@@ -31,7 +31,7 @@ class Post extends Model {
     }
 
     static get hidden() {
-        return ['updatedAt'];
+        return ['planId', 'homeTypeId', 'addressId','managedById', 'updatedAt'];
     }
 
     static BUILD_STATUS_TYPES() {
@@ -70,6 +70,7 @@ class Post extends Model {
     static async getPost(id, auth) {
         let post = await Post
             .query()
+            .with('plan')
             .with('managedBy')
             .with('address.localidad.municipio.provincia')
             .with('homeType')
@@ -85,8 +86,7 @@ class Post extends Model {
         try {
             const user = await auth.getUser();
             post = CurrencyService.formatPostPrice(post.toJSON(), user)
-        }
-        finally {
+        } finally {
             return post
         }
     }
@@ -146,6 +146,7 @@ class Post extends Model {
                 builder.setVisible(['id', 'type'])
             })
             .with('address.localidad.municipio.provincia')
+            .with('owner')
             .with('images', (builder) => {
                 builder.where('default', true)
             })
@@ -154,12 +155,18 @@ class Post extends Model {
         if (user.role === User.roles().MANAGER) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN users ON users.id = posts.managed_by_id WHERE users.office_id = ${user.officeId})`
+                INNER JOIN users ON users.id = posts.managed_by_id WHERE users.office_id = ${user.officeId}) OR
+                posts.id IN (SELECT posts.id FROM posts 
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
             );
         }
 
         if (user.role === User.roles().AGENT) {
-            query.andWhere('posts.managedById', user.id);
+            query.whereRaw(
+                `posts.managed_by_id = ${user.id} OR
+                posts.id IN (SELECT posts.id FROM posts 
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+            );
         }
 
         if (user.role === User.roles().CLIENT) {
@@ -200,7 +207,7 @@ class Post extends Model {
             query.andWhere('posts.price', '<=', filter.maxPrice);
         }
 
-        if (filter.localidadId) {
+        if (filter.localidadId) {0
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
                 WHERE addresses.localidad_id = ${filter.localidadId})`

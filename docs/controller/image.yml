@@ -28,11 +28,10 @@
     produces:
       - application/json
     parameters:
-      - name: postImages
+      - name: images
         in: body
         description: Array of images objects
-#        schema:
-#          $ref: "#/definitions/Image"
+
     responses:
       200:
         description: Success
@@ -67,7 +66,7 @@
       404:
         $ref: '#/responses/404NotFound'
 
-  put:
+  patch:
     tags:
       - Image
     summary: Set default image

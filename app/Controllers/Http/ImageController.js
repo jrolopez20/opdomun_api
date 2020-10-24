@@ -38,7 +38,7 @@ class ImageController {
      */
     async store({params, request, response}) {
         try {
-            const postPictures = request.file('postImages', {
+            const postPictures = request.file('images', {
                 types: ['image'],
                 extnames: ['jpg', 'jpeg', 'png'],
                 size: '1mb'
