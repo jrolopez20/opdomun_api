@@ -10,7 +10,7 @@ class BenchmarkPriceSchema extends Schema {
       table.integer('location_category_id').unsigned().notNullable().references('id').inTable('location_categories').onDelete('CASCADE')
       table.integer('architectural_typology_id').unsigned().notNullable().references('id').inTable('architectural_typologies').onDelete('CASCADE')
       table.integer('rooms').notNullable()
-      table.boolean('garage')
+      table.boolean('garage').notNullable()
       table.boolean('garden')
       table.float('reference_value').notNullable()
       table.timestamps(true, true)
