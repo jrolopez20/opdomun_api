@@ -8,6 +8,7 @@ class MunicipioSchema extends Schema {
         this.create('municipios', (table) => {
             table.increments()
             table.integer('provincia_id').unsigned().notNullable().references('id').inTable('provincias').onDelete('CASCADE')
+            table.integer('location_category_id').unsigned().notNullable().references('id').inTable('location_categories').onDelete('RESTRICT')
             table.string('title', 30).notNullable()
             table.decimal('prosp_urbana', 5).notNullable()
             table.timestamps(true, true)

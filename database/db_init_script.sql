@@ -1,6 +1,7 @@
 ﻿/**
 * Initianlization script
 *
+* 0- Location categories
 * 1- Provincias
 * 2- Municipios
 * 3- Localidades
@@ -10,8 +11,18 @@
 * 7- Nom_electrodomesticos
 * 8- Nom_moviliarios
 * 9- Nom_seg_ciudadanas
+* 10- Architectural_typologies
+* 11- Benchmark_prices
 *
 */
+
+/* 1- Data for the `location_categories` table  (Records 1 - 5) */
+INSERT INTO location_categories (id, title) VALUES (1, 'VIVIENDAS UBICADAS EN ZONAS DE DESARROLLO ECONOMICO (MARIEL)');
+INSERT INTO location_categories (id, title) VALUES (2, 'VIVIENDAS UBICADAS EN LOS MUNICIPIOS PLAYA, PLAZA, LA HABANA VIEJA, TRINIDAD Y CÁRDENAS (PENÍNSULA DE HICACOS)');
+INSERT INTO location_categories (id, title) VALUES (3, 'VIVIENDAS UBICADAS EN LOS MUNICIPIOS CERRO, CENTRO HABANA, 10 DE OCTUBRE Y LA HABANA DEL ESTE (GUANABO)');
+INSERT INTO location_categories (id, title) VALUES (4, 'VIVIENDAS UBICADAS EN EL RESTO DE LOS MUNICIPIOS DE LA HABANA Y LAS CAPITALES PROVINCIALES');
+INSERT INTO location_categories (id, title) VALUES (5, 'VIVIENDAS UBICADAS EN OTROS MUNICIPIOS DEL PAIS');
+
 
 /* 1- Data for the `provincias` table  (Records 1 - 16) */
 
@@ -65,510 +76,175 @@ VALUES (16, 'IJ', 'Isla de la Juventud');
 
 
 /* 2- Data for the `municipios` table  (Records 1 - 168) */
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (99, 8, 2, 'Trinidad', 36.34);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (109, 9, 4, 'Ciego de Avila', 64.04);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (13, 2, 1, 'Mariel', 63.11);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (23, 3, 2, 'Playa', 426.77);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (24, 3, 2, 'Plaza de la Revolución', 372.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (26, 3, 2, 'Habana Vieja', 372.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (61, 5, 2, 'Cárdenas', 76.41);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (32, 3, 3, 'Cerro', 372.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (25, 3, 3, 'Centro Habana', 372.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (31, 3, 3, 'Diez de Octubre', 457.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (28, 3, 3, 'Habana del Este', 457.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (27, 3, 4, 'Regla', 372.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (29, 3, 4, 'Guanabacoa', 426.77);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (30, 3, 4, 'San Miguel del Padrón', 457.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (33, 3, 4, 'Marianao', 426.77);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (34, 3, 4, 'La Lisa', 426.77);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (35, 3, 4, 'Boyeros', 426.77);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (36, 3, 4, 'Arroyo Naranjo', 457.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (37, 3, 4, 'Cotorro', 457.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (8, 1, 4, 'Pinar del Río', 68.29);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (20, 2, 4, 'Artemisa', 119.04);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (50, 4, 4, 'San José de las Lajas', 27.41);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (60, 5, 4, 'Matanzas', 77.22);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (1, 1, 5, 'Sandino', 13.56);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (2, 1, 5, 'Mantua', 8.89);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (3, 1, 5, 'Minas de Matahambre', 11.64);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (4, 1, 5, 'Viñales', 10.42);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (5, 1, 5, 'La Palma', 12.43);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (6, 1, 5, 'Los Palacios', 14.24);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (7, 1, 5, 'Consolación del Sur', 31.69);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (9, 1, 5, 'San Luis', 11.87);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (10, 1, 5, 'San Juan y Martínez', 15.69);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (11, 1, 5, 'Guane', 13.16);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (12, 2, 5, 'Bahía Honda', 60.04);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (14, 2, 5, 'Guanajay', 38.97);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (15, 2, 5, 'Caimito', 58.42);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (16, 2, 5, 'Bauta', 70.55);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (17, 2, 5, 'San Antonio de los Baños', 72.02);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (18, 2, 5, 'Güira de Melena', 56.03);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (19, 2, 5, 'Alquizar', 46.94);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (21, 2, 5, 'Candelaria', 29.25);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (22, 2, 5, 'San Cristóbal', 98.83);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (49, 4, 5, 'Bejucal', 10.08);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (51, 4, 5, 'Jaruco', 8.60);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (52, 4, 5, 'Santa Cruz del Norte', 12.42);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (53, 4, 5, 'Madruga', 8.57);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (54, 4, 5, 'Nueva Paz', 8.58);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (55, 4, 5, 'San Nicolás', 7.47);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (56, 4, 5, 'Güines', 23.27);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (57, 4, 5, 'Melena del Sur', 7.35);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (58, 4, 5, 'Batabanó', 9.76);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (59, 4, 5, 'Quivicán', 10.68);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (62, 5, 5, 'Martí', 10.84);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (63, 5, 5, 'Colón', 33.00);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (64, 5, 5, 'Perico', 14.92);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (65, 5, 5, 'Jovellanos', 27.77);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (66, 5, 5, 'Pedro Betancourt', 14.44);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (67, 5, 5, 'Limonar', 16.98);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (68, 5, 5, 'Unión de Reyes', 5.03);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (69, 5, 5, 'Ciénaga de Zapata', 29.29);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (70, 5, 5, 'Jagüey Grande', 13.47);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (71, 5, 5, 'Calimete', 11.53);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (72, 5, 5, 'Los Arabos', 14.49);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (73, 7, 5, 'Corralillo', 13.62);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (74, 7, 5, 'Quemado de Güines', 11.24);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (75, 7, 5, 'Sagua la Grande', 26.88);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (76, 7, 5, 'Encrucijada', 17.01);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (77, 7, 5, 'Camajuaní', 30.99);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (78, 7, 5, 'Caibarién', 21.58);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (79, 7, 5, 'Remedios', 23.29);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (80, 7, 5, 'Placetas', 34.29);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (82, 7, 5, 'Cifuentes', 14.15);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (83, 7, 5, 'Santo Domingo', 25.87);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (84, 7, 5, 'Ranchuelo', 27.74);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (85, 7, 5, 'Manicaragua', 34.15);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (86, 6, 5, 'Aguada de Pasajeros', 13.47);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (87, 6, 5, 'Rodas', 14.62);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (88, 6, 5, 'Palmira', 14.07);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (89, 6, 5, 'Lajas', 9.20);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (90, 6, 5, 'Cruces', 12.73);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (91, 6, 5, 'Cumanayagua', 20.85);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (93, 6, 5, 'Abreus', 13.32);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (94, 8, 5, 'Yaguajay', 25.59);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (95, 8, 5, 'Jatibonico', 20.06);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (96, 8, 5, 'Taguasco', 15.92);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (97, 8, 5, 'Cabaiguán', 30.08);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (98, 8, 5, 'Fomento', 14.90);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (101, 8, 5, 'La Sierpe', 8.10);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (102, 9, 5, 'Chambas', 15.62);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (103, 9, 5, 'Morón', 28.84);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (104, 9, 5, 'Bolivia', 6.53);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (105, 9, 5, '1ro de Enero', 9.68);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (106, 9, 5, 'Ciro Redondo', 12.73);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (107, 9, 5, 'Florencia', 7.98);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (108, 9, 5, 'Majagua', 10.66);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (110, 9, 5, 'Venezuela', 11.02);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (111, 9, 5, 'Baraguá', 13.60);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (112, 11, 5, 'Carlos M. de Céspedes', 5.78);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (113, 11, 5, 'Esmeralda', 7.11);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (114, 11, 5, 'Sierra de Cubitas', 4.57);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (115, 11, 5, 'Minas', 8.89);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (116, 11, 5, 'Nuevitas', 14.74);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (117, 11, 5, 'Guáimaro', 8.83);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (118, 11, 5, 'Sibanicú', 7.24);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (120, 11, 5, 'Florida', 16.88);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (121, 11, 5, 'Vertientes', 12.14);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (122, 11, 5, 'Jimaguayú', 4.99);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (123, 11, 5, 'Najasa', 3.78);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (124, 11, 5, 'Santa Cruz del Sur', 10.42);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (125, 10, 5, 'Manatí', 9.51);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (126, 10, 5, 'Puerto Padre', 28.91);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (127, 10, 5, 'Jesús Menéndez', 15.34);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (128, 10, 5, 'Majibacoa', 13.23);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (130, 10, 5, 'Jobabo', 13.67);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (131, 10, 5, 'Colombia', 10.37);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (132, 10, 5, 'Amancio', 12.30);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (133, 12, 5, 'Gibara', 23.05);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (134, 12, 5, 'Rafael Freire', 18.01);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (135, 12, 5, 'Banes', 25.81);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (136, 12, 5, 'Antillas', 4.11);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (137, 12, 5, 'Báguanos', 15.89);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (139, 12, 5, 'Calixto García', 17.84);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (140, 12, 5, 'Cacocúm', 13.32);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (141, 12, 5, 'Urbano Noris', 13.06);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (142, 12, 5, 'Cueto', 10.51);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (143, 12, 5, 'Mayarí', 32.02);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (144, 12, 5, 'Frank País', 7.76);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (145, 12, 5, 'Sagua de Tánamo', 15.17);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (146, 12, 5, 'Moa', 25.28);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (147, 13, 5, 'Río Cauto', 15.13);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (148, 13, 5, 'Cauto Cristo', 6.54);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (149, 13, 5, 'Jiguaní', 18.93);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (151, 13, 5, 'Yara', 18.18);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (152, 13, 5, 'Manzanillo', 40.37);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (153, 13, 5, 'Campechuela', 13.86);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (154, 13, 5, 'Media Luna', 10.53);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (155, 13, 5, 'Niquero', 13.39);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (156, 13, 5, 'Pilón', 9.37);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (157, 13, 5, 'Bartolome Masó', 15.60);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (158, 13, 5, 'Buey Arriba', 9.94);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (159, 13, 5, 'Guisa', 14.89);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (160, 14, 5, 'Contramaestre', 31.46);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (161, 14, 5, 'Mella', 10.54);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (162, 14, 5, 'San Luis', 23.51);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (163, 14, 5, 'Segundo Frente', 11.84);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (164, 14, 5, 'Songo - La Maya', 27.52);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (166, 14, 5, 'Palma Soriano', 36.11);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (81, 7, 4, 'Santa Clara', 127.71);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (92, 6, 4, 'Cienfuegos', 77.42);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (100, 8, 4, 'Sancti Spíritus', 66.38);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (119, 11, 4, 'Camagüey', 76.73);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (129, 10, 4, 'Las Tunas', 66.32);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (138, 12, 4, 'Holguín', 116.02);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (150, 13, 4, 'Bayamo', 75.95);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (165, 14, 4, 'Santiago de Cuba', 150.39);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (167, 14, 5, 'Tercer Frente', 9.19);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (168, 14, 5, 'Guamá', 10.20);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (169, 15, 5, 'El Salvador', 29.45);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (170, 15, 5, 'Manuel Tames', 26.30);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (171, 15, 5, 'Yateras', 13.40);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (172, 15, 5, 'Baracoa', 54.96);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (173, 15, 5, 'Maisí', 19.47);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (174, 15, 5, 'Imias', 14.51);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (175, 15, 5, 'San Antonio del Sur', 17.44);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (176, 15, 5, 'Caimanera', 7.89);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (178, 15, 5, 'Niceto Pérez', 11.57);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (179, 16, 5, 'Isla de la Juventud', 33.71);
+INSERT INTO municipios (id, provincia_id, location_category_id, title, prosp_urbana) VALUES (177, 15, 4, 'Guantánamo', 156.07);
 
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (1, 1, 'Sandino', 13.56);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (2, 1, 'Mantua', 8.89);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (3, 1, 'Minas de Matahambre', 11.64);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (4, 1, 'Viñales', 10.42);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (5, 1, 'La Palma', 12.43);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (6, 1, 'Los Palacios', 14.24);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (7, 1, 'Consolación del Sur', 31.69);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (8, 1, 'Pinar del Río', 68.29);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (9, 1, 'San Luis', 11.87);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (10, 1, 'San Juan y Martínez', 15.69);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (11, 1, 'Guane', 13.16);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (12, 2, 'Bahía Honda', 60.04);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (13, 2, 'Mariel', 63.11);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (14, 2, 'Guanajay', 38.97);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (15, 2, 'Caimito', 58.42);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (16, 2, 'Bauta', 70.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (17, 2, 'San Antonio de los Baños', 72.02);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (18, 2, 'Güira de Melena', 56.03);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (19, 2, 'Alquizar', 46.94);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (20, 2, 'Artemisa', 119.04);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (21, 2, 'Candelaria', 29.25);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (22, 2, 'San Cristóbal', 98.83);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (23, 3, 'Playa', 426.77);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (24, 3, 'Plaza de la Revolución', 372.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (25, 3, 'Centro Habana', 372.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (26, 3, 'Habana Vieja', 372.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (27, 3, 'Regla', 372.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (28, 3, 'Habana del Este', 457.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (29, 3, 'Guanabacoa', 426.77);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (30, 3, 'San Miguel del Padrón', 457.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (31, 3, 'Diez de Octubre', 457.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (32, 3, 'Cerro', 372.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (33, 3, 'Marianao', 426.77);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (34, 3, 'La Lisa', 426.77);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (35, 3, 'Boyeros', 426.77);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (36, 3, 'Arroyo Naranjo', 457.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (37, 3, 'Cotorro', 457.55);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (49, 4, 'Bejucal', 10.08);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (50, 4, 'San José de las Lajas', 27.41);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (51, 4, 'Jaruco', 8.6);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (52, 4, 'Santa Cruz del Norte', 12.42);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (53, 4, 'Madruga', 8.57);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (54, 4, 'Nueva Paz', 8.58);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (55, 4, 'San Nicolás', 7.47);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (56, 4, 'Güines', 23.27);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (57, 4, 'Melena del Sur', 7.35);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (58, 4, 'Batabanó', 9.76);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (59, 4, 'Quivicán', 10.68);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (60, 5, 'Matanzas', 77.22);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (61, 5, 'Cárdenas', 76.41);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (62, 5, 'Martí', 10.84);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (63, 5, 'Colón', 33);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (64, 5, 'Perico', 14.92);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (65, 5, 'Jovellanos', 27.77);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (66, 5, 'Pedro Betancourt', 14.44);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (67, 5, 'Limonar', 16.98);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (68, 5, 'Unión de Reyes', 5.03);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (69, 5, 'Ciénaga de Zapata', 29.29);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (70, 5, 'Jagüey Grande', 13.47);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (71, 5, 'Calimete', 11.53);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (72, 5, 'Los Arabos', 14.49);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (73, 7, 'Corralillo', 13.62);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (74, 7, 'Quemado de Güines', 11.24);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (75, 7, 'Sagua la Grande', 26.88);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (76, 7, 'Encrucijada', 17.01);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (77, 7, 'Camajuaní', 30.99);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (78, 7, 'Caibarién', 21.58);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (79, 7, 'Remedios', 23.29);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (80, 7, 'Placetas', 34.29);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (81, 7, 'Santa Clara', 127.71);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (82, 7, 'Cifuentes', 14.15);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (83, 7, 'Santo Domingo', 25.87);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (84, 7, 'Ranchuelo', 27.74);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (85, 7, 'Manicaragua', 34.15);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (86, 6, 'Aguada de Pasajeros', 13.47);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (87, 6, 'Rodas', 14.62);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (88, 6, 'Palmira', 14.07);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (89, 6, 'Lajas', 9.2);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (90, 6, 'Cruces', 12.73);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (91, 6, 'Cumanayagua', 20.85);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (92, 6, 'Cienfuegos', 77.42);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (93, 6, 'Abreus', 13.32);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (94, 8, 'Yaguajay', 25.59);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (95, 8, 'Jatibonico', 20.06);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (96, 8, 'Taguasco', 15.92);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (97, 8, 'Cabaiguán', 30.08);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (98, 8, 'Fomento', 14.9);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (99, 8, 'Trinidad', 36.34);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (100, 8, 'Sancti Spíritus', 66.38);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (101, 8, 'La Sierpe', 8.1);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (102, 9, 'Chambas', 15.62);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (103, 9, 'Morón', 28.84);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (104, 9, 'Bolivia', 6.53);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (105, 9, '1ro de Enero', 9.68);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (106, 9, 'Ciro Redondo', 12.73);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (107, 9, 'Florencia', 7.98);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (108, 9, 'Majagua', 10.66);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (109, 9, 'Ciego de Avila', 64.04);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (110, 9, 'Venezuela', 11.02);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (111, 9, 'Baraguá', 13.6);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (112, 11, 'Carlos M. de Céspedes', 5.78);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (113, 11, 'Esmeralda', 7.11);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (114, 11, 'Sierra de Cubitas', 4.57);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (115, 11, 'Minas', 8.89);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (116, 11, 'Nuevitas', 14.74);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (117, 11, 'Guáimaro', 8.83);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (118, 11, 'Sibanicú', 7.24);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (119, 11, 'Camagüey', 76.73);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (120, 11, 'Florida', 16.88);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (121, 11, 'Vertientes', 12.14);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (122, 11, 'Jimaguayú', 4.99);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (123, 11, 'Najasa', 3.78);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (124, 11, 'Santa Cruz del Sur', 10.42);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (125, 10, 'Manatí', 9.51);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (126, 10, 'Puerto Padre', 28.91);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (127, 10, 'Jesús Menéndez', 15.34);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (128, 10, 'Majibacoa', 13.23);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (129, 10, 'Las Tunas', 66.32);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (130, 10, 'Jobabo', 13.67);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (131, 10, 'Colombia', 10.37);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (132, 10, 'Amancio', 12.3);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (133, 12, 'Gibara', 23.05);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (134, 12, 'Rafael Freire', 18.01);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (135, 12, 'Banes', 25.81);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (136, 12, 'Antillas', 4.11);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (137, 12, 'Báguanos', 15.89);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (138, 12, 'Holguín', 116.02);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (139, 12, 'Calixto García', 17.84);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (140, 12, 'Cacocúm', 13.32);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (141, 12, 'Urbano Noris', 13.06);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (142, 12, 'Cueto', 10.51);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (143, 12, 'Mayarí', 32.02);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (144, 12, 'Frank País', 7.76);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (145, 12, 'Sagua de Tánamo', 15.17);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (146, 12, 'Moa', 25.28);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (147, 13, 'Río Cauto', 15.13);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (148, 13, 'Cauto Cristo', 6.54);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (149, 13, 'Jiguaní', 18.93);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (150, 13, 'Bayamo', 75.95);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (151, 13, 'Yara', 18.18);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (152, 13, 'Manzanillo', 40.37);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (153, 13, 'Campechuela', 13.86);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (154, 13, 'Media Luna', 10.53);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (155, 13, 'Niquero', 13.39);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (156, 13, 'Pilón', 9.37);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (157, 13, 'Bartolome Masó', 15.6);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (158, 13, 'Buey Arriba', 9.94);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (159, 13, 'Guisa', 14.89);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (160, 14, 'Contramaestre', 31.46);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (161, 14, 'Mella', 10.54);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (162, 14, 'San Luis', 23.51);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (163, 14, 'Segundo Frente', 11.84);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (164, 14, 'Songo - La Maya', 27.52);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (165, 14, 'Santiago de Cuba', 150.39);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (166, 14, 'Palma Soriano', 36.11);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (167, 14, 'Tercer Frente', 9.19);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (168, 14, 'Guamá', 10.2);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (169, 15, 'El Salvador', 29.45);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (170, 15, 'Manuel Tames', 26.3);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (171, 15, 'Yateras', 13.4);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (172, 15, 'Baracoa', 54.96);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (173, 15, 'Maisí', 19.47);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (174, 15, 'Imias', 14.51);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (175, 15, 'San Antonio del Sur', 17.44);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (176, 15, 'Caimanera', 7.89);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (177, 15, 'Guantánamo', 156.07);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (178, 15, 'Niceto Pérez', 11.57);
-
-INSERT INTO "municipios" ("id", "provincia_id", "title", "prosp_urbana")
-VALUES (179, 16, 'Isla de la Juventud', 33.71);
 
 
 /* 3- Data for the `localidads` table  (Records 1 - 1502) */
@@ -2213,3 +1889,290 @@ VALUES (4, 40, 'Baja');
 INSERT INTO "nom_seg_ciudadanas" ("id", "value", "title")
 VALUES (5, 20, 'Muy Baja');
 
+/* 10- Data for the `architectural_typologies` table  (Records 1 - 4) */
+INSERT INTO architectural_typologies (id, title) VALUES (1, 'Casas de paredes de mampostería y cubierta pesada');
+INSERT INTO architectural_typologies (id, title) VALUES (2, 'Casas de paredes de mampostería y cubierta ligera');
+INSERT INTO architectural_typologies (id, title) VALUES (3, 'Casas con paredes y cubierta de cualquier material');
+INSERT INTO architectural_typologies (id, title) VALUES (4, 'Apartamentos (paredes de mampostería y cubierta pesada)');
+
+/* 11- Data for the `benchmark_prices` table  (Records 1 - 280) */
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (1, 1, 1, 1, true, true, 171500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (2, 1, 1, 1, NULL, true, 150500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (3, 1, 1, 1, true, NULL, 147000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (4, 1, 1, 1, NULL, NULL, 126000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (5, 1, 1, 2, true, true, 297500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (6, 1, 1, 2, NULL, true, 276500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (7, 1, 1, 2, true, NULL, 273000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (8, 1, 1, 2, NULL, NULL, 252000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (9, 1, 1, 3, true, true, 423500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (10, 1, 1, 3, NULL, true, 402500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (11, 1, 1, 3, true, NULL, 399000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (12, 1, 1, 3, NULL, NULL, 378000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (13, 1, 1, 4, true, true, 549500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (14, 1, 1, 4, NULL, true, 525000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (15, 1, 1, 4, true, NULL, 528500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (16, 1, 1, 4, NULL, NULL, 504000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (17, 1, 2, 1, true, true, 129500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (18, 1, 2, 1, NULL, true, 108500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (19, 1, 2, 1, true, NULL, 105000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (20, 1, 2, 1, NULL, NULL, 84000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (21, 1, 2, 2, true, true, 213500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (22, 1, 2, 2, NULL, true, 192500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (23, 1, 2, 2, true, NULL, 189000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (24, 1, 2, 2, NULL, NULL, 168000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (25, 1, 2, 3, true, true, 297500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (26, 1, 2, 3, NULL, true, 276500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (27, 1, 2, 3, true, NULL, 273000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (28, 1, 2, 3, NULL, NULL, 252000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (29, 1, 2, 4, true, true, 54500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (30, 1, 2, 4, NULL, true, 51500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (31, 1, 2, 4, true, NULL, 51000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (32, 1, 2, 4, NULL, NULL, 48000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (33, 1, 3, 1, true, true, 87500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (34, 1, 3, 1, NULL, true, 66500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (35, 1, 3, 1, true, NULL, 63000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (36, 1, 3, 1, NULL, NULL, 42000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (37, 1, 3, 2, true, true, 129500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (38, 1, 3, 2, NULL, true, 108500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (39, 1, 3, 2, true, NULL, 105000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (40, 1, 3, 2, NULL, NULL, 84000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (41, 1, 3, 3, true, true, 171500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (42, 1, 3, 3, NULL, true, 150500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (43, 1, 3, 3, true, NULL, 147000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (44, 1, 3, 3, NULL, NULL, 126000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (45, 1, 3, 4, true, true, 213500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (46, 1, 3, 4, NULL, true, 192500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (47, 1, 3, 4, true, NULL, 189000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (48, 1, 3, 4, NULL, NULL, 168000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (49, 1, 4, 1, true, NULL, 105000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (50, 1, 4, 2, NULL, NULL, 84000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (51, 1, 4, 2, true, NULL, 189000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (52, 1, 4, 2, NULL, NULL, 168000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (53, 1, 4, 3, true, NULL, 273000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (54, 1, 4, 3, NULL, NULL, 252000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (55, 1, 4, 4, true, NULL, 357000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (56, 1, 4, 4, NULL, NULL, 336000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (57, 2, 1, 1, true, true, 147000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (58, 2, 1, 1, NULL, true, 129000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (59, 2, 1, 1, true, NULL, 126000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (60, 2, 1, 1, NULL, NULL, 108000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (61, 2, 1, 2, true, true, 255000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (62, 2, 1, 2, NULL, true, 237000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (63, 2, 1, 2, true, NULL, 234000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (64, 2, 1, 2, NULL, NULL, 216000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (65, 2, 1, 3, true, true, 363000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (66, 2, 1, 3, NULL, true, 345000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (67, 2, 1, 3, true, NULL, 342000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (68, 2, 1, 3, NULL, NULL, 324000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (69, 2, 1, 4, true, true, 471000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (70, 2, 1, 4, NULL, true, 453000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (71, 2, 1, 4, true, NULL, 450000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (72, 2, 1, 4, NULL, NULL, 432000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (73, 2, 2, 1, true, true, 111000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (74, 2, 2, 1, NULL, true, 93000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (75, 2, 2, 1, true, NULL, 90000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (76, 2, 2, 1, NULL, NULL, 72000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (77, 2, 2, 2, true, true, 183000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (78, 2, 2, 2, NULL, true, 165000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (79, 2, 2, 2, true, NULL, 162000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (80, 2, 2, 2, NULL, NULL, 144000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (81, 2, 2, 3, true, true, 255000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (82, 2, 2, 3, NULL, true, 237000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (83, 2, 2, 3, true, NULL, 234000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (84, 2, 2, 3, NULL, NULL, 216000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (85, 2, 2, 4, true, true, 327000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (86, 2, 2, 4, NULL, true, 309000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (87, 2, 2, 4, true, NULL, 306000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (88, 2, 2, 4, NULL, NULL, 288000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (89, 2, 3, 1, true, true, 75000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (90, 2, 3, 1, NULL, true, 57000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (91, 2, 3, 1, true, NULL, 54000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (92, 2, 3, 1, NULL, NULL, 36000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (93, 2, 3, 2, true, true, 111000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (94, 2, 3, 2, NULL, true, 93000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (95, 2, 3, 2, true, NULL, 90000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (96, 2, 3, 2, NULL, NULL, 72000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (97, 2, 3, 3, true, true, 147000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (98, 2, 3, 3, NULL, true, 129000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (99, 2, 3, 3, true, NULL, 126000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (100, 2, 3, 3, NULL, NULL, 108000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (101, 2, 3, 4, true, true, 183000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (102, 2, 3, 4, NULL, true, 165000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (103, 2, 3, 4, true, NULL, 162000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (104, 2, 3, 4, NULL, NULL, 144000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (105, 2, 4, 1, true, NULL, 90000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (106, 2, 4, 1, NULL, NULL, 72000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (107, 2, 4, 2, true, NULL, 162000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (108, 2, 4, 2, NULL, NULL, 144000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (109, 2, 4, 3, true, NULL, 234000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (110, 2, 4, 3, NULL, NULL, 216000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (111, 2, 4, 4, true, NULL, 306000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (112, 2, 4, 4, NULL, NULL, 288000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (113, 3, 1, 1, true, true, 122500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (114, 3, 1, 1, NULL, true, 107500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (115, 3, 1, 1, true, NULL, 105000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (116, 3, 1, 1, NULL, NULL, 90000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (117, 3, 1, 2, true, true, 212500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (118, 3, 1, 2, NULL, true, 197500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (119, 3, 1, 2, true, NULL, 195000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (120, 3, 1, 2, NULL, NULL, 180000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (121, 3, 1, 3, true, true, 302500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (122, 3, 1, 3, NULL, true, 287500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (123, 3, 1, 3, true, NULL, 285000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (124, 3, 1, 3, NULL, NULL, 270000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (125, 3, 1, 4, true, true, 392500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (126, 3, 1, 4, NULL, true, 377500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (127, 3, 1, 4, true, NULL, 375000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (128, 3, 1, 4, NULL, NULL, 360000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (129, 3, 2, 1, true, true, 92500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (130, 3, 2, 1, NULL, true, 77500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (131, 3, 2, 1, true, NULL, 75000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (132, 3, 2, 1, NULL, NULL, 60000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (133, 3, 2, 2, true, true, 152500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (134, 3, 2, 2, NULL, true, 137500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (135, 3, 2, 2, true, NULL, 135000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (136, 3, 2, 2, NULL, NULL, 120000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (137, 3, 2, 3, true, true, 212500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (138, 3, 2, 3, NULL, true, 197500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (139, 3, 2, 3, true, NULL, 195000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (140, 3, 2, 3, NULL, NULL, 180000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (141, 3, 2, 4, true, true, 272500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (142, 3, 2, 4, NULL, true, 257500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (143, 3, 2, 4, true, NULL, 255000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (144, 3, 2, 4, NULL, NULL, 240000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (145, 3, 3, 1, true, true, 62500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (146, 3, 3, 1, NULL, true, 47500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (147, 3, 3, 1, true, NULL, 45000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (148, 3, 3, 1, NULL, NULL, 30000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (149, 3, 3, 2, true, true, 92500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (150, 3, 3, 2, NULL, true, 77500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (151, 3, 3, 2, true, NULL, 75000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (152, 3, 3, 2, NULL, NULL, 60000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (153, 3, 3, 3, true, true, 122500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (154, 3, 3, 3, NULL, true, 107500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (155, 3, 3, 3, true, NULL, 105000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (156, 3, 3, 3, NULL, NULL, 90000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (157, 3, 3, 4, true, true, 152500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (158, 3, 3, 4, NULL, true, 137500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (159, 3, 3, 4, true, NULL, 135000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (160, 3, 3, 4, NULL, NULL, 120000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (161, 3, 4, 1, true, NULL, 75000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (162, 3, 4, 1, NULL, NULL, 60000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (163, 3, 4, 2, true, NULL, 135000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (164, 3, 4, 2, NULL, NULL, 120000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (165, 3, 4, 3, true, NULL, 195000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (166, 3, 4, 3, NULL, NULL, 180000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (167, 3, 4, 4, true, NULL, 255000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (168, 3, 4, 4, NULL, NULL, 240000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (169, 4, 1, 1, true, true, 98000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (170, 4, 1, 1, NULL, true, 86000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (171, 4, 1, 1, true, NULL, 84000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (172, 4, 1, 1, NULL, NULL, 72000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (173, 4, 1, 2, true, true, 170000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (174, 4, 1, 2, NULL, true, 158000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (175, 4, 1, 2, true, NULL, 156000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (176, 4, 1, 2, NULL, NULL, 144000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (177, 4, 1, 3, true, true, 242000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (178, 4, 1, 3, NULL, true, 230000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (179, 4, 1, 3, true, NULL, 228000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (180, 4, 1, 3, NULL, NULL, 216000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (181, 4, 1, 4, true, true, 314000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (182, 4, 1, 4, NULL, true, 302000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (183, 4, 1, 4, true, NULL, 300000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (184, 4, 1, 4, NULL, NULL, 288000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (185, 4, 2, 1, true, true, 74000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (186, 4, 2, 1, NULL, true, 62000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (187, 4, 2, 1, true, NULL, 60000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (188, 4, 2, 1, NULL, NULL, 48000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (189, 4, 2, 2, true, true, 122000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (190, 4, 2, 2, NULL, true, 110000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (191, 4, 2, 2, true, NULL, 108000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (192, 4, 2, 2, NULL, NULL, 96000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (193, 4, 2, 3, true, true, 170000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (194, 4, 2, 3, NULL, true, 158000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (195, 4, 2, 3, true, NULL, 156000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (196, 4, 2, 3, NULL, NULL, 144000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (197, 4, 2, 4, true, true, 218000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (198, 4, 2, 4, NULL, true, 206000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (199, 4, 2, 4, true, NULL, 204000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (200, 4, 2, 4, NULL, NULL, 192000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (201, 4, 3, 1, true, true, 50000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (202, 4, 3, 1, NULL, true, 38000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (203, 4, 3, 1, true, NULL, 36000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (204, 4, 3, 1, NULL, NULL, 24000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (205, 4, 3, 2, true, true, 74000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (206, 4, 3, 2, NULL, true, 62000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (207, 4, 3, 2, true, NULL, 60000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (208, 4, 3, 2, NULL, NULL, 48000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (209, 4, 3, 3, true, true, 98000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (210, 4, 3, 3, NULL, true, 86000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (211, 4, 3, 3, true, NULL, 84000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (212, 4, 3, 3, NULL, NULL, 72000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (213, 4, 3, 4, true, true, 122000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (214, 4, 3, 4, NULL, true, 110000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (215, 4, 3, 4, true, NULL, 108000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (216, 4, 3, 4, NULL, NULL, 96000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (217, 4, 4, 1, true, NULL, 60000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (218, 4, 4, 1, NULL, NULL, 48000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (219, 4, 4, 2, true, NULL, 108000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (220, 4, 4, 2, NULL, NULL, 96000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (221, 4, 4, 3, true, NULL, 156000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (222, 4, 4, 3, NULL, NULL, 144000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (223, 4, 4, 4, true, NULL, 204000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (224, 4, 4, 4, NULL, NULL, 192000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (225, 5, 1, 1, true, true, 36750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (226, 5, 1, 1, NULL, true, 32250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (227, 5, 1, 1, true, NULL, 31500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (228, 5, 1, 1, NULL, NULL, 27000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (229, 5, 1, 2, true, true, 63750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (230, 5, 1, 2, NULL, true, 59250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (231, 5, 1, 2, true, NULL, 58500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (232, 5, 1, 2, NULL, NULL, 54000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (233, 5, 1, 3, true, true, 90750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (234, 5, 1, 3, NULL, true, 86250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (235, 5, 1, 3, true, NULL, 85500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (236, 5, 1, 3, NULL, NULL, 81000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (237, 5, 1, 4, true, true, 117750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (238, 5, 1, 4, NULL, true, 113250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (239, 5, 1, 4, true, NULL, 112500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (240, 5, 1, 4, NULL, NULL, 108000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (241, 5, 2, 1, true, true, 27750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (242, 5, 2, 1, NULL, true, 23250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (243, 5, 2, 1, true, NULL, 22500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (244, 5, 2, 1, NULL, NULL, 18000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (245, 5, 2, 2, true, true, 45750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (246, 5, 2, 2, NULL, true, 41250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (247, 5, 2, 2, true, NULL, 40500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (248, 5, 2, 2, NULL, NULL, 36000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (249, 5, 2, 3, true, true, 63750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (250, 5, 2, 3, NULL, true, 59250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (251, 5, 2, 3, true, NULL, 58500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (252, 5, 2, 3, NULL, NULL, 54000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (253, 5, 2, 4, true, true, 81750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (254, 5, 2, 4, NULL, true, 77250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (255, 5, 2, 4, true, NULL, 76500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (256, 5, 2, 4, NULL, NULL, 72000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (257, 5, 3, 1, true, true, 18750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (258, 5, 3, 1, NULL, true, 14250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (259, 5, 3, 1, true, NULL, 13500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (260, 5, 3, 1, NULL, NULL, 9000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (261, 5, 3, 2, true, true, 27750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (262, 5, 3, 2, NULL, true, 23250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (263, 5, 3, 2, true, NULL, 22500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (264, 5, 3, 2, NULL, NULL, 18000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (265, 5, 3, 3, true, true, 36750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (266, 5, 3, 3, NULL, true, 32250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (267, 5, 3, 3, true, NULL, 31500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (268, 5, 3, 3, NULL, NULL, 27000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (269, 5, 3, 4, true, true, 45750);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (270, 5, 3, 4, NULL, true, 41250);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (271, 5, 3, 4, true, NULL, 40500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (272, 5, 3, 4, NULL, NULL, 36000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (273, 5, 4, 1, true, NULL, 22500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (274, 5, 4, 1, NULL, NULL, 18000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (275, 5, 4, 2, true, NULL, 40500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (276, 5, 4, 2, NULL, NULL, 36000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (277, 5, 4, 3, true, NULL, 58500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (278, 5, 4, 3, NULL, NULL, 54000);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (279, 5, 4, 4, true, NULL, 76500);
+INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (280, 5, 4, 4, NULL, NULL, 72000);
