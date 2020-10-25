@@ -1,0 +1,38 @@
+/tax_calculator:
+  get:
+    tags:
+      - Tax calculator
+    summary: Calculate benchmark price and its tax
+    produces:
+      - application/json
+    parameters:
+      - name: locationCategoryId
+        required: true
+        in: query
+        type: integer
+      - name: architecturalTypologyId
+        required: true
+        in: query
+        type: integer
+      - name: rooms
+        required: true
+        in: query
+        type: integer
+      - name: garage
+        required: true
+        in: query
+        type: boolean
+      - name: garden
+        in: query
+        type: boolean
+    responses:
+      200:
+        description: Success
+        type: object
+        properties:
+          referenceValue:
+            required: true
+            type: number
+          tax:
+            required: true
+            type: number

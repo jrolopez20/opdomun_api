@@ -27,7 +27,7 @@ class BenchmarkPriceService {
      * @param garden
      * @returns {Promise<{tax: number, referenceValue: number}>}
      */
-    static async calculate(locationCategoryId, architecturalTypologyId, rooms, garage = null, garden = null) {
+    static async calculate(locationCategoryId, architecturalTypologyId, rooms, garage, garden = null) {
         const query = BenchmarkPrice
             .query()
             .where('locationCategoryId', locationCategoryId)
@@ -35,7 +35,7 @@ class BenchmarkPriceService {
             .where('rooms', (rooms < 4 ? rooms : 4))
             .where('garage', strToBool(garage))
 
-        if(architecturalTypologyId === 4){
+        if(architecturalTypologyId !== 4) {
             if (strToBool(garden)) {
                 query.where('garden', true)
             }else {

@@ -14,6 +14,7 @@ class Municipio extends Model {
             .query()
             .setVisible(['id', 'title', 'prospUrbana'])
             .with('provincia')
+            .with('locationCategory')
             .where('provincia_id', provinciaId)
             .fetch();
 
@@ -26,6 +27,10 @@ class Municipio extends Model {
 
     localidads() {
         return this.hasMany('App/Models/Localidad', 'id', 'municipioId')
+    }
+
+    locationCategory() {
+        return this.belongsTo('App/Models/LocationCategory', 'locationCategoryId', 'id');
     }
 }
 

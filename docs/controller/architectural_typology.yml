@@ -1,0 +1,14 @@
+/architectural_typologies:
+  get:
+    tags:
+      - Tax calculator
+    description: Architectural typologies list
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/ArchitecturalTypology'

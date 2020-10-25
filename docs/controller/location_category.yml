@@ -1,0 +1,14 @@
+/location_categories:
+  get:
+    tags:
+      - Tax calculator
+    description: Location categories list
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/LocationCategory'

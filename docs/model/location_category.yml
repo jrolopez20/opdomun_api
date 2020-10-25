@@ -1,0 +1,13 @@
+definitions:
+  LocationCategory:
+    type: object
+    properties:
+      id:
+        type: integer
+        readOnly: true
+      title:
+        type: string
+        required: true
+    required:
+      - id
+      - title

@@ -36,6 +36,16 @@ Route.group(() => {
     // Offices
     Route.get('offices', 'OfficeController.index');
 
+    // Tax calculator
+    Route.get('tax_calculator', 'BenchmarkPriceController.index')
+        .validator('TaxCalculator');
+
+    // LocationCategory
+    Route.get('location_categories', 'LocationCategoryController.index');
+
+    // ArchitecturalTypology
+    Route.get('architectural_typologies', 'ArchitecturalTypologyController.index');
+
     // Images
     Route.resource('posts.images', 'ImageController')
         .middleware(new Map([
@@ -157,9 +167,6 @@ Route.group(() => {
     Route.get('sol_tecnico_constructiva_options', 'VariableTcController.getSolTecnicoConstructivaValues').middleware(['auth']);
     Route.get('moviliario_options', 'VariableMhController.getMoviliarioOptions').middleware(['auth']);
     Route.get('electrodomestico_options', 'VariableMhController.getElectrodomesticoOptions').middleware(['auth']);
-
-    Route.get('tax_calculator', 'BenchmarkPriceController.index')
-        .validator('TaxCalculator');
 
 }).prefix('api');
 

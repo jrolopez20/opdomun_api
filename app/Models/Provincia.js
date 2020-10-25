@@ -10,7 +10,7 @@ class Provincia extends Model {
     }
 
     static async getProvincias() {
-        const provincias = Provincia.query().fetch();
+        const provincias = await Provincia.query().fetch();
 
         return provincias;
     }

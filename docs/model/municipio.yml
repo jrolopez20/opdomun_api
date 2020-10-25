@@ -7,6 +7,8 @@ definitions:
         readOnly: true
       provincia:
         $ref: '#/definitions/Provincia'
+      locationCategory:
+        $ref: '#/definitions/LocationCategory'
       title:
         type: string
       prospUrbana:
