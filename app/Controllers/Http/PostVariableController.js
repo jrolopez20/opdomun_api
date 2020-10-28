@@ -12,6 +12,7 @@ class PostVariableController {
             .query()
             .with('variable')
             .where('postId', params.id)
+            .orderBy('variableId')
             .fetch();
 
         return response.json(variables);

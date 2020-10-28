@@ -38,7 +38,7 @@ class Post extends Model {
         return {
             EXCELENT: 'EXCELLENT',
             VERY_GOOD: 'VERY_GOOD',
-            GODD: 'GOOD',
+            GOOD: 'GOOD',
             REGULAR: 'REGULAR',
             BAD: 'BAD',
             VERY_BAD: 'VERY_BAD',
@@ -64,7 +64,7 @@ class Post extends Model {
      * @returns {*}
      */
     setPrice(price) {
-        return CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY());
+        return price ? CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY()) : null;
     }
 
     static async getPost(id, auth) {

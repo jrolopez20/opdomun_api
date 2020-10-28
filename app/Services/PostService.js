@@ -8,9 +8,9 @@ const Database = use('Database');
 const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
+const Address = use('App/Models/Address')
 const NotificationService = use('App/Services/NotificationService')
 const AddressService = use('App/Services/AddressService')
-const CurrencyService = use('App/Services/CurrencyService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 
 class PostService {
@@ -19,7 +19,7 @@ class PostService {
         {
             plan,
             address,
-            price,
+            price = null,
             area,
             bedrooms,
             bathrooms,
@@ -29,12 +29,12 @@ class PostService {
             owner,
             activeMonths
         },
-        user) {
+        auth) {
         const addressObj = await AddressService.addAddress(address)
         let post = new Post();
 
         post = Object.assign(post, {
-            managedById: user.id,
+            managedById: auth.user.id,
             addressId: addressObj.id,
             planId: plan ? plan.id : null,
             price,
@@ -49,7 +49,7 @@ class PostService {
 
         await Owner.addOwner({
             postId: post.id,
-            userId: user.id,
+            userId: auth.user.id,
             email: owner.email,
             fullname: owner.fullname,
             telephone: owner.telephone
@@ -64,7 +64,7 @@ class PostService {
         await this.setAu(post, postPlaces);
 
         await post.calculateOpdo();
-        post = await Post.getPost(post.id, auth.user.id);
+        post = await Post.getPost(post.id, auth);
 
         return post;
     }
@@ -79,49 +79,74 @@ class PostService {
             homeType,
             summary,
             postPlaces,
-            owner
+            owner,
+            images
         },
         auth
     ) {
         const freePlan = await Plan.findBy('type', Plan.TYPES().FREE)
         const activeMonths = 1;
-        const addressObj = await AddressService.addAddress(address)
 
-        let post = new Post();
+        //Begin Transaction to save a Post
+        const trx = await Database.beginTransaction()
+        try {
+            // Store Address
+            let addressObj = new Address();
+            addressObj.localidadId = address.localidad.id
+            addressObj.description = address.description
+            addressObj.coordinates = address.coordinates
+            await addressObj.save(trx);
 
-        post = Object.assign(post, {
-            planId: freePlan.id,
-            addressId: addressObj.id,
-            price,
-            area,
-            bedrooms,
-            bathrooms,
-            homeTypeId: homeType.id,
-            summary,
-            publishedAt: new Date()
-        });
+            // Store post
+            let post = await addressObj.post()
+                .create({
+                    planId: freePlan.id,
+                    price,
+                    area,
+                    bedrooms,
+                    bathrooms,
+                    homeTypeId: homeType.id,
+                    summary,
+                    publishedAt: new Date()
+                }, trx);
 
-        await post.save();
-        // Define post close date
-        await this.setExpirationDate(post.id, activeMonths);
+            // Store owner
+            await post.owner().create({
+                ...owner,
+                userId: auth.user.id
+            }, trx);
 
-        await Owner.addOwner({
-            postId: post.id,
-            userId: auth.user.id,
-            email: owner.email,
-            fullname: owner.fullname,
-            telephone: owner.telephone
-        });
+            // Store images
+            if (images && images.length) {
+                const hasDefaultImage = images.find(img => img.default)
+                if (!hasDefaultImage) {
+                    images[0].default = true
+                }
 
-        await this.initPostVariable(post);
-        if (postPlaces) {
-            await this.setAu(post, postPlaces);
+                await post.images()
+                    .createMany(images, trx)
+            }
+
+            // End transaction
+            await trx.commit();
+
+            // Define post close date
+            await this.setExpirationDate(post.id, activeMonths);
+
+            await this.initPostVariable(post);
+            if (postPlaces) {
+                await this.setAu(post, postPlaces);
+            }
+
+            await post.calculateOpdo();
+            post = await Post.getPost(post.id, auth);
+
+            return post;
+        } catch (e) {
+            console.log(e)
+            trx.rollback();
+            throw new Error(e.message)
         }
-
-        await post.calculateOpdo();
-        post = await Post.getPost(post.id, auth.user.id);
-
-        return post;
     }
 
     static async setFreePost(postId, {
@@ -133,43 +158,119 @@ class PostService {
         homeType,
         summary,
         postPlaces,
-        owner
-    }) {
+        owner,
+        images
+    }, auth) {
         let post = await Post.find(postId);
         if (!post) {
             throw new ResourceNotFoundException();
         }
 
-        post = Object.assign(post, {
-            price,
-            area,
-            bedrooms,
-            bathrooms,
-            homeTypeId: homeType.id,
-            summary
-        });
+        //Begin Transaction to save a Post
+        const trx = await Database.beginTransaction()
+        try {
+            post = Object.assign(post, {
+                price,
+                area,
+                bedrooms,
+                bathrooms,
+                homeTypeId: homeType.id,
+                summary
+            });
 
-        await post.load('owner');
-        const ownerObj = await post.getRelated('owner');
-        ownerObj.fullname = owner.fullname;
-        ownerObj.telephone = owner.telephone;
-        ownerObj.email = owner.email;
-        await ownerObj.save()
+            // Edit Owner
+            if (owner) {
+                await post.load('owner');
+                const ownerObj = await post.getRelated('owner');
+                ownerObj.fullname = owner.fullname;
+                ownerObj.telephone = owner.telephone;
+                ownerObj.email = owner.email;
+                await ownerObj.save(trx)
+            }
 
-        await post.load('address');
-        const addressObj = await post.getRelated('address');
-        addressObj.description = address.description;
-        if (address.coordinates) {
-            addressObj.coordinates = address.coordinates;
+            // Edit address
+            if (address) {
+                await post.load('address');
+                const addressObj = await post.getRelated('address');
+
+                if (address.description) {
+                    addressObj.description = address.description;
+                }
+                if (address.coordinates) {
+                    addressObj.coordinates = address.coordinates;
+                }
+
+                await addressObj.save(trx)
+            }
+
+            // Store images
+            if (images && images.length > 0) {
+                await post.load('images')
+                const currentImages = (await post.getRelated('images')).toJSON();
+                console.log('news', images)
+                console.log('current', currentImages)
+
+                if (currentImages) {
+                    const deprecatedImages = currentImages.filter(c => !images.find(i => c.id === i.id))
+                    if (deprecatedImages) {
+                        // Remove deprecated images.
+                        const ids = []
+                        deprecatedImages.map(img => {
+                            ids.push(img.id)
+                        });
+                        console.log(ids)
+                        await Image
+                            .query()
+                            .whereIn('id', ids)
+                            .transacting(trx)
+                            .delete()
+                    }
+                }
+
+                // Check for default image
+                const hasDefaultImage = images.find(img => img.default)
+                if (!hasDefaultImage) {
+                    images[0].default = true
+                }
+
+                let defaultFlag = false;
+                images.forEach(async (img) => {
+                    // Validate only one image by default
+                    if (defaultFlag) img.default = false
+                    else if (img.default) defaultFlag = true
+
+                    if (img.id) {
+                        await Image
+                            .query()
+                            .where('id', img.id)
+                            .update({
+                                url: img.url,
+                                default: img.default,
+                            }, trx)
+                    } else {
+                        await post
+                            .images()
+                            .create(img, trx)
+                    }
+                })
+            }
+
+
+            await this.setAu(post, postPlaces);
+
+            await post.calculateOpdo();
+            post = await Post.getPost(post.id, auth);
+
+            // End transaction
+            await trx.commit();
+
+            return post;
+        } catch (e) {
+            console.log('error=>', e)
+            trx.rollback();
+            throw new Error(e.message)
+        } finally {
         }
-        await addressObj.save()
-
-        await this.setAu(post, postPlaces);
-
-        await post.calculateOpdo();
-        post = await Post.getPost(post.id, auth.user.id);
-
-        return post;
     }
 
     static async setPost(

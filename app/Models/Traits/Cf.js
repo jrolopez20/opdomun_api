@@ -8,7 +8,7 @@ class Cf {
 
     Model.prototype.calculateCf = async function (windowCategory, windowArea, puntal, solarProtection = 0,
                                                   eastProtection = 0, southProtection = 0, westProtection = 0) {
-      let post = await Post.find(this.relHor);
+      let post = await Post.find(this.postId);
 
       const tmpWindowArea = parseFloat(windowArea * windowCategory)
       let tempAreaVentanaEntreAreaPiso = tmpWindowArea / parseFloat(post.area)

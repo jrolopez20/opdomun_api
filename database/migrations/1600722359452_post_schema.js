@@ -28,7 +28,7 @@ class PostSchema extends Schema {
                 [
                     Post.BUILD_STATUS_TYPES().EXCELENT,
                     Post.BUILD_STATUS_TYPES().VERY_GOOD,
-                    Post.BUILD_STATUS_TYPES().GODD,
+                    Post.BUILD_STATUS_TYPES().GOOD,
                     Post.BUILD_STATUS_TYPES().REGULAR,
                     Post.BUILD_STATUS_TYPES().BAD,
                     Post.BUILD_STATUS_TYPES().VERY_BAD,

@@ -91,7 +91,7 @@ class PostController {
                 postPlaces,
                 owner,
                 activeMonths
-            }, auth.user);
+            }, auth);
 
             return response.status(201).json(post)
         } catch (e) {
@@ -214,11 +214,11 @@ class PostController {
     async addFreePost({request, response, auth}) {
         try {
             const {
-                address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner
+                address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner, images
             } = request.all();
 
             const post = await PostService.addFreePost({
-                address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner
+                address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner, images
             }, auth);
 
             return response.status(201).json(post)

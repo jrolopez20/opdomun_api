@@ -45,7 +45,7 @@ class Ec {
           '65': 10.252,
           '70': 1.495
         },
-        [Post.BUILD_STATUS_TYPES().GODD]: {
+        [Post.BUILD_STATUS_TYPES().GOOD]: {
           '1': 97.48,
           '5': 93.83,
           '10': 89.7,

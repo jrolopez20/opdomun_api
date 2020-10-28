@@ -28,14 +28,19 @@ class PostSeeder {
             await PostService.addFreePost(post.toJSON(), {user});
         }
 
-        // Create PREMIUM dummy posts
+        // Create PREMIUM dummy posts and Appraisals
         const agents = await User.query().where('role', User.roles().AGENT).fetch();
         const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
         for (const agent of agents.toJSON()) {
-            const obj = await Factory.model('App/Models/Post').make({planId: premiumPlan.id})
-            obj.activeMonths = 3;
-            const post = await PostService.addPost(obj.toJSON(), agent);
+            let post = await Factory.model('App/Models/Post').make({plan: premiumPlan})
+            post.activeMonths = 3;
+            post = await PostService.addPost(post.toJSON(), {user: agent});
             await PostService.publishPost(post.id)
+
+            const appraisalObj = await Factory.model('App/Models/Post').make()
+            const appraisal = appraisalObj.toJSON()
+            delete appraisal.images
+            await PostService.addPost(appraisal, {user: agent});
         }
     }
 }

@@ -47,9 +47,7 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
         throw Error('Be sure to execute database initialization script before run this seed.')
     }
     return {
-        plan: {
-            id: data.planId || null,
-        },
+        plan: data.plan || null,
         price: {
             value: faker.integer({min: 7000, max: 80000}),
             currency: 'USD'
@@ -86,7 +84,17 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
             fullname: faker.name(),
             email: faker.email(),
             telephone: faker.phone({formatted: false})
-        }
+        },
+        images: [
+            {
+                url: faker.avatar({protocol: 'https', fileExtension: 'jpg'}),
+                default: true
+            },
+            {
+                url: faker.avatar({protocol: 'https', fileExtension: 'jpg'}),
+                default: false
+            }
+        ]
     }
 });
 

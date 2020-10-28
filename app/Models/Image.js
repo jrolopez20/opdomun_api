@@ -22,8 +22,12 @@ class Image extends Model {
         return this.belongsTo('App/Models/Post', 'postId', 'id');
     }
 
-    getUrl(value) {
-        return value ? Image.pictureBaseUrl() + value : null
+    setUrl(url) {
+        if (url.includes('http://') || url.includes('https://')) {
+            return url
+        } else {
+            return Image.pictureBaseUrl() + url
+        }
     }
 
     static async removeAllImgOnDrive(postId) {

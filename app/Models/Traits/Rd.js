@@ -45,7 +45,7 @@ class Rd {
           'post_variables.points'
         )
         .innerJoin('variables', 'variables.id', 'post_variables.variable_id')
-        .where('post_variables.post_id', this.post_id)
+        .where('post_variables.post_id', this.postId)
         .andWhere('variables.cod', 'in', ['Tc', 'Ec']);
 
       return variables;

@@ -12,6 +12,7 @@ class StorePost {
             bedrooms: 'required|number',
             bathrooms: 'required|number',
             homeType: 'required|object',
+            owner: 'required|object',
             plan: 'object',
         }
     }

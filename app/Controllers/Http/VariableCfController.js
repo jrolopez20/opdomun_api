@@ -52,15 +52,20 @@ class VariableCfController {
             } else {
                 let postVariable = await PostVariable.find(params.id)
 
-                let varConforEfic = await VarConforEficiencia.findBy('postId', postVariable.postId)
+                let varConforEfic = await VarConforEficiencia.findBy('postId', postVariable.toJSON().postId)
+
                 if (!varConforEfic) {
                     varConforEfic = new VarConforEficiencia()
-                    varConforEfic.postId = postVariable.postId;
+                    varConforEfic.postId = postVariable.toJSON().postId
                 }
 
-                varConforEfic.fill({
-                    windowCategory, windowArea, puntal, solarProtection, eastProtection, southProtection, westProtection
-                });
+                varConforEfic.windowCategory = windowCategory
+                varConforEfic.windowArea= windowArea
+                varConforEfic.puntal = puntal
+                varConforEfic.solarProtection = solarProtection
+                varConforEfic.eastProtection = eastProtection
+                varConforEfic.southProtection = southProtection
+                varConforEfic.westProtection = westProtection
 
                 await varConforEfic.save();
 

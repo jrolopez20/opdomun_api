@@ -34,6 +34,7 @@ class VariableRdController {
             let ecResult = 0;
 
             const variables = await postVariable.getRdRequiredData();
+
             variables.map(variable => {
                 if (variable.points === null) {
                     throw new Error(`Debe completar primero la variable ${variable.title}`);
