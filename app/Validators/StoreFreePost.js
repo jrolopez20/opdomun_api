@@ -9,7 +9,7 @@ class StoreFreePost {
         return {
             address: 'required|object|address',
             owner: 'required|object',
-            images: 'required|object|images',
+            images: 'required|images',
             price: 'required|object|price',
             area: 'required|number',
             bedrooms: 'required|number',
@@ -25,7 +25,6 @@ class StoreFreePost {
             'owner.required': 'You must provide owner info',
             'owner.object': 'The field owner must be a valid owner object',
             'images.required': 'You must provide images list',
-            'images.object': 'The field images must be a valid images list',
             'price.required': 'You must provide a price.',
             'price.object': 'The field price must be a valid price object',
             'area.required': 'You must provide an area.',

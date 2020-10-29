@@ -6,7 +6,6 @@ use('App/Validators/PriceValidator');
 class UpdateFreePost {
     get rules() {
         return {
-            owner: 'required|object',
             price: 'required|object|price',
             area: 'required|number',
             bedrooms: 'required|number',
@@ -17,8 +16,6 @@ class UpdateFreePost {
 
     get messages() {
         return {
-            'owner.required': 'You must provide owner info',
-            'owner.object': 'The field owner must be a valid owner object',
             'price.required': 'You must provide a price.',
             'price.object': 'The field price must be a valid price object',
             'area.required': 'You must provide an area.',

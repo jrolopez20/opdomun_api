@@ -112,7 +112,9 @@ class PostService {
 
             // Store owner
             await post.owner().create({
-                ...owner,
+                fullname: owner.fullname,
+                email: owner.email,
+                telephone: owner.telephone,
                 userId: auth.user.id
             }, trx);
 
@@ -255,7 +257,6 @@ class PostService {
                 })
             }
 
-
             await this.setAu(post, postPlaces);
 
             await post.calculateOpdo();
@@ -266,7 +267,7 @@ class PostService {
 
             return post;
         } catch (e) {
-            console.log('error=>', e)
+            console.log(e)
             trx.rollback();
             throw new Error(e.message)
         } finally {
