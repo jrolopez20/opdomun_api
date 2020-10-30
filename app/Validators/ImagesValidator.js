@@ -3,7 +3,7 @@ const Validator = use('Validator');
 const Plan = use('App/Models/Plan');
 
 const checkImages = async (data, field, message, args, get) => {
-    if (data[field] && data[field].length > 1) {
+    if (data[field] && data[field].length > 0) {
         if (data['plan']) {
             const plan = await Plan.find('id', data['plan'].id);
 
