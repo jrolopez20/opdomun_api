@@ -141,7 +141,7 @@ class Post extends Model {
     static async getPosts(planId = null, page = 1, limit = 20, filter, user) {
         const query = Post
             .query()
-            .setVisible(['id', 'price', 'publishedAt', 'closedAt', 'sold'])
+            .setVisible(['id', 'price', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'type'])
             })

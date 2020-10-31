@@ -152,7 +152,6 @@ class PostService {
     }
 
     static async setFreePost(postId, {
-        address,
         price,
         area,
         bedrooms,
@@ -160,8 +159,9 @@ class PostService {
         homeType,
         summary,
         postPlaces,
-        owner,
-        images
+        address = null,
+        owner = null,
+        images = null
     }, auth) {
         let post = await Post.find(postId);
         if (!post) {
