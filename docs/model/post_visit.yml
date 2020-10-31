@@ -9,6 +9,8 @@ definitions:
         $ref: '#/definitions/Post'
       total:
         type: integer
+      lastVisit:
+        type: datetime
     required:
       - id
       - post

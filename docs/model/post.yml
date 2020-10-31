@@ -16,6 +16,8 @@ definitions:
         $ref: '#/definitions/HomeType'
       plan:
         $ref: '#/definitions/Plan'
+      postVisit:
+        $ref: '#/definitions/PostVisit'
       images:
         type: array
         items:

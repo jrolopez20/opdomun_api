@@ -9,6 +9,19 @@ class PostVisit extends Model {
     return ['postId', 'createdAt', 'updatedAt'];
   }
 
+  static get computed () {
+    return ['lastVisit']
+  }
+
+  getLastVisit ({ updatedAt }) {
+    return updatedAt
+  }
+
+  static get lasVisit() {
+    return new Date();
+  }
+
+
   static async inrementVisit(postId) {
     const postVisit = await PostVisit.findOrCreate(
       {postId},
