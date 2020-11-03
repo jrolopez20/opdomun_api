@@ -201,13 +201,21 @@ class Post extends Model {
             query.andWhere('posts.bathrooms', filter.bathrooms);
         }
         if (filter.minPrice) {
-            query.andWhere('posts.price', '>=', filter.minPrice);
+            // Get the current currency
+            const currentCurrency = user ? user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
+            // Transform price to base currency
+            const value = CurrencyService.transform(filter.minPrice, currentCurrency, CurrencyService.BASE_CURRENCY())
+            query.andWhere('posts.price', '>=', value);
         }
         if (filter.maxPrice) {
-            query.andWhere('posts.price', '<=', filter.maxPrice);
+            // Get the current currency
+            const currentCurrency = user ? user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
+            // Transform price to base currency
+            const value = CurrencyService.transform(filter.maxPrice, currentCurrency, CurrencyService.BASE_CURRENCY())
+            query.andWhere('posts.price', '<=', value);
         }
 
-        if (filter.localidadId) {0
+        if (filter.localidadId) {
             query.whereRaw(
                 `posts.address_id IN (SELECT addresses.id FROM addresses 
                 WHERE addresses.localidad_id = ${filter.localidadId})`
@@ -270,11 +278,25 @@ class Post extends Model {
         if (filter.bathrooms) {
             query.andWhere('posts.bathrooms', filter.bathrooms);
         }
+
+        let user = null;
+        try {
+            user = await auth.getUser();
+        } catch (e) {}
+
         if (filter.minPrice) {
-            query.andWhere('posts.price', '>=', filter.minPrice);
+            // Get the current currency
+            const currentCurrency = user ? user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
+            // Transform price to base currency
+            const value = CurrencyService.transform(filter.minPrice, currentCurrency, CurrencyService.BASE_CURRENCY())
+            query.andWhere('posts.price', '>=', value);
         }
         if (filter.maxPrice) {
-            query.andWhere('posts.price', '<=', filter.maxPrice);
+            // Get the current currency
+            const currentCurrency = user ? user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
+            // Transform price to base currency
+            const value = CurrencyService.transform(filter.maxPrice, currentCurrency, CurrencyService.BASE_CURRENCY())
+            query.andWhere('posts.price', '<=', value);
         }
 
         if (filter.localidadId) {

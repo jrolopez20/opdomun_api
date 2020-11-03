@@ -17,6 +17,9 @@
       - name: municipioId
         in: query
         type: integer
+      - name: localidadId
+        in: query
+        type: integer
       - name: homeTypeId
         in: query
         type: integer
@@ -61,6 +64,9 @@
         in: query
         type: integer
       - name: municipioId
+        in: query
+        type: integer
+      - name: localidadId
         in: query
         type: integer
       - name: homeTypeId
