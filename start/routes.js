@@ -66,9 +66,11 @@ Route.group(() => {
     // Subscriptions
     Route.resource('subscriptions', 'SubscriptionController')
         .validator(new Map([
-            [['subscriptions.store'], ['StoreSubscription']]
+            [['store', 'update'], ['StoreSubscription']]
         ]))
-        .middleware(['auth'])
+        .middleware(new Map([
+            [['store', 'update', 'destroy'], ['auth']]
+        ]))
         .apiOnly();
 
     // Users

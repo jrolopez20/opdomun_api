@@ -9,10 +9,7 @@ class StoreSubscription {
             minPrice: 'required|number',
             maxPrice: 'required|number',
             bedrooms: 'required|number',
-            bathrooms: 'required|number',
-            fullname: 'required',
-            telephone: 'required|number',
-            email: 'required|email'
+            bathrooms: 'required|number'
         }
     }
 
@@ -32,12 +29,6 @@ class StoreSubscription {
             'bedrooms.number': 'The field bedrooms must be a number',
             'bathrooms.required': 'The field bathrooms is required',
             'bathrooms.number': 'The field bathrooms must be a number',
-            'fullname.required': 'The field fullname is required',
-            'telephone.required': 'The field telephone is required',
-            'telephone.number': 'The field telephone must be a number',
-            'email.required': 'The field email is required',
-            'email.email': 'The field email must be a valid email address'
-
         }
     }
 

@@ -17,9 +17,8 @@ class SubscriptionService {
 
     static async addSubscription(request, user) {
         const {
-            provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms, telephone, fullname, email
+            provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms
         } = request.all();
-
         const subscription = new Subscription();
 
         subscription.userId = user.id;
@@ -30,30 +29,47 @@ class SubscriptionService {
         subscription.maxPrice = maxPrice;
         subscription.bedrooms = bedrooms;
         subscription.bathrooms = bathrooms;
-        subscription.telephone = telephone;
-        subscription.fullname = fullname;
-        subscription.email = email;
 
         await subscription.save();
 
-        // Get all posts that match to subscription attribute
-        const posts = await Post.getMatchedPremiumPost({
-            provinciaId, municipio, minPrice, maxPrice, homeType
-        });
-        for (const post of posts) {
-            // Notify owner about matched subscriptions
-            await NotificationService.dispatchCustomerNotification({
-                id: post.id,
-                price: post.price,
-                bedrooms: post.bedrooms,
-                bathrooms: post.bathrooms,
-                owner: {
-                    fullname: post.fullname,
-                    email: post.email,
-                    telephone: post.telephone
-                }
-            }, subscription);
-        }
+        // // Get all posts that match to subscription attribute
+        // const posts = await Post.getMatchedPremiumPost({
+        //     provinciaId, municipio, minPrice, maxPrice, homeType
+        // });
+        // for (const post of posts) {
+        //     // Notify owner about matched subscriptions
+        //     await NotificationService.dispatchCustomerNotification({
+        //         id: post.id,
+        //         price: post.price,
+        //         bedrooms: post.bedrooms,
+        //         bathrooms: post.bathrooms,
+        //         owner: {
+        //             fullname: post.fullname,
+        //             email: post.email,
+        //             telephone: post.telephone
+        //         }
+        //     }, subscription);
+        // }
+
+        return subscription;
+    }
+
+    static async setSubscription(subscriptionId, request) {
+        const {
+            provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms
+        } = request.all();
+
+        const subscription = await Subscription.find(subscriptionId);
+
+        subscription.provinciaId = provinciaId;
+        subscription.municipio = municipio.join(',');
+        subscription.homeType = homeType.join(',');
+        subscription.minPrice = minPrice;
+        subscription.maxPrice = maxPrice;
+        subscription.bedrooms = bedrooms;
+        subscription.bathrooms = bathrooms;
+
+        await subscription.save();
 
         return subscription;
     }

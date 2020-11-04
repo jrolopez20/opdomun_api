@@ -69,6 +69,19 @@ class SubscriptionController {
     }
 
     /**
+     * Update subscription details.
+     * PUT or PATCH subscriptions/:id
+     *
+     * @param {object} ctx
+     * @param {Request} ctx.request
+     * @param {Response} ctx.response
+     */
+    async update({params, request, response, auth}) {
+        const subscription = await SubscriptionService.setSubscription(params.id, request);
+        return response.json(subscription);
+    }
+
+    /**
      * Delete a subscription with id.
      * DELETE subscriptions/:id
      *
