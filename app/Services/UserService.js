@@ -41,11 +41,10 @@ class UserService {
 
             await user.save(trx);
 
-            if (address) {
+            if (address && address.localidad && address.localidad.id && address.description) {
                 let addressObj = new Address();
                 addressObj.localidadId = address.localidad.id
                 addressObj.description = address.description
-                addressObj.coordinates = address.coordinates
                 await addressObj.save(trx);
 
                 await user.address().associate(addressObj, trx)
@@ -64,14 +63,15 @@ class UserService {
     }
 
     static async setUser(userId, request) {
-        const email = request.input("email")
-        const numid = request.input("numid")
-        const fullname = request.input("fullname")
-        const telephone = request.input("telephone")
-        const address = request.input("address")
-        const picture = request.input("picture")
-        const office = request.input("office")
-        let role = request.input("role")
+        const email = request.input('email')
+        const numid = request.input('numid')
+        const fullname = request.input('fullname')
+        const telephone = request.input('telephone')
+        const address = request.input('address')
+        const picture = request.input('picture')
+        const office = request.input('office')
+        const preferredCurrency = request.input('preferredCurrency')
+        const role = request.input('role')
 
         const trx = await Database.beginTransaction()
         try {
@@ -85,6 +85,10 @@ class UserService {
                 user.picture = picture;
             }
 
+            if (preferredCurrency) {
+                user.preferredCurrency = preferredCurrency;
+            }
+
             if(office) {
                 user.officeId = office.id;
             }
@@ -96,16 +100,23 @@ class UserService {
             // Edit address
             if (address) {
                 await user.load('address');
-                const addressObj = await user.getRelated('address');
+                let addressObj = await user.getRelated('address');
+                if(addressObj) {
+                    if (address.localidad) {
+                        addressObj.localidadId = address.localidad.id;
+                    }
+                    if (address.description) {
+                        addressObj.description = address.description;
+                    }
 
-                if (address.localidad) {
-                    addressObj.localidadId = address.localidad.id;
+                    await addressObj.save(trx)
+                } else if(address.localidad && address.localidad.id && address.description) {
+                    addressObj = await Address.create({
+                        localidadId: address.localidad.id,
+                        description: address.description
+                    }, trx)
+                    user.addressId = addressObj.id
                 }
-                if (address.description) {
-                    addressObj.description = address.description;
-                }
-
-                await addressObj.save(trx)
             }
 
             await user.save(trx);
@@ -113,8 +124,7 @@ class UserService {
             // End transaction
             await trx.commit();
 
-            await user.load('office.provincia');
-            return user;
+            return await User.getUser(user.id);
         } catch (e) {
             console.log(e)
             trx.rollback();

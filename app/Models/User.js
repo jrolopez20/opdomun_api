@@ -41,6 +41,7 @@ class User extends Model {
         const query = User
             .query()
             .with('office.provincia')
+            .orderBy('updatedAt', 'DESC')
 
         if (role) {
             query.where({role})
@@ -51,10 +52,6 @@ class User extends Model {
             query.whereRaw(where)
         }
 
-        if (orderBy) {
-            query.orderBy(orderBy, 'DESC')
-        }
-
         limit = limit > 0 ? limit : undefined;
         const users = await query.paginate(page, limit);
         return users.toJSON();
@@ -63,6 +60,7 @@ class User extends Model {
     static async getUser(id) {
         const query = User
             .query()
+            .with('address.localidad.municipio.provincia')
             .with('office.provincia')
             .where('id', id)
 
