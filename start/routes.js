@@ -112,6 +112,8 @@ Route.group(() => {
             [['show'], ['visitors_count']]
         ])).apiOnly();
 
+    Route.get('posts/:id/report', 'PostController.report');
+
     Route.put('posts/:id/publish', 'PostController.publishPost')
         .middleware(['auth'])
         .validator('PublishPost');

@@ -38,6 +38,7 @@ class Article extends Model {
             .with('user', (builder) => {
                 builder.setVisible(['id', 'fullname'])
             })
+            .orderBy('updatedAt', 'DESC')
 
         if (filter) {
             let where = "(title ilike '%" + filter + "%') OR (summary ilike '%" + filter + "%') OR (text ilike '%" + filter + "%')";

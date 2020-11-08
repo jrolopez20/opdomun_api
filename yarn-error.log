@@ -1,0 +1,65 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add adonis-pdf
+
+PATH: 
+  C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\PuTTY\;C:\wamp64\bin\php\php7.3.4;C:\wamp64\bin\php\php7.3.4\ext;C:\Users\Javier\AppData\Local\Programs\Python\Python37;C:\Users\Javier\AppData\Local\Programs\Python\Python37\Scripts;C:\Program Files\Symfony;C:\Users\Javier\AppData\Roaming\npm;C:\Program Files\Android\Android Studio3.2\gradle\gradle-4.6\bin;C:\Users\Javier\AppData\Roaming\Composer\vendor\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\ProgramData\ComposerSetup\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\PuTTY\;C:\wamp64\bin\php\php7.3.4;C:\wamp64\bin\php\php7.3.4\ext;C:\Users\Javier\AppData\Local\Programs\Python\Python37;C:\Users\Javier\AppData\Local\Programs\Python\Python37\Scripts;C:\Program Files\Symfony;C:\Users\Javier\AppData\Roaming\npm;C:\Program Files\Android\Android Studio3.2\gradle\gradle-4.6\bin;C:\Users\Javier\AppData\Roaming\Composer\vendor\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\ProgramData\ComposerSetup\bin;;D:\Programs\Android\sdk\tools;D:\Programs\Android\sdk\platform-tools;C:\Users\Javier\AppData\Roaming\npm;C:\Users\Javier\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  12.18.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: read ECONNRESET
+      at TLSWrap.onStreamRead (internal/stream_base_commons.js:205:27)
+
+npm manifest: 
+  {
+    "name": "adonis-api-app",
+    "version": "4.1.0",
+    "adonis-version": "4.1.0",
+    "description": "Adonisjs boilerplate for API server with pre-configured JWT",
+    "main": "index.js",
+    "scripts": {
+      "start": "node server.js",
+      "test": "node ace test"
+    },
+    "keywords": [
+      "adonisjs",
+      "adonis-app"
+    ],
+    "author": "",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+      "@adonisjs/ace": "^5.0.8",
+      "@adonisjs/auth": "^3.0.7",
+      "@adonisjs/bodyparser": "^2.0.5",
+      "@adonisjs/cors": "^1.0.7",
+      "@adonisjs/drive": "^1.0.4",
+      "@adonisjs/fold": "^4.0.9",
+      "@adonisjs/framework": "^5.0.9",
+      "@adonisjs/ignitor": "^2.0.8",
+      "@adonisjs/lucid": "^6.1.3",
+      "@adonisjs/mail": "^3.0.10",
+      "@adonisjs/validator": "^5.0.6",
+      "adonis-swagger": "^1.2.9",
+      "knex-stringcase": "^1.4.3",
+      "mysql": "^2.18.1",
+      "pg": "^8.3.3"
+    },
+    "devDependencies": {},
+    "autoload": {
+      "App": "./app"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

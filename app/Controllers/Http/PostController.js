@@ -1,9 +1,6 @@
 'use strict'
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
+// const PDF = use('PDF');
 const Post = use('App/Models/Post');
 const PostService = use('App/Services/PostService');
 const PaginatedResponse = use('App/Util/PaginatedResponse');
@@ -238,6 +235,18 @@ class PostController {
             }, auth);
 
             return response.status(200).json(post)
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
+
+    async report({response, params}) {
+        try {
+            // const content = await Post.getPostContent(params.id)
+            // await PDF.create(content, response.response);
+            // response.response.setHeader('Content-type', 'application/pdf');
+            // return response;
+            return response.json()
         } catch (e) {
             return response.status(400).json({message: e.message})
         }
