@@ -7,8 +7,8 @@ const Subscription = use('App/Models/Subscription');
 const Database = use('Database')
 
 class StatisticsService {
-    static APPRAISAL_KEY= 'APPRAISAL'
-    static SUBSCRIPTION_KEY= 'SUBSCRIPTION'
+    static APPRAISAL_KEY = 'APPRAISAL'
+    static SUBSCRIPTION_KEY = 'SUBSCRIPTION'
 
     static async getServices(user, startAt, endAt) {
         startAt += ' 00:00:00';
@@ -17,7 +17,7 @@ class StatisticsService {
             .table('posts')
             .select('posts.plan_id as planId', 'plans.type')
             .leftJoin('plans', 'posts.plan_id', 'plans.id')
-            .whereRaw('(posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.published_at >= ? AND posts.published_at <= ?)', [startAt, endAt, startAt, endAt])
+            .whereRaw('((posts.plan_id is null AND posts.created_at >= ? AND posts.created_at <= ?) OR (posts.published_at >= ? AND posts.published_at <= ?))', [startAt, endAt, startAt, endAt])
             .leftJoin('users', 'posts.managed_by_id', 'users.id')
             .orderBy('plan_id', 'plans.type')
             .count('posts.id as total')
@@ -26,13 +26,11 @@ class StatisticsService {
 
         if (user.role === User.roles().MANAGER) {
             query.innerJoin('offices', 'users.office_id', 'offices.id')
-            query.andWhere('offices.id', user.officeId)
-            query.whereIn('posts.plan_id', [null, 1])
+            query.whereRaw('(offices.id = ? AND (posts.plan_id = 1 OR posts.plan_id is null))', [user.officeId])
         }
 
         if (user.role === User.roles().AGENT) {
-            query.andWhere('posts.managed_by_id', user.id)
-            query.whereIn('posts.plan_id', [null, 1])
+            query.whereRaw('(posts.managed_by_id = ? AND (posts.plan_id = 1 OR posts.plan_id is null))', [user.id])
         }
 
         let services = await query;
