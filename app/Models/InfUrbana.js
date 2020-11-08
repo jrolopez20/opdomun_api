@@ -7,7 +7,7 @@ const Database = use('Database')
 class InfUrbana extends Model {
 
     static async getInfUrbana(postId) {
-        return await Database.select('iu.id', '.iu.value', 'iu.title')
+        return await Database.select('iu.id', 'iu.value', 'iu.title')
             .from('inf_urbanas as iu')
             .innerJoin('post_variables as pv', 'pv.id', 'iu.post_variable_id')
             .where('pv.post_id', postId)

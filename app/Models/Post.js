@@ -15,7 +15,7 @@ const VarMenaje = use('App/Models/VarMenaje')
 const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
 const Address = use('App/Models/Address')
-const BadRequestException = use('App/Exceptions/BadRequestException')
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const CurrencyService = use('App/Services/CurrencyService')
 
 function strToBool(s) {
@@ -364,16 +364,19 @@ class Post extends Model {
         const post = await Database
             .from('posts')
             .select(
-                'posts.id', 'posts.plan_id as planId', 'plans.type', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area', 'posts.address',
+                'posts.id', 'posts.plan_id as planId', 'plans.type', 'posts.opdo', 'posts.evi', 'posts.price', 'posts.area',
+                'addresses.description as addressDescription', 'localidads.title as localidad',
+                'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provinciaTitle',
                 'posts.published_at as publishedAt', 'posts.bedrooms', 'posts.bathrooms', 'posts.built_year as builtYear', 'posts.build_status as buildStatus',
                 'posts.summary', 'home_types.title as homeType',
-                'municipios.title as municipio', 'provincias.cod as provincia', 'provincias.title as provinciaTitle',
                 'posts.managed_by_id', 'users.fullname as agentName', 'users.email as agentEmail', 'users.telephone as agentPhone',
                 'owners.fullname as owner_name', 'owners.email as owner_email', 'owners.telephone as owner_phone',
                 'var_flexibilidads.area_crecimiento', 'post_visits.total as visits',
                 'vde.valor_arquitectonico', 'vde.valor_urbano'
             )
-            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
+            .innerJoin('addresses', 'addresses.id', 'posts.address_id')
+            .innerJoin('localidads', 'localidads.id', 'addresses.localidad_id')
+            .innerJoin('municipios', 'municipios.id', 'localidads.municipio_id')
             .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
             .leftJoin('users', 'users.id', 'posts.managed_by_id')
             .innerJoin('home_types', 'home_types.id', 'posts.home_type_id')
@@ -396,7 +399,10 @@ class Post extends Model {
      */
     static async getPostContent(id) {
         const post = await this.getPostDetail(id)
-        const postPlaces = await PostPlace.getPostPLaces(id)
+        if (!post) {
+            throw new ResourceNotFoundException();
+        }
+        const postPlaces = (await PostPlace.getPostPLaces(id)).toJSON()
         const segCiudadana = await NomSegCiudadana.getPostSegCiudadana(id)
         const itemsInfUrbana = await InfUrbana.getInfUrbana(id)
         const itemsVisuales = await EnvElement.getEnvElements(id)
@@ -514,7 +520,7 @@ class Post extends Model {
                     fontFamily: "Arial"
                 },
                 {
-                    text: post.provincia + ', ' + post.municipio + ', ' + post.address,
+                    text: post.provincia + ', ' + post.municipio + ', ' + post.localidad + ', ' + post.addressDescription,
                     margin: [0, 0, 0, 10],
                 },
                 {
@@ -665,7 +671,7 @@ class Post extends Model {
                 ]);
             }
 
-            if (itemsEstConstructiva.length > 0) {
+            if (itemsEstConstructiva && itemsEstConstructiva.length > 0) {
                 body.push({
                     text: 'Solución técnico constructiva:',
                     bold: true,
@@ -689,7 +695,7 @@ class Post extends Model {
                                 border: [false, false, false, true]
                             },
                             {
-                                text: item.display_value,
+                                text: item.displayValue,
                                 border: [false, false, false, true]
                             },
                         ]
@@ -807,7 +813,7 @@ class Post extends Model {
                 })
             }
 
-            if (itemsServPublicos.length > 0) {
+            if (itemsServPublicos && itemsServPublicos.length > 0) {
                 body.push({
                     text: 'Distancia de la vivienda hasta los servicios públicos:',
                     bold: true,
@@ -841,7 +847,7 @@ class Post extends Model {
                 body.push(table)
             }
 
-            if (itemsVisuales.length > 0) {
+            if (itemsVisuales && itemsVisuales.length > 0) {
                 const displayValuesVisuales = {
                     '100': '1ER PLANO',
                     '80': '2DO PLANO',
@@ -879,7 +885,7 @@ class Post extends Model {
                 body.push(table)
             }
 
-            if (itemsInfUrbana.length > 0) {
+            if (itemsInfUrbana && itemsInfUrbana.length > 0) {
                 const displayValuesInfUrbana = {
                     '100': 'Excelente',
                     '80': 'Bueno',

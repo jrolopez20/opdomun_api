@@ -11,17 +11,18 @@
 |
 */
 const providers = [
-  '@adonisjs/framework/providers/AppProvider',
-  '@adonisjs/auth/providers/AuthProvider',
-  '@adonisjs/bodyparser/providers/BodyParserProvider',
-  '@adonisjs/cors/providers/CorsProvider',
-  '@adonisjs/lucid/providers/LucidProvider',
-  '@adonisjs/mail/providers/MailProvider',
-  '@adonisjs/validator/providers/ValidatorProvider',
-  '@adonisjs/drive/providers/DriveProvider',
-  '@adonisjs/mail/providers/MailProvider',
-  '@adonisjs/framework/providers/ViewProvider',
-  'adonis-swagger/providers/SwaggerProvider'
+    '@adonisjs/framework/providers/AppProvider',
+    '@adonisjs/auth/providers/AuthProvider',
+    '@adonisjs/bodyparser/providers/BodyParserProvider',
+    '@adonisjs/cors/providers/CorsProvider',
+    '@adonisjs/lucid/providers/LucidProvider',
+    '@adonisjs/mail/providers/MailProvider',
+    '@adonisjs/validator/providers/ValidatorProvider',
+    '@adonisjs/drive/providers/DriveProvider',
+    '@adonisjs/mail/providers/MailProvider',
+    '@adonisjs/framework/providers/ViewProvider',
+    'adonis-swagger/providers/SwaggerProvider',
+    'adonis-pdf/providers/PdfProvider'
 ]
 
 /*
@@ -34,7 +35,7 @@ const providers = [
 |
 */
 const aceProviders = [
-  '@adonisjs/lucid/providers/MigrationsProvider',
+    '@adonisjs/lucid/providers/MigrationsProvider',
 ]
 
 /*
@@ -63,4 +64,4 @@ const commands = [
     'App/Commands/SeedSync'
 ]
 
-module.exports = { providers, aceProviders, aliases, commands }
+module.exports = {providers, aceProviders, aliases, commands}

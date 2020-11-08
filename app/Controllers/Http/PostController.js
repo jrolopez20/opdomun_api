@@ -1,6 +1,6 @@
 'use strict'
 
-// const PDF = use('PDF');
+const PDF = use('PDF');
 const Post = use('App/Models/Post');
 const PostService = use('App/Services/PostService');
 const PaginatedResponse = use('App/Util/PaginatedResponse');
@@ -242,11 +242,11 @@ class PostController {
 
     async report({response, params}) {
         try {
-            // const content = await Post.getPostContent(params.id)
-            // await PDF.create(content, response.response);
-            // response.response.setHeader('Content-type', 'application/pdf');
-            // return response;
-            return response.json()
+            const content = await Post.getPostContent(params.id)
+            PDF.create(content, response.response);
+            response.response.setHeader('Content-type', 'application/pdf');
+
+            return response;
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

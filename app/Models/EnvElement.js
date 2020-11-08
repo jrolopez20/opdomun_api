@@ -7,7 +7,7 @@ const Database = use('Database')
 class EnvElement extends Model {
 
     static async getEnvElements(postId) {
-        return await Database.select('ee.id', '.ee.value', 'ee.title')
+        return await Database.select('ee.id', 'ee.value', 'ee.title')
             .from('env_elements as ee')
             .innerJoin('post_variables as pv', 'pv.id', 'ee.post_variable_id')
             .where('pv.post_id', postId)
