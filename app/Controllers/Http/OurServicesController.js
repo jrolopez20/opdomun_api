@@ -1,14 +1,14 @@
 'use strict'
 
-const Plan = use('App/Models/Plan');
+const OurServicesService = use('App/Services/OurServicesService');
 
 class OurServicesController {
 
     async index({response}) {
-        const serices = await Plan.all();
-        return response.json(serices);
+        const services = OurServicesService.getServices();
+        return response.json(services);
     }
 
 }
 
-module.exports = OurServicesController
+module.exports = OurServicesController;

@@ -18,6 +18,9 @@ const Route = use('Route');
 
 // API routes
 Route.group(() => {
+    // Services
+    Route.get('our_services', 'OurServicesController.index');
+
     // Home types
     Route.get('plans', 'PlanController.index');
 

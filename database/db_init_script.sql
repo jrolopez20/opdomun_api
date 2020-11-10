@@ -16,7 +16,7 @@
 *
 */
 
-/* 1- Data for the `location_categories` table  (Records 1 - 5) */
+/* 0- Data for the `location_categories` table  (Records 1 - 5) */
 INSERT INTO location_categories (id, title) VALUES (1, 'VIVIENDAS UBICADAS EN ZONAS DE DESARROLLO ECONOMICO (MARIEL)');
 INSERT INTO location_categories (id, title) VALUES (2, 'VIVIENDAS UBICADAS EN LOS MUNICIPIOS PLAYA, PLAZA, LA HABANA VIEJA, TRINIDAD Y CÁRDENAS (PENÍNSULA DE HICACOS)');
 INSERT INTO location_categories (id, title) VALUES (3, 'VIVIENDAS UBICADAS EN LOS MUNICIPIOS CERRO, CENTRO HABANA, 10 DE OCTUBRE Y LA HABANA DEL ESTE (GUANABO)');
