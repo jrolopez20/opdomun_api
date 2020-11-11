@@ -30,39 +30,39 @@
     tags:
       - Subscription
     description: Create a subscription
+    security:
+      - bearerAuth: []
     produces:
       - application/json
     parameters:
-      - name: provinciaId
-        in: formData
-        required: true
-        type: integer
-      - name: municipio
-        in: formData
-        required: true
-        type: string
-        description: 'Number array'
-      - name: homeType
-        in: formData
-        required: true
-        type: string
-        description: 'Number array'
-      - name: minPrice
-        in: formData
-        required: true
-        type: number
-      - name: maxPrice
-        in: formData
-        required: true
-        type: number
-      - name: bedrooms
-        in: formData
-        required: true
-        type: integer
-      - name: bathrooms
-        in: formData
-        required: true
-        type: integer
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            provinciaId:
+              required: true
+              type: integer
+            municipio:
+              required: true
+              type: array
+              description: 'Number array'
+            homeType:
+              required: true
+              type: array
+              description: 'Number array'
+            minPrice:
+              required: true
+              type: number
+            maxPrice:
+              required: true
+              type: number
+            bedrooms:
+              required: true
+              type: integer
+            bathrooms:
+              required: true
+              type: integer
     responses:
       200:
         schema:
@@ -105,41 +105,39 @@
       - name: subscriptionId
         in: path
         required: true
-        description: 'User ID'
+        description: 'Subscription ID'
         schema:
           type: integer
           format: int64
           minimum: 1
-      - name: provinciaId
-        in: formData
-        required: true
-        type: integer
-      - name: municipio
-        in: formData
-        required: true
-        type: array
-        description: 'Number array'
-      - name: homeType
-        in: formData
-        required: true
-        type: array
-        description: 'Number array'
-      - name: minPrice
-        in: formData
-        required: true
-        type: number
-      - name: maxPrice
-        in: formData
-        required: true
-        type: number
-      - name: bedrooms
-        in: formData
-        required: true
-        type: integer
-      - name: bathrooms
-        in: formData
-        required: true
-        type: integer
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            provinciaId:
+              required: true
+              type: integer
+            municipio:
+              required: true
+              type: array
+              description: 'Number array'
+            homeType:
+              required: true
+              type: array
+              description: 'Number array'
+            minPrice:
+              required: true
+              type: number
+            maxPrice:
+              required: true
+              type: number
+            bedrooms:
+              required: true
+              type: integer
+            bathrooms:
+              required: true
+              type: integer
     responses:
       200:
         description: User
