@@ -22,7 +22,7 @@ const providers = [
     '@adonisjs/mail/providers/MailProvider',
     '@adonisjs/framework/providers/ViewProvider',
     'adonis-swagger/providers/SwaggerProvider',
-    'adonis-pdf/providers/PdfProvider'
+    'adonis-pdf/providers/PDFProvider'
 ]
 
 /*
