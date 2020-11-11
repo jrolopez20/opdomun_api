@@ -183,6 +183,7 @@ Route.group(() => {
 Route.group(() => {
     Route.post('login', 'AuthController.login').validator('Auth').middleware(['guest'])
     Route.post('register', 'AuthController.register').validator('StoreUser').middleware(['guest'])
+    Route.post('change_password', 'AuthController.changePassword').middleware(['auth']);
 }).prefix('api').namespace('Auth');
 
 

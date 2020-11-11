@@ -7,16 +7,19 @@
     produces:
       - application/json
     parameters:
-      - name: email
-        description: email to use for login.
-        in: formData
-        required: true
-        type: string
-      - name: password
-        description: User's password.
-        in: formData
-        required: true
-        type: string
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            email:
+              description: email to use for login.
+              required: true
+              type: string
+            password:
+              description: User's password.
+              required: true
+              type: string
     responses:
       200:
         description: Login
@@ -32,28 +35,48 @@
     produces:
       - application/json
     parameters:
-      - name: email
-        in: formData
-        required: true
-        type: string
-      - name: password
-        in: formData
-        required: true
-        type: string
-      - name: repassword
-        in: formData
-        required: true
-        type: string
-      - name: fullname
-        in: formData
-        required: true
-        type: string
-      - name: telephone
-        in: formData
-        required: true
-        type: string
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            email:
+              required: true
+              type: string
+            password:
+              required: true
+              type: string
+            repassword:
+              required: true
+              type: string
+            fullname:
+              required: true
+              type: string
+            telephone:
+              required: true
+              type: string
     responses:
       200:
         description: Success
         schema:
           $ref: '#/definitions/User'
+
+/change_password:
+  post:
+    tags:
+      - Auth
+    summary: Change authenticated user password
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            password:
+              required: true
+              type: string
+    responses:
+      200:
+        description: Success

@@ -104,7 +104,7 @@ class UserController {
         }
     }
 
-    async changePassword({params, request, response, auth}) {
+    async changePassword({params, request, response}) {
         try {
             await UserService.changePassword(params.id, request.input('password'));
             return response.json('Password changed');
