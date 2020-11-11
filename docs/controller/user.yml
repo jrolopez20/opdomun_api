@@ -249,18 +249,37 @@
     produces:
       - application/json
     parameters:
-      - name: fullname
-        in: formData
-        required: true
-        type: string
-      - name: email
-        in: formData
-        required: true
-        type: string
-      - name: telephone
-        in: formData
-        required: true
-        type: string
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            fullname:
+              required: true
+              type: string
+            telehpone:
+              required: true
+              type: string
+            picture:
+              type: string
+            preferredCurrency:
+              type: string
+            address:
+                type: object
+                description: Address info
+                properties:
+                  localidad:
+                    required: true
+                    type: object
+                    properties:
+                      id:
+                        required: true
+                        type: number
+                  description:
+                    type: string
+                    required: true
+                  coordinates:
+                    $ref: '#/definitions/Coordinates'
     responses:
       200:
         description: User
