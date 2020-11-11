@@ -1,0 +1,20 @@
+definitions:
+  Service:
+    type: object
+    properties:
+      id:
+        type: integer
+        readOnly: true
+      type:
+        type: string
+        value:  PREMIUM_POST | FREE_POST | PURCHASE_POST | APPRAISAL | TAX_CALCULATOR
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        $ref: '#/definitions/Price'
+    required:
+      - id
+      - title
+      - description

@@ -1,0 +1,14 @@
+/our_services:
+  get:
+    tags:
+      - Our services
+    summary: Show available services
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Service'
