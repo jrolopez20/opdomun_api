@@ -47,11 +47,6 @@
     produces:
       - application/json
     parameters:
-      - name: numid
-        in: formData
-        required: true
-        type: string
-        description: 'Carnet de identidad'
       - name: fullname
         in: formData
         required: true
@@ -124,11 +119,6 @@
           type: integer
           format: int64
           minimum: 1
-      - name: numid
-        in: formData
-        required: true
-        type: string
-        description: 'Carnet de identidad'
       - name: fullname
         in: formData
         required: true
@@ -248,3 +238,29 @@
         description: Success
         schema:
           $ref: '#/definitions/User'
+
+/profile:
+  put:
+    tags:
+      - Auth
+    summary: Update user profile
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: fullname
+        in: formData
+        required: true
+        type: string
+      - name: email
+        in: formData
+        required: true
+        type: string
+      - name: telephone
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: User

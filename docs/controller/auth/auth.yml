@@ -44,10 +44,6 @@
         in: formData
         required: true
         type: string
-      - name: numid
-        in: formData
-        required: true
-        type: string
       - name: fullname
         in: formData
         required: true

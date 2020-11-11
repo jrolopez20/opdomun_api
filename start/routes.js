@@ -99,6 +99,8 @@ Route.group(() => {
 
     Route.get('authenticated_user', 'UserController.getAuthenticatedUser')
         .middleware(['auth']);
+    Route.put('profile', 'UserController.updateProfile')
+        .middleware(['auth']);
 
     Route.resource('posts/:postId/owner', 'OwnerController')
         .middleware(new Map([

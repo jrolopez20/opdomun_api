@@ -12,7 +12,7 @@ class UserService {
 
     static async addUser(request) {
         const {
-            email, password, repassword, numid, fullname, telephone, address, office, role, picture
+            email, password, repassword, fullname, telephone, address, office, role, picture
         } = request.all()
 
         const givenUser = await User.query().where('email', email).first();
@@ -30,7 +30,6 @@ class UserService {
             let user = new User();
             user.email = email;
             user.password = password
-            user.numid = numid;
             user.fullname = fullname;
             user.telephone = telephone;
             user.picture = picture;
@@ -63,7 +62,6 @@ class UserService {
     }
 
     static async setUser(userId, request) {
-        const numid = request.input('numid')
         const fullname = request.input('fullname')
         const telephone = request.input('telephone')
         const address = request.input('address')
@@ -75,7 +73,6 @@ class UserService {
         const trx = await Database.beginTransaction()
         try {
             let user = await User.find(userId)
-            user.numid = numid;
             user.fullname = fullname;
             user.telephone = telephone;
 
@@ -93,6 +90,62 @@ class UserService {
 
             if (role) {
                 user.role = role;
+            }
+
+            // Edit address
+            if (address) {
+                await user.load('address');
+                let addressObj = await user.getRelated('address');
+                if(addressObj) {
+                    if (address.localidad) {
+                        addressObj.localidadId = address.localidad.id;
+                    }
+                    if (address.description) {
+                        addressObj.description = address.description;
+                    }
+
+                    await addressObj.save(trx)
+                } else if(address.localidad && address.localidad.id && address.description) {
+                    addressObj = await Address.create({
+                        localidadId: address.localidad.id,
+                        description: address.description
+                    }, trx)
+                    user.addressId = addressObj.id
+                }
+            }
+
+            await user.save(trx);
+
+            // End transaction
+            await trx.commit();
+
+            return await User.getUser(user.id);
+        } catch (e) {
+            console.log(e)
+            trx.rollback();
+            throw new Error(e.message)
+        }
+    }
+
+    static async setProfile(auth, request) {
+        const fullname = request.input('fullname')
+        const telephone = request.input('telephone')
+        const address = request.input('address')
+        const picture = request.input('picture')
+        const preferredCurrency = request.input('preferredCurrency')
+
+        const trx = await Database.beginTransaction()
+        try {
+            let user = await auth.getUser();
+            user.fullname = fullname;
+            user.telephone = telephone;
+
+            if (picture) {
+                user.picture = picture;
+            }
+
+            if (preferredCurrency) {
+                user.preferredCurrency = preferredCurrency;
             }
 
             // Edit address

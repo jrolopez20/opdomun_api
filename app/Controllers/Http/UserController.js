@@ -131,6 +131,15 @@ class UserController {
         const user = await User.getUser(auth.user.id);
         return response.json(user)
     }
+
+    async updateProfile({request, response, auth}) {
+        try {
+            const user = await UserService.setProfile(auth, request);
+            return response.json(user);
+        } catch (e) {
+            return response.status(400).json({message: e.message})
+        }
+    }
 }
 
 module.exports = UserController
