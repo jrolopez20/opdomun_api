@@ -5,7 +5,6 @@ const Hash = use('Hash')
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
-const Database = use('Database')
 
 class User extends Model {
 
@@ -25,7 +24,7 @@ class User extends Model {
     }
 
     static get hidden() {
-        return ['password', 'picture', 'createdAt', 'updatedAt', 'closedAt'];
+        return ['password', 'createdAt', 'updatedAt', 'closedAt'];
     }
 
     static roles() {

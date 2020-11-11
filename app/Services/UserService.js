@@ -63,7 +63,6 @@ class UserService {
     }
 
     static async setUser(userId, request) {
-        const email = request.input('email')
         const numid = request.input('numid')
         const fullname = request.input('fullname')
         const telephone = request.input('telephone')
@@ -76,7 +75,6 @@ class UserService {
         const trx = await Database.beginTransaction()
         try {
             let user = await User.find(userId)
-            user.email = email;
             user.numid = numid;
             user.fullname = fullname;
             user.telephone = telephone;
