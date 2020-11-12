@@ -17,6 +17,7 @@ class UserSchema extends Schema {
       table.string('numid', 11)
       table.string('telephone', 15)
       table.string('picture', 254)
+      table.boolean('notifications_consent').defaultTo(false)
       table.timestamps(true, true)
       table.timestamp('closed_at', true)
       table.string('preferred_currency', 3).defaultTo(CurrencyService.DEFAULT_CURRENCY())

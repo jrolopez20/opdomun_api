@@ -12,7 +12,7 @@ class UserService {
 
     static async addUser(request) {
         const {
-            email, password, repassword, fullname, telephone, address, office, role, picture
+            email, password, repassword, fullname, telephone, address, office, role, picture, notificationsConsent
         } = request.all()
 
         const givenUser = await User.query().where('email', email).first();
@@ -33,6 +33,7 @@ class UserService {
             user.fullname = fullname;
             user.telephone = telephone;
             user.picture = picture;
+            user.notificationsConsent = notificationsConsent;
             if (office) {
                 user.officeId = office.id;
             }
@@ -132,6 +133,7 @@ class UserService {
         const telephone = request.input('telephone')
         const address = request.input('address')
         const picture = request.input('picture')
+        const notificationsConsent = request.input('notificationsConsent')
         const preferredCurrency = request.input('preferredCurrency')
 
         const trx = await Database.beginTransaction()
@@ -139,6 +141,7 @@ class UserService {
             let user = await auth.getUser();
             user.fullname = fullname;
             user.telephone = telephone;
+            user.notificationsConsent = notificationsConsent;
 
             if (picture) {
                 user.picture = picture;

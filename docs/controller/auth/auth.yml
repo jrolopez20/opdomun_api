@@ -55,6 +55,8 @@
             telephone:
               required: true
               type: string
+            notificationsConsent:
+              type: boolean
     responses:
       200:
         description: Success

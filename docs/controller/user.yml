@@ -47,33 +47,33 @@
     produces:
       - application/json
     parameters:
-      - name: fullname
-        in: formData
-        required: true
-        type: string
-      - name: email
-        in: formData
-        required: true
-        type: string
-      - name: telephone
-        in: formData
-        required: true
-        type: string
-      - name: role
-        in: formData
-        required: true
-        type: string
-      - name: officeId
-        in: formData
-        type: integer
-      - name: password
-        in: formData
-        required: true
-        type: string
-      - name: repassword
-        in: formData
-        required: true
-        type: string
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            fullname:
+              required: true
+              type: string
+            email:
+              required: true
+              type: string
+            telephone:
+              required: true
+              type: string
+            role:
+              required: true
+              type: string
+            officeId:
+              type: integer
+            password:
+              required: true
+              type: string
+            repassword:
+              required: true
+              type: string
+            notificationsConsent:
+              type: boolean
     responses:
       200:
         description: Subscription
@@ -264,6 +264,8 @@
               type: string
             preferredCurrency:
               type: string
+            notificationsConsent:
+              type: boolean
             address:
                 type: object
                 description: Address info

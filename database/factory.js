@@ -36,6 +36,7 @@ Factory.blueprint('App/Models/User', async (faker, i, data) => {
         fullname: faker.name(),
         numid: faker.integer({min: 60000000000, max: 99999999999}),
         telephone: faker.phone({formatted: false}),
+        notificationsConsent: true,
         officeId: data.office ? data.office.id : null
     }
 });
@@ -44,7 +45,7 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
     const homeTypes = (await HomeType.all()).toJSON();
     const localidades = (await Localidad.all()).toJSON();
     if (!homeTypes.length || !localidades.length) {
-        throw Error('Be sure to execute database initialization script before run this seed.')
+        throw Error('Be sure to execute database initialization script before execute this seed.')
     }
     return {
         plan: data.plan || null,
