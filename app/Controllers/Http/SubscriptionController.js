@@ -77,8 +77,12 @@ class SubscriptionController {
      * @param {Response} ctx.response
      */
     async update({params, request, response, auth}) {
-        const subscription = await SubscriptionService.setSubscription(params.id, request);
-        return response.json(subscription);
+        try {
+            const subscription = await SubscriptionService.setSubscription(params.id, request);
+            return response.json(subscription);
+        } catch (e) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     /**

@@ -23,8 +23,8 @@ class SubscriptionService {
 
         subscription.userId = user.id;
         subscription.provinciaId = provinciaId;
-        subscription.municipio = municipio.join(',');
-        subscription.homeType = homeType.join(',');
+        subscription.municipio = municipio;
+        subscription.homeType = homeType;
         subscription.minPrice = minPrice;
         subscription.maxPrice = maxPrice;
         subscription.bedrooms = bedrooms;
@@ -51,7 +51,7 @@ class SubscriptionService {
         //     }, subscription);
         // }
 
-        return subscription;
+        return await Subscription.find(subscription.id);
     }
 
     static async setSubscription(subscriptionId, request) {
@@ -59,11 +59,11 @@ class SubscriptionService {
             provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms
         } = request.all();
 
-        const subscription = await Subscription.find(subscriptionId);
+        const subscription = await Subscription.findOrFail(subscriptionId);
 
         subscription.provinciaId = provinciaId;
-        subscription.municipio = municipio.join(',');
-        subscription.homeType = homeType.join(',');
+        subscription.municipio = municipio;
+        subscription.homeType = homeType;
         subscription.minPrice = minPrice;
         subscription.maxPrice = maxPrice;
         subscription.bedrooms = bedrooms;
@@ -71,7 +71,7 @@ class SubscriptionService {
 
         await subscription.save();
 
-        return subscription;
+        return await Subscription.find(subscriptionId);
     }
 
 }

@@ -10,6 +10,14 @@ class Subscription extends Model {
         this.addTrait('CastDate')
     }
 
+    setMunicipio (municipio) {
+        return JSON.stringify(municipio)
+    }
+
+    setHomeType (homeType) {
+        return JSON.stringify(homeType)
+    }
+
     static async getSubscriptions(page = 1, limit = 20, filter) {
         const query = Subscription
             .query()
@@ -77,18 +85,7 @@ class Subscription extends Model {
             .with('provincia')
             .where('id', id);
 
-        const subscription = await query.first();
-
-        const municipios = await Database
-            .from('municipios')
-            .whereRaw(`id in (${subscription.municipio})`);
-
-        const homeTypes = await Database
-            .from('home_types')
-            .whereRaw(`id in (${subscription.homeType})`);
-
-        subscription.municipios = municipios
-        subscription.homeTypes = homeTypes
+        const subscription = await query.firstOrFail();
 
         return subscription;
     }
