@@ -6,8 +6,7 @@ class StoreUser {
             fullname: 'required',
             email: 'required|email',
             telephone: 'required',
-            password: 'required',
-            repassword: 'required'
+            password: 'required'
         }
     }
 
@@ -17,8 +16,7 @@ class StoreUser {
             'email.required': 'You must provide an email address.',
             'email.email': 'You must provide a valid email address.',
             'telephone.required': 'You must provide a telephone',
-            'password.required': 'You must provide a password',
-            'repassword.required': 'You must provide a repassword',
+            'password.required': 'You must provide a password'
         }
     }
 

@@ -46,9 +46,6 @@
             password:
               required: true
               type: string
-            repassword:
-              required: true
-              type: string
             fullname:
               required: true
               type: string

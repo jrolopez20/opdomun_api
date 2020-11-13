@@ -12,17 +12,13 @@ class UserService {
 
     static async addUser(request) {
         const {
-            email, password, repassword, fullname, telephone, address, office, role, picture, notificationsConsent
+            email, password, fullname, telephone, address, office, role, picture, notificationsConsent
         } = request.all()
 
         const givenUser = await User.query().where('email', email).first();
 
         if (givenUser) {
             throw new BadRequestException('There is an user with the same email address.');
-        }
-
-        if (password !== repassword) {
-            throw new BadRequestException('Password do not match.');
         }
 
         const trx = await Database.beginTransaction()
