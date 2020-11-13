@@ -5,6 +5,21 @@ const Mail = use('Mail');
 const Helpers = use('Helpers');
 class MailNotification {
 
+    static async registerConfirmation(user, token) {
+        const sender = Env.getOrFail('MAIL_USERNAME');
+        const appName = Env.getOrFail('APP_NAME');
+
+        const confirmationUrl = `${Env.get('APP_URL')}/registration_confirmation?token=${token}`;
+
+        await Mail.send('emails.register_confirmation', {user, confirmationUrl}, (message) => {
+            message
+                .to(user.email)
+                .from(sender, appName)
+                .subject('Active su cuenta de Opdomun')
+                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
+        })
+    }
+
     static async notifyCustomerSingle(owner, subscriptor) {
         const sender = Env.getOrFail('MAIL_USERNAME');
         const appName = Env.getOrFail('APP_NAME');

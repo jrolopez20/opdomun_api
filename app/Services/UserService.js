@@ -48,8 +48,7 @@ class UserService {
 
             // End transaction
             await trx.commit();
-            await user.load('address');
-            await user.load('office.provincia');
+
             return user;
         } catch (e) {
             console.log(e)
@@ -81,7 +80,7 @@ class UserService {
                 user.preferredCurrency = preferredCurrency;
             }
 
-            if(office) {
+            if (office) {
                 user.officeId = office.id;
             }
 
@@ -93,7 +92,7 @@ class UserService {
             if (address) {
                 await user.load('address');
                 let addressObj = await user.getRelated('address');
-                if(addressObj) {
+                if (addressObj) {
                     if (address.localidad) {
                         addressObj.localidadId = address.localidad.id;
                     }
@@ -102,7 +101,7 @@ class UserService {
                     }
 
                     await addressObj.save(trx)
-                } else if(address.localidad && address.localidad.id && address.description) {
+                } else if (address.localidad && address.localidad.id && address.description) {
                     addressObj = await Address.create({
                         localidadId: address.localidad.id,
                         description: address.description
@@ -151,7 +150,7 @@ class UserService {
             if (address) {
                 await user.load('address');
                 let addressObj = await user.getRelated('address');
-                if(addressObj) {
+                if (addressObj) {
                     if (address.localidad) {
                         addressObj.localidadId = address.localidad.id;
                     }
@@ -160,7 +159,7 @@ class UserService {
                     }
 
                     await addressObj.save(trx)
-                } else if(address.localidad && address.localidad.id && address.description) {
+                } else if (address.localidad && address.localidad.id && address.description) {
                     addressObj = await Address.create({
                         localidadId: address.localidad.id,
                         description: address.description
@@ -212,6 +211,19 @@ class UserService {
         await user.save();
 
         return user;
+    }
+
+    static async activateUser(userId) {
+        const user = await User.find(userId);
+        if (!user) {
+            throw new ResourceNotFoundException();
+        }
+        if (user.enabled) {
+            throw new BadRequestException('The user is already enabled');
+        }
+
+        user.enabled = true;
+        return await user.save();
     }
 
     static async getRoles(user) {

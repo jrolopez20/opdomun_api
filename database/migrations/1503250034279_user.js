@@ -13,6 +13,7 @@ class UserSchema extends Schema {
       table.string('email', 254).notNullable().unique()
       table.string('password', 60).notNullable()
       table.string('role', 10).notNullable()
+      table.boolean('enabled').notNullable().defaultTo(false)
       table.string('fullname', 50).notNullable()
       table.string('numid', 11)
       table.string('telephone', 15)

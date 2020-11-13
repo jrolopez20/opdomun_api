@@ -1,0 +1,28 @@
+@layout('emails.layout')
+
+@section('content')
+<div style="text-align: left;">
+    <div style="margin-bottom: 30px;">
+        <div style="font-size: 22px; margin-bottom: 10px; text-align: center">
+            Active su cuenta
+        </div>
+        <p>
+            Hola {{ user.fullname }}, haga click en el enlace de debajo para confirmar la creación de su cuenta en
+            <strong>Opdomun</strong>.
+        </p>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{{confirmationUrl}}" target="_blank"
+           style="display: inline-block; text-align: center; background: #008FFC; padding: 12px 20px; color: #fff; text-decoration: none; border-radius: 5px;">
+            Confirmar
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('footer')
+<p>
+    Si usted no se ha registrado en Opdomun o nunca ha oído hablar de él simplemente ignore este correo.
+</p>
+@endsection
