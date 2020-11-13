@@ -14,9 +14,12 @@ class AuthController {
 
         try {
             let accessToken = await auth.attempt(email, password)
+            const user = await User.findBy('email', email);
+            if(!user.enabled) {
+                throw new Error('The user is disabled')
+            }
             return response.json({...accessToken})
         } catch (e) {
-            console.log(e)
             return response.status(400).json({message: 'Invalid login attemp!'})
         }
     }
