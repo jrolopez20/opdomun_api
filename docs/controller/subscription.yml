@@ -9,11 +9,30 @@
       - application/json
     parameters:
       - name: page
-        description: page
         in: query
         type: integer
       - name: limit
-        description: limit
+        in: query
+        type: integer
+      - name: provincia
+        in: query
+        type: integer
+      - name: municipio
+        in: query
+        type: integer
+      - name: homeType
+        in: query
+        type: integer
+      - name: minPrice
+        in: query
+        type: integer
+      - name: maxPrice
+        in: query
+        type: integer
+      - name: bedrooms
+        in: query
+        type: integer
+      - name: bathrooms
         in: query
         type: integer
     responses:
@@ -46,11 +65,9 @@
             municipio:
               required: true
               type: array
-              description: 'Number array'
             homeType:
               required: true
               type: array
-              description: 'Number array'
             minPrice:
               required: true
               type: number
@@ -121,11 +138,9 @@
             municipio:
               required: true
               type: array
-              description: 'Number array'
             homeType:
               required: true
               type: array
-              description: 'Number array'
             minPrice:
               required: true
               type: number
