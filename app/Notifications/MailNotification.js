@@ -29,7 +29,7 @@ class MailNotification {
                 .to(owner.email)
                 .from(sender, appName)
                 .subject('Posible comprador para su propiedad')
-                .embed(Helpers.publicPath('images/logo_dark.png'), 'logo')
+                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
         })
     }
 
@@ -42,7 +42,7 @@ class MailNotification {
                 .to(owner.email)
                 .from(sender, appName)
                 .subject('Posibles compradores para su propiedad')
-                .embed(Helpers.publicPath('images/logo_dark.png'), 'logo')
+                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
         })
     }
 
@@ -55,7 +55,7 @@ class MailNotification {
                 .to(subscription.email)
                 .from(sender, appName)
                 .subject('Nueva casa en venta que pudiera interesarte')
-                .embed(Helpers.publicPath('images/logo_dark.png'), 'logo')
+                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
         })
     }
 
