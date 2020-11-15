@@ -48,41 +48,8 @@ class Subscription extends Model {
         }
 
         const subscriptions = await query.paginate(page, limit);
-        return subscriptions;
+        return subscriptions.toJSON();
     }
-
-    // static async getSubscriptions(page = 1, limit = 20, filter) {
-    //     const query = Subscription
-    //         .query()
-    //         .with('provincia');
-    //
-    //     if (filter) {
-    //         if (filter.provincia) {
-    //             query.andWhere('provinciaId', filter.provincia)
-    //         }
-    //         if (filter.municipio) {
-    //             query.whereRaw(`${filter.municipio} = ANY (regexp_split_to_array(municipio, ',')::int[])`);
-    //         }
-    //         if (filter.homeType) {
-    //             query.whereRaw(`${filter.homeType} = ANY (regexp_split_to_array(home_type, ',')::int[])`);
-    //         }
-    //         if (filter.bedrooms) {
-    //             query.andWhere('bedrooms', filter.bedrooms);
-    //         }
-    //         if (filter.bathrooms) {
-    //             query.andWhere('bathrooms', filter.bathrooms);
-    //         }
-    //         if (filter.minPrice) {
-    //             query.andWhere('minPrice', '>=', filter.minPrice);
-    //         }
-    //         if (filter.maxPrice) {
-    //             query.andWhere('maxPrice', '<=', filter.maxPrice);
-    //         }
-    //     }
-    //
-    //     const subscriptions = await query.paginate(page, limit);
-    //     return subscriptions.toJSON();
-    // }
 
     static async getMatchedSubscriptions({provinciaId, municipioId, price, homeType, bedrooms, bathrooms}) {
         const subscriptions = Database

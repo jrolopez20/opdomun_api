@@ -5,6 +5,7 @@ const UserService = use('App/Services/UserService');
 const MailNotification = use('App/Notifications/MailNotification');
 const Encryption = use('Encryption');
 const BadRequestException = use('App/Exceptions/BadRequestException');
+const crypto = use('App/Exceptions/BadRequestException');
 
 class AuthController {
 
@@ -29,8 +30,7 @@ class AuthController {
             const user = await UserService.addUser(request);
             const token = Encryption.encrypt(user.id);
 
-            await MailNotification.registerConfirmation(user, token)
-
+            await MailNotification.registerUserConfirmation(user, token)
             return response.status(201).json({
                 message: 'We have send you an email with the instructions to verify your account'
             })

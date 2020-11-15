@@ -31,7 +31,6 @@ class SubscriptionController {
         };
 
         const result = await Subscription.getSubscriptions(page, limit, filter);
-        return result;
         return PaginatedResponse.parse(response, result)
     }
 

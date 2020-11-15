@@ -5,11 +5,11 @@ const Mail = use('Mail');
 const Helpers = use('Helpers');
 class MailNotification {
 
-    static async registerConfirmation(user, token) {
+    static async registerUserConfirmation(user, token) {
         const sender = Env.getOrFail('MAIL_USERNAME');
         const appName = Env.getOrFail('APP_NAME');
 
-        const confirmationUrl = `${Env.get('APP_URL')}/registration_confirmation?token=${token}`;
+        const confirmationUrl = `${Env.get('APP_URL')}/registration_confirmation?token=${encodeURIComponent(token)}`;
 
         await Mail.send('emails.register_confirmation', {user, confirmationUrl}, (message) => {
             message
