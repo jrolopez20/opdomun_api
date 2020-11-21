@@ -45,11 +45,11 @@ class SubscriptionController {
     async store({request, response, auth}) {
         try {
             const {
-                provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+                provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
             } = request.all();
 
             const subscription = await SubscriptionService.addSubscription({
-                provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+                provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
             }, auth.user);
             return response.status(201).json(subscription)
         } catch (e) {

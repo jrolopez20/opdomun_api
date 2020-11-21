@@ -5,7 +5,7 @@ use('App/Validators/PriceValidator');
 class StoreSubscription {
     get rules() {
         return {
-            provinciaId: 'required|number',
+            provincia: 'required|object',
             municipios: 'required|array',
             homeTypes: 'required|array',
             minPrice: 'required|object|price',
@@ -17,8 +17,8 @@ class StoreSubscription {
 
     get messages() {
         return {
-            'provinciaId.required': 'You must provide a provinciaId',
-            'provinciaId.number': 'The field provinciaId must be a number',
+            'provincia.required': 'You must provide provincia',
+            'provincia.object': 'The field provincia must be an object',
             'municipios.required': 'You must provide at least one municipio',
             'municipios.array': 'The field municipio must be an array',
             'homeTypes.required': 'You must provide at leat one homeType',

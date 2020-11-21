@@ -15,11 +15,11 @@ class SubscriptionService {
         }
     }
 
-    static async addSubscription({provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms}, user) {
+    static async addSubscription({provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms}, user) {
         const subscription = new Subscription();
 
         subscription.userId = user.id;
-        subscription.provinciaId = provinciaId;
+        subscription.provinciaId = provincia.id;
         subscription.municipios = municipios;
         subscription.homeTypes = homeTypes;
         subscription.minPrice = minPrice;
@@ -53,12 +53,12 @@ class SubscriptionService {
 
     static async setSubscription(subscriptionId, request) {
         const {
-            provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+            provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
         } = request.all();
 
         const subscription = await Subscription.findOrFail(subscriptionId);
 
-        subscription.provinciaId = provinciaId;
+        subscription.provinciaId = provincia.id;
         subscription.municipios = municipios;
         subscription.homeTypes = homeTypes;
         subscription.minPrice = minPrice;

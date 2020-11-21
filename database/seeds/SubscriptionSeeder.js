@@ -25,9 +25,10 @@ class SubscriptionSeeder {
         let clients = await User.query().where('role', User.roles().CLIENT).limit(5).fetch();
         for (const user of clients.toJSON()) {
             const subscription = await Factory.model('App/Models/Subscription').make()
-
+            const subscriptionObject = subscription.toJSON();
             await SubscriptionService.addSubscription({
-                ...subscription.toJSON(),
+                ...subscriptionObject,
+                provincia: {id: subscriptionObject.provinciaId},
                 municipios: JSON.parse(subscription.municipios),
                 homeTypes: JSON.parse(subscription.homeTypes)
             }, user);
