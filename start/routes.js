@@ -72,9 +72,10 @@ Route.group(() => {
             [['store', 'update'], ['StoreSubscription']]
         ]))
         .middleware(new Map([
-            [['store', 'update', 'destroy'], ['auth']]
+            [['index', 'store', 'update', 'destroy'], ['auth']]
         ]))
         .apiOnly();
+    Route.get('published_subscriptions', 'SubscriptionController.publishedSubscriptions');
 
     // Users
     Route.resource('users', 'UserController')

@@ -3,6 +3,7 @@
 const Database = use('Database')
 const Model = use('Model')
 const CurrencyService = use('App/Services/CurrencyService')
+const User = use('App/Models/User')
 
 class Subscription extends Model {
 
@@ -41,7 +42,45 @@ class Subscription extends Model {
         return price ? CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY()) : null;
     }
 
-    static async getSubscriptions(page = 1, limit = 20, filter) {
+    static async getSubscriptions(auth, page = 1, limit = 20, filter) {
+        const query = Subscription
+            .query()
+            .with('provincia')
+            .with('user');
+
+        if (auth.user.role !== User.roles().ADMIN) {
+            query.where('userId', auth.user.id);
+        }
+
+        if (filter) {
+            if (filter.provincia) {
+                query.andWhere('provinciaId', filter.provincia)
+            }
+            if (filter.municipio) {
+                query.whereRaw('municipios @> ?', `[{"id":${filter.municipio}}]`);
+            }
+            if (filter.homeType) {
+                query.whereRaw('home_types @> ?', `[{"id":${filter.homeType}}]`);
+            }
+            if (filter.bedrooms) {
+                query.andWhere('bedrooms', filter.bedrooms);
+            }
+            if (filter.bathrooms) {
+                query.andWhere('bathrooms', filter.bathrooms);
+            }
+            if (filter.minPrice) {
+                query.andWhere('minPrice', '>=', filter.minPrice);
+            }
+            if (filter.maxPrice) {
+                query.andWhere('maxPrice', '<=', filter.maxPrice);
+            }
+        }
+
+        const subscriptions = await query.paginate(page, limit);
+        return subscriptions.toJSON();
+    }
+
+    static async getPublishedSubscriptions(page = 1, limit = 20, filter) {
         const query = Subscription
             .query()
             .with('provincia')

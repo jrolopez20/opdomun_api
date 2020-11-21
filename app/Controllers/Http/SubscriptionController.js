@@ -17,7 +17,7 @@ class SubscriptionController {
      * @param response
      * @returns {Promise<*|Promise<any>>}
      */
-    async index({request, response}) {
+    async index({request, response, auth}) {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = {
@@ -30,7 +30,24 @@ class SubscriptionController {
             homeTypes: request.input('homeTypes')
         };
 
-        const result = await Subscription.getSubscriptions(page, limit, filter);
+        const result = await Subscription.getSubscriptions(auth, page, limit, filter);
+        return PaginatedResponse.parse(response, result)
+    }
+
+    async publishedSubscriptions({request, response}) {
+        const page = request.input('page');
+        const limit = request.input('limit');
+        const filter = {
+            provincia: request.input('provincia'),
+            municipios: request.input('municipios'),
+            minPrice: request.input('minPrice'),
+            maxPrice: request.input('maxPrice'),
+            bedrooms: request.input('bedrooms'),
+            bathrooms: request.input('bathrooms'),
+            homeTypes: request.input('homeTypes')
+        };
+
+        const result = await Subscription.getPublishedSubscriptions(page, limit, filter);
         return PaginatedResponse.parse(response, result)
     }
 
