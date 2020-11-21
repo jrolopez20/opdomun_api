@@ -2,6 +2,7 @@
 
 const Database = use('Database')
 const Model = use('Model')
+const CurrencyService = use('App/Services/CurrencyService')
 
 class Subscription extends Model {
 
@@ -10,28 +11,51 @@ class Subscription extends Model {
         this.addTrait('CastDate')
     }
 
-    setMunicipio (municipio) {
-        return JSON.stringify(municipio)
+    setMunicipios (municipios) {
+        return JSON.stringify(municipios)
     }
 
-    setHomeType (homeType) {
-        return JSON.stringify(homeType)
+    setHomeTypes (homeTypes) {
+        return JSON.stringify(homeTypes)
+    }
+
+    getMinPrice(price) {
+        return {
+            value: CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY()),
+            currency: CurrencyService.DEFAULT_CURRENCY(),
+        }
+    }
+
+    setMinPrice(price) {
+        return price ? CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY()) : null;
+    }
+
+    getMaxPrice(price) {
+        return {
+            value: CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY()),
+            currency: CurrencyService.DEFAULT_CURRENCY(),
+        }
+    }
+
+    setMaxPrice(price) {
+        return price ? CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY()) : null;
     }
 
     static async getSubscriptions(page = 1, limit = 20, filter) {
         const query = Subscription
             .query()
-            .with('provincia');
+            .with('provincia')
+            .with('user');
 
         if (filter) {
             if (filter.provincia) {
                 query.andWhere('provinciaId', filter.provincia)
             }
             if (filter.municipio) {
-                query.whereRaw('municipio @> ?', `[{"id":${filter.municipio}}]`);
+                query.whereRaw('municipios @> ?', `[{"id":${filter.municipio}}]`);
             }
             if (filter.homeType) {
-                query.whereRaw('home_type @> ?', `[{"id":${filter.homeType}}]`);
+                query.whereRaw('home_types @> ?', `[{"id":${filter.homeType}}]`);
             }
             if (filter.bedrooms) {
                 query.andWhere('bedrooms', filter.bedrooms);
@@ -55,7 +79,7 @@ class Subscription extends Model {
         const subscriptions = Database
             .from('subscriptions')
             .select(
-                'subscriptions.id', 'users.email', 'users.telephone', 'users.fullname', 'subscriptions.municipio'
+                'subscriptions.id', 'users.email', 'users.telephone', 'users.fullname', 'subscriptions.municipios'
             )
             .innerJoin('users', 'users.id', 'subscriptions.user_id');
 
@@ -64,7 +88,7 @@ class Subscription extends Model {
         }
 
         if (municipioId) {
-            subscriptions.whereRaw(`${municipioId} = ANY (regexp_split_to_array(municipio, ',')::int[])`);
+            subscriptions.whereRaw(`${municipioId} = ANY (regexp_split_to_array(municipios, ',')::int[])`);
         }
 
         if (price) {
@@ -73,7 +97,7 @@ class Subscription extends Model {
         }
 
         if (homeType) {
-            subscriptions.whereRaw(`${homeType} = ANY (regexp_split_to_array(home_type, ',')::int[])`);
+            subscriptions.whereRaw(`${homeType} = ANY (regexp_split_to_array(home_types, ',')::int[])`);
         }
 
         return await subscriptions;

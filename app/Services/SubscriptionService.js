@@ -15,16 +15,13 @@ class SubscriptionService {
         }
     }
 
-    static async addSubscription(request, user) {
-        const {
-            provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms
-        } = request.all();
+    static async addSubscription({provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms}, user) {
         const subscription = new Subscription();
 
         subscription.userId = user.id;
         subscription.provinciaId = provinciaId;
-        subscription.municipio = municipio;
-        subscription.homeType = homeType;
+        subscription.municipios = municipios;
+        subscription.homeTypes = homeTypes;
         subscription.minPrice = minPrice;
         subscription.maxPrice = maxPrice;
         subscription.bedrooms = bedrooms;
@@ -34,7 +31,7 @@ class SubscriptionService {
 
         // // Get all posts that match to subscription attribute
         // const posts = await Post.getMatchedPremiumPost({
-        //     provinciaId, municipio, minPrice, maxPrice, homeType
+        //     provinciaId, municipios, minPrice, maxPrice, homeTypes
         // });
         // for (const post of posts) {
         //     // Notify owner about matched subscriptions
@@ -56,14 +53,14 @@ class SubscriptionService {
 
     static async setSubscription(subscriptionId, request) {
         const {
-            provinciaId, municipio, homeType, minPrice, maxPrice, bedrooms, bathrooms
+            provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
         } = request.all();
 
         const subscription = await Subscription.findOrFail(subscriptionId);
 
         subscription.provinciaId = provinciaId;
-        subscription.municipio = municipio;
-        subscription.homeType = homeType;
+        subscription.municipios = municipios;
+        subscription.homeTypes = homeTypes;
         subscription.minPrice = minPrice;
         subscription.maxPrice = maxPrice;
         subscription.bedrooms = bedrooms;

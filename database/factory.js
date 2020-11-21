@@ -17,6 +17,7 @@ const User = use('App/Models/User')
 const Office = use('App/Models/Office')
 const HomeType = use('App/Models/HomeType')
 const Localidad = use('App/Models/Localidad')
+const Municipio = use('App/Models/Municipio')
 const Hash = use('Hash')
 
 
@@ -103,5 +104,52 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
 Factory.blueprint('App/Models/Office', async (faker, i, data) => {
     return {
         provinciaId: data.province.id
+    }
+});
+
+Factory.blueprint('App/Models/Subscription', async (faker, i, data) => {
+    const provinciaId = faker.integer({min: 1, max: 15});
+    const homeTypes = (await HomeType.all()).toJSON();
+    const municipios = (
+        await Municipio
+            .query()
+            .where('provinciaId', provinciaId)
+            .fetch()
+    ).toJSON();
+
+    const municipioIndex = faker.integer({min: 3, max: municipios.length - 1});
+    const firstIndex = faker.integer({min: 0, max: 2});
+    const secondIndex = faker.integer({min: 3, max: 4});
+
+    return {
+        provinciaId: provinciaId,
+        municipios: [
+            {
+                id: municipios[municipioIndex - 1].id,
+                title: municipios[municipioIndex - 1].title
+            }, {
+                id: municipios[municipioIndex].id,
+                title: municipios[municipioIndex].title
+            }
+        ],
+        homeTypes: [
+            {
+                id: homeTypes[firstIndex].id,
+                title: homeTypes[firstIndex].title
+            }, {
+                id: homeTypes[secondIndex].id,
+                title: homeTypes[secondIndex].title
+            }
+        ],
+        minPrice: {
+            value: faker.integer({min: 8000, max: 20000}),
+            currency: 'USD'
+        },
+        maxPrice: {
+            value: faker.integer({min: 20001, max: 90000}),
+            currency: 'USD'
+        },
+        bedrooms: faker.integer({min: 1, max: 5}),
+        bathrooms: faker.integer({min: 1, max: 3}),
     }
 });

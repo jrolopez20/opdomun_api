@@ -22,12 +22,12 @@ class SubscriptionController {
         const limit = request.input('limit');
         const filter = {
             provincia: request.input('provincia'),
-            municipio: request.input('municipio'),
+            municipios: request.input('municipios'),
             minPrice: request.input('minPrice'),
             maxPrice: request.input('maxPrice'),
             bedrooms: request.input('bedrooms'),
             bathrooms: request.input('bathrooms'),
-            homeType: request.input('homeType')
+            homeTypes: request.input('homeTypes')
         };
 
         const result = await Subscription.getSubscriptions(page, limit, filter);
@@ -44,7 +44,13 @@ class SubscriptionController {
      */
     async store({request, response, auth}) {
         try {
-            const subscription = await SubscriptionService.addSubscription(request, auth.user);
+            const {
+                provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+            } = request.all();
+
+            const subscription = await SubscriptionService.addSubscription({
+                provinciaId, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+            }, auth.user);
             return response.status(201).json(subscription)
         } catch (e) {
             return response.status(400).json({message: e.message})

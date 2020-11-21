@@ -22,14 +22,14 @@ class PostSeeder {
     async run() {
         await Address.query().delete();
         // Create FREE dummy posts
-        let clients = await User.query().where('role', User.roles().CLIENT).fetch();
+        let clients = await User.query().where('role', User.roles().CLIENT).limit(5).fetch();
         for (const user of clients.toJSON()) {
             const post = await Factory.model('App/Models/Post').make()
             await PostService.addFreePost(post.toJSON(), {user});
         }
 
         // Create PREMIUM dummy posts and Appraisals
-        const agents = await User.query().where('role', User.roles().AGENT).fetch();
+        const agents = await User.query().where('role', User.roles().AGENT).limit(5).fetch();
         const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
         for (const agent of agents.toJSON()) {
             let post = await Factory.model('App/Models/Post').make({plan: premiumPlan})

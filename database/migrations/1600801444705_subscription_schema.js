@@ -9,8 +9,8 @@ class SubscriptionSchema extends Schema {
             table.increments()
             table.integer('user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE')
             table.integer('provincia_id').unsigned().notNullable().references('id').inTable('provincias').onDelete('CASCADE')
-            table.jsonb('municipio').notNullable()
-            table.jsonb('home_type').notNullable()
+            table.jsonb('municipios').notNullable()
+            table.jsonb('home_types').notNullable()
             table.float('min_price').notNullable()
             table.float('max_price').notNullable()
             table.integer('bedrooms')
@@ -18,8 +18,8 @@ class SubscriptionSchema extends Schema {
             table.timestamps(true, true)
         })
 
-        this.raw('CREATE INDEX subscriptions_home_type_gin_idx ON subscriptions USING gin (home_type jsonb_path_ops);')
-        this.raw('CREATE INDEX subscriptions_municipio_gin_idx ON subscriptions USING gin (municipio jsonb_path_ops);')
+        this.raw('CREATE INDEX subscriptions_home_type_gin_idx ON subscriptions USING gin (home_types jsonb_path_ops);')
+        this.raw('CREATE INDEX subscriptions_municipio_gin_idx ON subscriptions USING gin (municipios jsonb_path_ops);')
     }
 
     down() {
