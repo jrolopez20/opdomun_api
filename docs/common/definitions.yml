@@ -52,6 +52,17 @@ definitions:
       - value
       - currency
 
+  SimpleObject:
+    type: object
+    properties:
+      id:
+        type: number
+      title:
+        type: string
+    required:
+      - id
+      - title
+
   Coordinates:
     type: object
     properties:

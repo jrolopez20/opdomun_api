@@ -9,16 +9,16 @@ definitions:
         $ref: '#/definitions/User'
       provincia:
         $ref: '#/definitions/Provincia'
-      municipio:
+      municipios:
         type: string
         description: 'List of comma separated of municipio'
-      homeType:
+      homeTypes:
         type: string
         description: 'List of comma separated of homeType'
       minPrice:
-        type: number
+        $ref: '#/definitions/Price'
       maxPrice:
-        type: number
+        $ref: '#/definitions/Price'
       bedrooms:
         type: integer
       bathrooms:
@@ -27,8 +27,8 @@ definitions:
       - id
       - user
       - provincia
-      - municipio
-      - homeType
+      - municipios
+      - homeTypes
       - minPrice
       - maxPrice
       - bedrooms
