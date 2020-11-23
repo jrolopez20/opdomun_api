@@ -182,10 +182,13 @@ Route.group(() => {
 
 // Authentication routes
 Route.group(() => {
-    Route.post('login', 'AuthController.login').validator('Auth').middleware(['guest'])
-    Route.post('register', 'AuthController.register').validator('StoreUser').middleware(['guest'])
+    Route.post('login', 'AuthController.login').validator('Auth').middleware(['guest']);
+    Route.post('register', 'AuthController.register').validator('StoreUser').middleware(['guest']);
     Route.post('change_password', 'AuthController.changePassword').middleware(['auth']);
+    Route.post('forgot_password', 'ForgotPasswordController.store').middleware(['guest']);
+    Route.put('forgot_password/:token/:email', 'ForgotPasswordController.update').validator('ResetPassword').middleware(['guest']);
 
 }).prefix('api').namespace('Auth');
 
+// Views
 Route.get('registration_confirmation', 'AuthController.registrationConfirmation').namespace('Auth');

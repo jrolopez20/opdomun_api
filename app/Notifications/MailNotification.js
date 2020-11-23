@@ -5,6 +5,10 @@ const Mail = use('Mail');
 const Helpers = use('Helpers');
 class MailNotification {
 
+    static logoPatch() {
+        return Helpers.publicPath('images/logo_large.png');
+    }
+
     static async registerUserConfirmation(user, token) {
         const sender = Env.getOrFail('MAIL_USERNAME');
         const appName = Env.getOrFail('APP_NAME');
@@ -16,8 +20,23 @@ class MailNotification {
                 .to(user.email)
                 .from(sender, appName)
                 .subject('Active su cuenta de Opdomun')
-                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
+                .embed(MailNotification.logoPatch(), 'logo')
         })
+    }
+
+    static async recoverPasswordNotification(user, token) {
+        const sender = Env.getOrFail('MAIL_USERNAME');
+        const appName = Env.getOrFail('APP_NAME');
+
+        const recoverUrl = `${Env.get('APP_URL')}/forgot_password/${token}/${user.email}`;
+
+        await Mail.send('emails.password_recover', {user, recoverUrl}, (message) => {
+            message
+                .to(user.email)
+                .from(sender, appName)
+                .subject('Recupere su contraseña de Opdomun')
+                .embed(MailNotification.logoPatch(), 'logo')
+        });
     }
 
     static async notifyCustomerSingle(owner, subscriptor) {
@@ -29,7 +48,7 @@ class MailNotification {
                 .to(owner.email)
                 .from(sender, appName)
                 .subject('Posible comprador para su propiedad')
-                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
+                .embed(MailNotification.logoPatch(), 'logo')
         })
     }
 
@@ -42,7 +61,7 @@ class MailNotification {
                 .to(owner.email)
                 .from(sender, appName)
                 .subject('Posibles compradores para su propiedad')
-                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
+                .embed(MailNotification.logoPatch(), 'logo')
         })
     }
 
@@ -55,7 +74,7 @@ class MailNotification {
                 .to(subscription.email)
                 .from(sender, appName)
                 .subject('Nueva casa en venta que pudiera interesarte')
-                .embed(Helpers.publicPath('images/logo_large.png'), 'logo')
+                .embed(MailNotification.logoPatch(), 'logo')
         })
     }
 

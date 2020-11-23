@@ -69,8 +69,6 @@ class AuthController {
             throw new BadRequestException(e.message);
         }
     }
-
-
 }
 
 module.exports = AuthController;

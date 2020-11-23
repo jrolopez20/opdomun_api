@@ -79,3 +79,51 @@
     responses:
       200:
         description: Success
+
+/forgot_password:
+  post:
+    tags:
+      - Auth
+    summary: Request to change user password
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            email:
+              required: true
+              type: string
+    responses:
+      200:
+        $ref: '#/responses/SuccessMessage'
+
+/forgot_password/{token}/{email}:
+  put:
+    tags:
+      - Auth
+    summary: Create a new user password
+    produces:
+      - application/json
+    parameters:
+      - name: token
+        in: path
+        required: true
+        type: string
+      - name: email
+        in: path
+        required: true
+        type: string
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            newPassword:
+              required: true
+              type: string
+    responses:
+      200:
+        $ref: '#/responses/SuccessMessage'
