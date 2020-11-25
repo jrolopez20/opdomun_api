@@ -23,3 +23,93 @@
             $ref: '#/definitions/Office'
         headers:
           $ref: '#/definitions/PaginationData'
+
+  post:
+    tags:
+      - Office
+    description: Create a new office
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            provincia:
+              type: object
+              properties:
+                id:
+                  required: true
+                  type: number
+          required:
+            - provincia
+    responses:
+      201:
+        description: Success
+        schema:
+          $ref: '#/definitions/Office'
+
+/offices/{id}:
+  get:
+    tags:
+      - Office
+    summary: Returns office by ID
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Succes
+        schema:
+          $ref: '#/definitions/Office'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  put:
+    tags:
+      - Office
+    summary: Update office
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            provincia:
+              type: object
+              properties:
+                id:
+                  required: true
+                  type: number
+          required:
+            - provincia
+    responses:
+      200:
+        description: Succes
+        schema:
+          $ref: '#/definitions/Office'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  delete:
+    tags:
+      - Office
+    summary: Remove office by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      204:
+        description: Succes
+      404:
+        $ref: '#/responses/404NotFound'
