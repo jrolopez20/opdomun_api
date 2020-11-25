@@ -36,9 +36,6 @@ Route.group(() => {
     // Localidades
     Route.get('municipios/:id/localidades', 'LocalidadController.index');
 
-    // Offices
-    Route.get('offices', 'OfficeController.index');
-
     // Tax calculator
     Route.get('tax_calculator', 'BenchmarkPriceController.index')
         .validator('TaxCalculator');
@@ -51,6 +48,13 @@ Route.group(() => {
 
     // Images
     Route.resource('posts.images', 'ImageController')
+        .middleware(new Map([
+            [['store', 'update', 'destroy'], ['auth']]
+        ]))
+        .apiOnly();
+
+    // Offices
+    Route.resource('offices', 'OfficeController')
         .middleware(new Map([
             [['store', 'update', 'destroy'], ['auth']]
         ]))

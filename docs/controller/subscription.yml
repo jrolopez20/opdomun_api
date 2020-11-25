@@ -135,7 +135,7 @@
             - bedrooms
             - bathrooms
     responses:
-      200:
+      201:
         schema:
           $ref: '#/definitions/Subscription'
         description: Subscription

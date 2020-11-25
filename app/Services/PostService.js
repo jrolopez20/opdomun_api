@@ -209,8 +209,6 @@ class PostService {
             if (images && images.length > 0) {
                 await post.load('images')
                 const currentImages = (await post.getRelated('images')).toJSON();
-                console.log('news', images)
-                console.log('current', currentImages)
 
                 if (currentImages) {
                     const deprecatedImages = currentImages.filter(c => !images.find(i => c.id === i.id))
@@ -220,7 +218,6 @@ class PostService {
                         deprecatedImages.map(img => {
                             ids.push(img.id)
                         });
-                        console.log(ids)
                         await Image
                             .query()
                             .whereIn('id', ids)

@@ -21,6 +21,19 @@ class Office extends Model {
         return offices.toJSON();
     }
 
+    static async getOffice (id) {
+        const office = await Office
+            .query()
+            .with('provincia')
+            .with('users', (builder) => {
+                builder.orderBy('role', 'DESC')
+            })
+            .where('id', id)
+            .firstOrFail();
+
+        return office.toJSON();
+    }
+
     provincia() {
         return this.belongsTo('App/Models/Provincia', 'provinciaId', 'id');
     }
