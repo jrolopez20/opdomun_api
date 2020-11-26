@@ -1,6 +1,5 @@
 'use strict'
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 const Database = use('Database')
 const PostPlace = use('App/Models/PostPlace')
@@ -12,7 +11,6 @@ const ServPublico = use('App/Models/ServPublico')
 const Riesgo = use('App/Models/Riesgo')
 const VarConforEficiencia = use('App/Models/VarConforEficiencia')
 const VarMenaje = use('App/Models/VarMenaje')
-const Municipio = use('App/Models/Municipio')
 const User = use('App/Models/User')
 const Address = use('App/Models/Address')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')

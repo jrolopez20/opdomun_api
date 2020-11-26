@@ -34,8 +34,6 @@ class SeedSync extends Command {
     }
 
     for (const seed of seedOrder) {
-      // this.success(`seed: ${seed}`)
-
       const exec = execSync(`adonis seed --files=${seed} --force`, {stdio: 'inherit'})
     }
   }

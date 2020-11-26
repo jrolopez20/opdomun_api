@@ -1,7 +1,4 @@
 'use strict'
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const PostVisit = use('App/Models/PostVisit')
 const Post = use('App/Models/Post')

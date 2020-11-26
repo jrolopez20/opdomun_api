@@ -1,13 +1,8 @@
 'use strict'
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
 const Article = use('App/Models/Article');
 const ArticleService = use('App/Services/ArticleService');
 const PaginatedResponse = use('App/Util/PaginatedResponse');
-const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 /**
  * Resourceful controller for interacting with articles
@@ -81,7 +76,7 @@ class ArticleController {
      * @returns {Promise<*|Promise<any>>}
      */
     async destroy({params, response}) {
-        const res = await ArticleService.destroyArticle(params.id);
+        await ArticleService.destroyArticle(params.id);
         return response.status(204).json(null);
     }
 }

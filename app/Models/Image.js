@@ -1,6 +1,5 @@
 'use strict'
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Helpers = use('Helpers')
 const Model = use('Model')
 const Drive = use('Drive')
