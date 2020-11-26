@@ -69,4 +69,4 @@ class CurrencyService {
     }
 }
 
-module.exports = CurrencyService;
+module.exports = CurrencyService

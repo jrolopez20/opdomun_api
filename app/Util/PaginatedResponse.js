@@ -12,4 +12,4 @@ class PaginatedResponse {
     }
 }
 
-module.exports = PaginatedResponse;
+module.exports = PaginatedResponse

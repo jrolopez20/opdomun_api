@@ -24,4 +24,4 @@ class ServPublico extends Model {
     }
 }
 
-module.exports = ServPublico;
+module.exports = ServPublico

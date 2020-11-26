@@ -39,6 +39,7 @@ class VarMenaje extends Model {
                 .innerJoin('menaje_electrodomesticos as me', 'm.id', 'me.menaje_id')
                 .innerJoin('nom_electrodomesticos as ne', 'ne.id', 'me.electrodomestico_id')
                 .where('m.post_id', postId)
+
             return {
                 moviliario: moviliario,
                 electrodomestico: electrodomestico
@@ -46,8 +47,6 @@ class VarMenaje extends Model {
         } else {
             return false;
         }
-
-
     }
 
     menajeMoviliario() {

@@ -29,7 +29,7 @@ class Post extends Model {
     }
 
     static get hidden() {
-        return ['planId', 'homeTypeId', 'addressId','managedById', 'updatedAt'];
+        return ['planId', 'homeTypeId', 'addressId', 'managedById', 'updatedAt'];
     }
 
     static BUILD_STATUS_TYPES() {
@@ -280,7 +280,8 @@ class Post extends Model {
         let user = null;
         try {
             user = await auth.getUser();
-        } catch (e) {}
+        } catch (e) {
+        }
 
         if (filter.minPrice) {
             // Get the current currency
@@ -519,13 +520,13 @@ class Post extends Model {
                 },
                 {
                     text: post.provincia + ', ' + post.municipio + ', ' + post.localidad + ', ' + post.addressDescription,
-                    margin: [0, 0, 0, 10],
+                    margin: [0, 0, 0, 10]
                 },
                 {
                     margin: [-5, 10],
                     layout: {
                         defaultBorder: false,
-                        hLineColor: '#b4b4b4',
+                        hLineColor: '#b4b4b4'
                     },
                     table: {
                         widths: ['*', '*', 20, '*', '*'],
@@ -632,7 +633,7 @@ class Post extends Model {
                     bold: true
                 },
                 {
-                    text: otherPlaces,
+                    text: otherPlaces
                 },
                 {
                     text: 'Resumen:',
@@ -640,10 +641,10 @@ class Post extends Model {
                     margin: [0, 10, 0, 0]
                 },
                 {
-                    text: post.summary,
+                    text: post.summary
                 }
             ]
-            if (post.planId != 2) {
+            if (post.planId !== 2) {
                 body[2].table.body.unshift([
                     {
                         text: 'Índice Op:',
@@ -678,7 +679,7 @@ class Post extends Model {
                 const table = {
                     layout: {
                         defaultBorder: false,
-                        hLineColor: '#b4b4b4',
+                        hLineColor: '#b4b4b4'
                     },
                     table: {
                         widths: [100, '*'],
@@ -711,19 +712,19 @@ class Post extends Model {
                 const dicc = VarConforEficiencia.getDicc()
                 let windowsCategory = '';
                 dicc.windowsCategory.forEach(item => {
-                    if (item.value == confortAmbiental.windowCategory) {
+                    if (item.value === confortAmbiental.windowCategory) {
                         windowsCategory = item.text;
                     }
                 });
                 let puntal = '';
                 dicc.puntal.forEach(item => {
-                    if (item.value == confortAmbiental.puntal) {
+                    if (item.value === confortAmbiental.puntal) {
                         puntal = item.text;
                     }
                 });
                 let solarProtection = '';
                 dicc.solarProtection.forEach(item => {
-                    if (item.value == confortAmbiental.solarProtection) {
+                    if (item.value === confortAmbiental.solarProtection) {
                         solarProtection = item.text;
                     }
                 });
@@ -782,7 +783,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.eastProtection == 100 ? 'Elemento Vertical ' : 'Sin protección',
+                                    text: confortAmbiental.eastProtection === 100 ? 'Elemento Vertical ' : 'Sin protección',
                                     border: [false, false, false, true]
                                 },
                             ],
@@ -792,7 +793,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.southProtection == 100 ? 'Elemento Horizontal ' : 'Sin protección',
+                                    text: confortAmbiental.southProtection === 100 ? 'Elemento Horizontal ' : 'Sin protección',
                                     border: [false, false, false, true]
                                 },
                             ],
@@ -802,7 +803,7 @@ class Post extends Model {
                                     border: [false, false, false, true]
                                 },
                                 {
-                                    text: confortAmbiental.westProtection == 100 ? 'Elemento Vertical ' : 'Sin protección',
+                                    text: confortAmbiental.westProtection === 100 ? 'Elemento Vertical ' : 'Sin protección',
                                     border: [false, false, false, true]
                                 },
                             ]
@@ -820,7 +821,7 @@ class Post extends Model {
                 const table = {
                     layout: {
                         defaultBorder: false,
-                        hLineColor: '#b4b4b4',
+                        hLineColor: '#b4b4b4'
                     },
                     table: {
                         widths: ['*', 120],
@@ -859,7 +860,7 @@ class Post extends Model {
                 const table = {
                     layout: {
                         defaultBorder: false,
-                        hLineColor: '#b4b4b4',
+                        hLineColor: '#b4b4b4'
                     },
                     table: {
                         widths: ['*', 120],
@@ -876,7 +877,7 @@ class Post extends Model {
                             {
                                 text: displayValuesVisuales[item.value],
                                 border: [false, false, false, true]
-                            },
+                            }
                         ]
                     )
                 }
@@ -918,7 +919,7 @@ class Post extends Model {
                             {
                                 text: displayValuesInfUrbana[item.value],
                                 border: [false, false, false, true]
-                            },
+                            }
                         ]
                     )
                 }
@@ -927,7 +928,7 @@ class Post extends Model {
 
             if (riesgo) {
                 let riskText = '';
-                if (riesgo.value == 100) {
+                if (riesgo.value === 100) {
                     riskText = 'La vivienda NO se encuentra ubicada en una zona de riesgo de desastres.'
                 } else {
                     const riskTypes = Riesgo.getRiskTypes();
@@ -978,7 +979,7 @@ class Post extends Model {
                     '80': 'Alto',
                     '60': 'Medio',
                     '40': 'Bajo',
-                    '20': 'Muy bajo',
+                    '20': 'Muy bajo'
                 }
                 body.push([{
                     text: {
@@ -989,7 +990,7 @@ class Post extends Model {
                 }, {
                     layout: {
                         defaultBorder: false,
-                        hLineColor: '#b4b4b4',
+                        hLineColor: '#b4b4b4'
                     },
                     table: {
                         widths: ['*', '*'],
@@ -1002,7 +1003,7 @@ class Post extends Model {
                                 {
                                     text: scale[post.valorArquitectonico],
                                     border: [false, false, false, true]
-                                },
+                                }
                             ],
                             [
                                 {
@@ -1012,7 +1013,7 @@ class Post extends Model {
                                 {
                                     text: scale[post.valorUrbano],
                                     border: [false, false, false, true]
-                                },
+                                }
                             ]
                         ]
                     }
@@ -1035,7 +1036,7 @@ class Post extends Model {
                     }
                     body.push({
                         text: {
-                            text: moviliario,
+                            text: moviliario
                         }
                     });
                 }
@@ -1047,7 +1048,7 @@ class Post extends Model {
                     }
                     body.push({
                         text: {
-                            text: electrodomesticos,
+                            text: electrodomesticos
                         }
                     });
                 }

@@ -6,11 +6,16 @@ const Drive = use('Drive')
 const Database = use('Database')
 const Env = use('Env')
 
+const PostPictureFolder = 'images/post_pictures/'
+
 class Image extends Model {
-    static postPictureFolder = 'images/post_pictures/'
+
+    static getPostPictureFolder() {
+        return PostPictureFolder;
+    }
 
     static pictureBaseUrl() {
-        return `${Env.get('APP_URL')}/${Image.postPictureFolder}`;
+        return `${Env.get('APP_URL')}/${Image.getPostPictureFolder()}`;
     }
 
     static get hidden() {
@@ -37,7 +42,7 @@ class Image extends Model {
 
         const tmpImgs = images.toJSON();
         for (let i = 0; i < tmpImgs.length; i++) {
-            const picPath = Helpers.publicPath(Image.postPictureFolder) + tmpImgs[i].url;
+            const picPath = Helpers.publicPath(Image.getPostPictureFolder()) + tmpImgs[i].url;
             await Drive.delete(picPath)
         }
 
