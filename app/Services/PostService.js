@@ -1,10 +1,10 @@
 'use strict'
 
-const Post = use('App/Models/Post');
-const Image = use('App/Models/Image');
-const Variable = use('App/Models/Variable');
-const PostVariable = use('App/Models/PostVariable');
-const Database = use('Database');
+const Post = use('App/Models/Post')
+const Image = use('App/Models/Image')
+const Variable = use('App/Models/Variable')
+const PostVariable = use('App/Models/PostVariable')
+const Database = use('Database')
 const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
@@ -90,7 +90,7 @@ class PostService {
         const trx = await Database.beginTransaction()
         try {
             // Store Address
-            let addressObj = new Address();
+            const addressObj = new Address();
             addressObj.localidadId = address.localidad.id
             addressObj.description = address.description
             addressObj.coordinates = address.coordinates
@@ -144,7 +144,6 @@ class PostService {
 
             return post;
         } catch (e) {
-            console.log(e)
             trx.rollback();
             throw new Error(e.message)
         }
@@ -212,7 +211,7 @@ class PostService {
                 if (currentImages) {
                     const deprecatedImages = currentImages.filter(c => !images.find(i => c.id === i.id))
                     if (deprecatedImages) {
-                        // Remove deprecated images.
+                        // Remove deprecated images
                         const ids = []
                         deprecatedImages.map(img => {
                             ids.push(img.id)
@@ -234,8 +233,12 @@ class PostService {
                 let defaultFlag = false;
                 images.forEach(async (img) => {
                     // Validate only one image by default
-                    if (defaultFlag) img.default = false
-                    else if (img.default) defaultFlag = true
+                    if (defaultFlag) {
+                        img.default = false
+                    }
+                    else if (img.default) {
+                        defaultFlag = true
+                    }
 
                     if (img.id) {
                         await Image
@@ -263,10 +266,8 @@ class PostService {
 
             return post;
         } catch (e) {
-            console.log(e)
             trx.rollback();
             throw new Error(e.message)
-        } finally {
         }
     }
 
@@ -281,7 +282,7 @@ class PostService {
             homeType,
             summary,
             postPlaces,
-            owner,
+            owner
         }) {
         let post = await Post.find(postId);
         if (!post) {
@@ -318,7 +319,7 @@ class PostService {
     }
 
     static async destroyPost(postId) {
-        let post = await Post.find(postId);
+        const post = await Post.find(postId);
         if (post) {
             await Image.removeAllImgOnDrive(post.id);
             // This destroy the address and automatically destroy in cascade the post
@@ -331,7 +332,7 @@ class PostService {
     static async initPostVariable(post) {
         let variables = await Variable.getVariables();
         variables = variables.toJSON();
-        let postVariables = new Array();
+        const postVariables = new Array();
 
         for (let variable of variables) {
             postVariables.push({
@@ -361,7 +362,7 @@ class PostService {
     }
 
     static async publishPost(postId) {
-        let post = await Post.find(postId);
+        const post = await Post.find(postId);
         if (!post) {
             throw new Error('Post not found');
         }
@@ -405,7 +406,7 @@ class PostService {
     }
 
     static async markAsSold(postId) {
-        let post = await Post.find(postId);
+        const post = await Post.find(postId);
         if (!post) {
             throw new ResourceNotFoundException();
         }
@@ -419,4 +420,4 @@ class PostService {
 
 }
 
-module.exports = PostService;
+module.exports = PostService

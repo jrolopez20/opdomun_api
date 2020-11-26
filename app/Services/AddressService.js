@@ -33,4 +33,4 @@ class AddressService {
 
 }
 
-module.exports = AddressService;
+module.exports = AddressService

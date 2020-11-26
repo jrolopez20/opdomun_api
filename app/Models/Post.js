@@ -40,7 +40,7 @@ class Post extends Model {
             REGULAR: 'REGULAR',
             BAD: 'BAD',
             VERY_BAD: 'VERY_BAD',
-            DEMOLITION: 'DEMOLITION',
+            DEMOLITION: 'DEMOLITION'
         }
     }
 
@@ -1120,7 +1120,7 @@ class Post extends Model {
                 x++;
             }
         }
-        if (x == postVariables.length) {
+        if (x === postVariables.length) {
             this.price = Math.round(this.evi / this.opdo);
             await this.save();
             return this.price;

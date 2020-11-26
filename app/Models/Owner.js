@@ -32,4 +32,4 @@ class Owner extends Model {
     }
 }
 
-module.exports = Owner;
+module.exports = Owner

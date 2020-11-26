@@ -7,8 +7,14 @@ const Subscription = use('App/Models/Subscription');
 const Database = use('Database')
 
 class StatisticsService {
-    static APPRAISAL_KEY = 'APPRAISAL'
-    static SUBSCRIPTION_KEY = 'SUBSCRIPTION'
+
+    static APPRAISAL_KEY() {
+        return 'APPRAISAL';
+    }
+
+    static SUBSCRIPTION_KEY() {
+        return 'SUBSCRIPTION';
+    }
 
     static async getServices(user, startAt, endAt) {
         startAt += ' 00:00:00';
@@ -37,7 +43,7 @@ class StatisticsService {
 
         for (let service of services) {
             if (!service.planId) {
-                service.type = StatisticsService.APPRAISAL_KEY
+                service.type = StatisticsService.APPRAISAL_KEY()
             }
         }
 
@@ -45,7 +51,7 @@ class StatisticsService {
             const result = await Subscription.getTotalSubscriptions(startAt, endAt)
             services.push({
                 planId: null,
-                type: StatisticsService.SUBSCRIPTION_KEY,
+                type: StatisticsService.SUBSCRIPTION_KEY(),
                 total: result
             })
         }
@@ -89,7 +95,7 @@ class StatisticsService {
                 item.services.push({
                     total: service.total,
                     planId: service.planId,
-                    type: service.type || StatisticsService.APPRAISAL_KEY
+                    type: service.type || StatisticsService.APPRAISAL_KEY()
                 })
             } else {
                 response.push({
@@ -97,7 +103,7 @@ class StatisticsService {
                     services: [{
                         total: service.total,
                         planId: service.planId,
-                        type: service.type || StatisticsService.APPRAISAL_KEY
+                        type: service.type || StatisticsService.APPRAISAL_KEY()
                     }]
                 })
             }
@@ -129,7 +135,7 @@ class StatisticsService {
         const appraisal = services.find(item => item.planId === null);
         response.push({
             planId: null,
-            type: StatisticsService.APPRAISAL_KEY,
+            type: StatisticsService.APPRAISAL_KEY(),
             total: appraisal ? appraisal.total : 0
         })
 
@@ -162,7 +168,7 @@ class StatisticsService {
         const appraisal = services.find(item => item.planId === null);
         response.push({
             planId: null,
-            title: StatisticsService.APPRAISAL_KEY,
+            title: StatisticsService.APPRAISAL_KEY(),
             total: appraisal ? appraisal.total : 0
         })
 
