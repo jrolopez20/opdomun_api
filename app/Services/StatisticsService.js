@@ -1,5 +1,5 @@
 'use strict'
-const Post = use('App/Models/Post');
+
 const Plan = use('App/Models/Plan');
 const Office = use('App/Models/Office');
 const User = use('App/Models/User');

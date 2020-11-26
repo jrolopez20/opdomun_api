@@ -26,7 +26,7 @@ class ArticleService {
 
         if (articlePicture) {
             const pictureName = new Date().getTime() + '.jpg';
-            await articlePicture.move(Helpers.publicPath(Article.articlePictureFolder), {
+            await articlePicture.move(Helpers.publicPath(Article.getArticlePictureFolder()), {
                 name: pictureName
             });
             if (!articlePicture.moved()) {
@@ -60,13 +60,13 @@ class ArticleService {
             const pictureName = new Date().getTime() + '.jpg';
 
             if (article.picture) {
-                const actualPicturePath = Helpers.publicPath(Article.articlePictureFolder) + article.picture;
+                const actualPicturePath = Helpers.publicPath(Article.getArticlePictureFolder()) + article.picture;
                 const exists = await Drive.exists(actualPicturePath);
                 if (exists) {
                     await Drive.delete(actualPicturePath)
                 }
             }
-            await articlePicture.move(Helpers.publicPath(Article.articlePictureFolder), {
+            await articlePicture.move(Helpers.publicPath(Article.getArticlePictureFolder()), {
                 name: pictureName
             });
             if (!articlePicture.moved()) {
@@ -84,7 +84,7 @@ class ArticleService {
         try {
             let article = await Article.findOrFail(articleId);
             if (article.picture) {
-                const picPath = Helpers.publicPath(Article.articlePictureFolder) + article.picture;
+                const picPath = Helpers.publicPath(Article.getArticlePictureFolder()) + article.picture;
                 await Drive.delete(picPath)
             }
             return await article.delete();

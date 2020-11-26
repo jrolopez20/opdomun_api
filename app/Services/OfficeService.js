@@ -1,7 +1,6 @@
 'use strict'
 
 const Office = use('App/Models/Office');
-const Post = use('App/Models/Post');
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const UnauthorizedException = use('App/Exceptions/UnauthorizedException.js')
 

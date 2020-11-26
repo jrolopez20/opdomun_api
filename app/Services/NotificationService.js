@@ -1,6 +1,5 @@
 'use strict'
 
-const Post = use('App/Models/Post');
 const Subscription = use('App/Models/Subscription');
 const MailNotification = use('App/Notifications/MailNotification');
 

@@ -2,13 +2,18 @@
 
 const Model = use('Model')
 const Env = use('Env')
-const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+
+const ArticlePictureFolder = 'images/article_pictures/'
 
 class Article extends Model {
-    static articlePictureFolder = 'images/article_pictures/'
+
+    static getArticlePictureFolder() {
+        return ArticlePictureFolder;
+    }
 
     static pictureBaseUrl() {
-        return `${Env.get('APP_URL')}/${Article.articlePictureFolder}`;
+        return `${Env.get('APP_URL')}/${Article.getArticlePictureFolder()}`;
     }
 
     static boot() {

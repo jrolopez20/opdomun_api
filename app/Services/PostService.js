@@ -9,7 +9,6 @@ const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
 const Address = use('App/Models/Address')
-const NotificationService = use('App/Services/NotificationService')
 const AddressService = use('App/Services/AddressService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 
@@ -379,11 +378,8 @@ class PostService {
         await post.save();
 
         const publishedPost = await Post.getPost(postId);
-        const postObj = publishedPost.toJSON();
 
         // TODO dispatch event to notify subscriptors about the new created post
-        // Notify subscriptors about the new property
-        // await NotificationService.dispatchSubscriptorNotification(postObj);
 
         return publishedPost;
     }
@@ -416,7 +412,6 @@ class PostService {
 
         post.sold = true;
         post.soldAt = new Date();
-        ;
         await post.save();
 
         return await Post.getPost(postId);
