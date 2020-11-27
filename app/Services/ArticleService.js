@@ -6,7 +6,6 @@ const Helpers = use('Helpers');
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
 
 class ArticleService {
-
     static async addArticle(request, userId) {
         const {title, summary, text} = request.all();
 
@@ -93,7 +92,6 @@ class ArticleService {
             throw new ResourceNotFoundException()
         }
     }
-
 }
 
 module.exports = ArticleService;

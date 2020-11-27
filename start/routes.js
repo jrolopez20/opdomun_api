@@ -18,8 +18,13 @@ const Route = use('Route');
 
 // API routes
 Route.group(() => {
-    // Services
-    Route.get('our_services', 'OurServicesController.index');
+    // Our Services
+    // Offices
+    Route.resource('our_services', 'OurServiceController')
+        .middleware(new Map([
+            [['store', 'update', 'destroy'], ['auth']]
+        ]))
+        .apiOnly();
 
     // Home types
     Route.get('plans', 'PlanController.index');
@@ -173,7 +178,7 @@ Route.group(() => {
     Route.get('variables/:id/mh', 'VariableMhController.show').middleware(['auth']);
     Route.put('variables/:id/mh', 'VariableMhController.update').middleware(['auth']);
 
-    Route.get('services', 'StatisticsController.getServices').middleware(['auth']);
+    Route.get('services_total', 'StatisticsController.getServices').middleware(['auth']);
     Route.get('services_by_office', 'StatisticsController.servicesByOffice').middleware(['auth']);
     Route.get('services_by_user', 'StatisticsController.servicesByUser').middleware(['auth']);
 

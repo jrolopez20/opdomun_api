@@ -5,10 +5,116 @@
     summary: Show available services
     produces:
       - application/json
+    parameters:
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      - $ref: '#/parameters/filter'
     responses:
       200:
         description: Success
         schema:
           type: array
           items:
-            $ref: '#/definitions/Service'
+            $ref: '#/definitions/OurService'
+        headers:
+          $ref: '#/definitions/PaginationData'
+
+  post:
+    tags:
+      - Our services
+    summary: Create a new service
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              value:  PREMIUM_POST | FREE_POST | PURCHASE_POST | APPRAISAL | TAX_CALCULATOR
+            title:
+              type: string
+            description:
+              type: string
+            price:
+              $ref: '#/definitions/Price'
+          required:
+            - type
+            - title
+            - description
+    responses:
+      201:
+        description: Success
+        schema:
+          $ref: '#/definitions/OurService'
+
+/our_services/{id}:
+  get:
+    tags:
+      - Our services
+    summary: Return service by ID
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: '#/definitions/OurService'
+      400:
+        $ref: '#/responses/400BadRequest'
+      403:
+        $ref: '#/responses/403Forbidden'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  put:
+    tags:
+      - Our services
+    summary: Update service
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              value:  PREMIUM_POST | FREE_POST | PURCHASE_POST | APPRAISAL | TAX_CALCULATOR
+            title:
+              type: string
+            description:
+              type: string
+            price:
+              $ref: '#/definitions/Price'
+          required:
+            - type
+            - title
+            - description
+    responses:
+      200:
+        description: User
+
+  delete:
+    tags:
+      - Our services
+    summary: Remove service by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      204:
+        description: Null

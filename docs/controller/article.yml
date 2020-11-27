@@ -28,21 +28,23 @@
     produces:
       - application/json
     parameters:
-      - name: title
-        in: formData
-        required: true
-        type: string
-      - name: summary
-        in: formData
-        required: true
-        type: string
-      - name: text
-        in: formData
-        required: true
-        type: string
-      - name: picture
-        in: formData
-        type: string
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+            summary:
+              type: string
+            text:
+              type: string
+            picture:
+              type: string
+          required:
+            - title
+            - summary
+            - text
     responses:
       200:
         description: Success
@@ -53,7 +55,7 @@
       403:
         $ref: '#/responses/403Forbidden'
 
-/articles/{userId}:
+/articles/{id}:
   get:
     tags:
       - Article

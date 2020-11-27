@@ -38,7 +38,7 @@ class Article extends Model {
     static async getArticles(page = 1, limit = 20, filter = null) {
         const query = Article
             .query()
-            .setVisible(['id', 'title', 'sumary', 'picture', 'createdAt'])
+            .setVisible(['id', 'title', 'summary', 'picture', 'createdAt'])
             .with('user', (builder) => {
                 builder.setVisible(['id', 'fullname'])
             })

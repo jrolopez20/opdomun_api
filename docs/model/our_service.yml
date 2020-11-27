@@ -1,5 +1,5 @@
 definitions:
-  Service:
+  OurService:
     type: object
     properties:
       id:
@@ -16,5 +16,6 @@ definitions:
         $ref: '#/definitions/Price'
     required:
       - id
+      - type
       - title
       - description
