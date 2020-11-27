@@ -11,7 +11,10 @@ class OurService extends Model {
     static OUR_SERVICE_TYPES() {
         return {
             PREMIUM_POST: 'PREMIUM_POST',
-            FREE_POST: 'FREE_POST'
+            FREE_POST: 'FREE_POST',
+            PURCHASE_POST: 'PURCHASE_POST',
+            APPRAISAL: 'APPRAISAL',
+            TAX_CALCULATOR: 'TAX_CALCULATOR'
         }
     }
 

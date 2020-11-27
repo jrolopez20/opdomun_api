@@ -11,7 +11,10 @@ class OurServiceSchema extends Schema {
                 'type',
                 [
                     OurService.OUR_SERVICE_TYPES().PREMIUM_POST,
-                    OurService.OUR_SERVICE_TYPES().FREE_POST
+                    OurService.OUR_SERVICE_TYPES().FREE_POST,
+                    OurService.OUR_SERVICE_TYPES().PURCHASE_POST,
+                    OurService.OUR_SERVICE_TYPES().APPRAISAL,
+                    OurService.OUR_SERVICE_TYPES().TAX_CALCULATOR
                 ],
                 {useNative: true, enumName: 'our_service_type'},
             ).notNullable().unique()

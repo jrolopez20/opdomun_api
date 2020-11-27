@@ -19,7 +19,6 @@ const Route = use('Route');
 // API routes
 Route.group(() => {
     // Our Services
-    // Offices
     Route.resource('our_services', 'OurServiceController')
         .middleware(new Map([
             [['store', 'update', 'destroy'], ['auth']]
