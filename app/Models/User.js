@@ -2,9 +2,9 @@
 
 const Hash = use('Hash')
 const Model = use('Model')
+const Database = use('Database')
 
 class User extends Model {
-
     static boot() {
         super.boot()
 
@@ -22,6 +22,23 @@ class User extends Model {
 
     static get hidden() {
         return ['password', 'createdAt', 'updatedAt', 'closedAt'];
+    }
+
+    static get computed () {
+        return ['hasPremiumPost']
+    }
+
+    async getHasPremiumPost ({ id }) {
+        const result = await Database
+            .table('posts')
+            .count('posts.id as total')
+            .innerJoin('plans', 'posts.plan_id', 'plans.id')
+            .innerJoin('owners', 'posts.id', 'owners.post_id')
+            .where('plans.type', 'PREMIUM')
+            .where('owners.user_id', id)
+            .first()
+
+        return parseInt(result.total) ? true : false
     }
 
     static roles() {
@@ -60,7 +77,8 @@ class User extends Model {
             .with('office.provincia')
             .where('id', id)
 
-        const user = await query.first()
+        const user = (await query.first()).toJSON()
+        user.hasPremiumPost = await user.hasPremiumPost
         return user;
     }
 

@@ -1,6 +1,5 @@
 'use strict'
 const Post = use('App/Models/Post');
-const Riesgo = use('App/Models/Riesgo');
 const Database = use('Database')
 
 class Rd {

@@ -1,7 +1,6 @@
 'use strict'
 
 const PostVariable = use('App/Models/PostVariable');
-const Database = use('Database')
 /**
  * Resourceful controller for interacting with posts
  */
