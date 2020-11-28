@@ -25,6 +25,9 @@ definitions:
         type: string
       notificationsConsent:
         type: boolean
+      hasPremiumPost:
+        type: boolean
+        description: Check if an user has a premium post or not
     required:
       - id
       - email

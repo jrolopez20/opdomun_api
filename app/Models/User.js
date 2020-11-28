@@ -3,6 +3,7 @@
 const Hash = use('Hash')
 const Model = use('Model')
 const Database = use('Database')
+const Plan = use('App/Models/Plan')
 
 class User extends Model {
     static boot() {
@@ -20,8 +21,25 @@ class User extends Model {
         this.addTrait('CastDate')
     }
 
+    static get computed () {
+        return ['hasPremiumPost']
+    }
+
+    async getHasPremiumPost({id}) {
+        const result = await Database
+            .count('posts.id as total')
+            .from('posts')
+            .innerJoin('plans', 'posts.plan_id', 'plans.id')
+            .innerJoin('owners', 'posts.id', 'owners.post_id')
+            .where('plans.type', Plan.TYPES().PREMIUM)
+            .where('owners.user_id', id)
+            .first()
+
+        return parseInt(result.total) ? true : false;
+    }
+
     static get hidden() {
-        return ['password', 'createdAt', 'updatedAt', 'closedAt'];
+        return ['password', 'createdAt', 'updatedAt', 'closedAt', 'hasPremiumPost'];
     }
 
     static roles() {
@@ -56,6 +74,10 @@ class User extends Model {
     static async getUser(id) {
         const query = User
             .query()
+            .setVisible([
+                'id','email','role','enabled','fullname','numid','telephone','picture',
+                'notificationsConsent','preferredCurrency','hasPremiumPost'
+            ])
             .with('address.localidad.municipio.provincia')
             .with('office.provincia')
             .where('id', id)
