@@ -29,7 +29,4 @@ definitions:
       - provincia
       - municipios
       - homeTypes
-      - minPrice
       - maxPrice
-      - bedrooms
-      - bathrooms

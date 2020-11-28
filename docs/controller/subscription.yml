@@ -130,10 +130,7 @@
             - provincia
             - municipios
             - homeTypes
-            - minPrice
             - maxPrice
-            - bedrooms
-            - bathrooms
     responses:
       201:
         schema:
@@ -212,10 +209,7 @@
             - provincia
             - municipios
             - homeTypes
-            - minPrice
             - maxPrice
-            - bedrooms
-            - bathrooms
     responses:
       200:
         description: User

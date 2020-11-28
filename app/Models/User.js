@@ -24,23 +24,6 @@ class User extends Model {
         return ['password', 'createdAt', 'updatedAt', 'closedAt'];
     }
 
-    static get computed () {
-        return ['hasPremiumPost']
-    }
-
-    async getHasPremiumPost ({ id }) {
-        const result = await Database
-            .table('posts')
-            .count('posts.id as total')
-            .innerJoin('plans', 'posts.plan_id', 'plans.id')
-            .innerJoin('owners', 'posts.id', 'owners.post_id')
-            .where('plans.type', 'PREMIUM')
-            .where('owners.user_id', id)
-            .first()
-
-        return parseInt(result.total) ? true : false
-    }
-
     static roles() {
         return {
             ADMIN: 'ADMIN',

@@ -11,7 +11,7 @@ class SubscriptionSchema extends Schema {
             table.integer('provincia_id').unsigned().notNullable().references('id').inTable('provincias').onDelete('CASCADE')
             table.jsonb('municipios').notNullable()
             table.jsonb('home_types').notNullable()
-            table.float('min_price').notNullable()
+            table.float('min_price')
             table.float('max_price').notNullable()
             table.integer('bedrooms')
             table.integer('bathrooms')
