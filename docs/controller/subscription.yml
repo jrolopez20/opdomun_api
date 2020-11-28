@@ -110,11 +110,11 @@
                 id:
                   required: true
                   type: number
-            municipio:
+            municipios:
               type: array
               items:
                 $ref: '#/definitions/SimpleObject'
-            homeType:
+            homeTypes:
               type: array
               items:
                 $ref: '#/definitions/SimpleObject'
@@ -128,8 +128,8 @@
               type: integer
           required:
             - provincia
-            - municipio
-            - homeType
+            - municipios
+            - homeTypes
             - minPrice
             - maxPrice
             - bedrooms
@@ -192,11 +192,11 @@
                 id:
                   required: true
                   type: number
-            municipio:
+            municipios:
               type: array
               items:
                 $ref: '#/definitions/SimpleObject'
-            homeType:
+            homeTypes:
               type: array
               items:
                 $ref: '#/definitions/SimpleObject'
@@ -210,8 +210,8 @@
               type: integer
           required:
             - provincia
-            - municipio
-            - homeType
+            - municipios
+            - homeTypes
             - minPrice
             - maxPrice
             - bedrooms
