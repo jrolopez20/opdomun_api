@@ -113,7 +113,7 @@ class Post extends Model {
         return posts;
     }
 
-    static async getFeaturedPosts(page = 1, limit = 3, auth) {
+    static async getFeaturedPosts(page = 1, limit = 3) {
         const query = Post
             .query()
             .with('managedBy')
@@ -124,7 +124,7 @@ class Post extends Model {
             .where('planId', 1)
             .whereNotNull('publishedAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at >= now()')
-            .where('posts.sold', 0)
+            .whereNull('soldAt')
             .orderBy('posts.opdo', 'desc');
 
         const posts = (await query.paginate(page, limit)).toJSON();
@@ -333,27 +333,25 @@ class Post extends Model {
     }
 
     static async getRecommendedPost(limit = 6) {
-        const query = Database
-            .from('posts')
-            .select(
-                'posts.id', 'posts.plan_id', 'plans.type', 'posts.opdo', 'posts.price', 'posts.area',
-                'posts.address', 'posts.published_at as publishedAt', 'posts.bedrooms', 'posts.bathrooms', 'images.url as image',
-                'municipios.title as municipio', 'provincias.cod as provincia'
-            )
-            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
-            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
-            .innerJoin('plans', 'plans.id', 'posts.plan_id')
-            .innerJoin('images', function () {
-                this
-                    .on('posts.id', 'images.post_id')
-                    .andOn('images.default', true)
+        const query = Post
+            .query()
+            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'sold'])
+            .with('plan', (builder) => {
+                builder.setVisible(['id', 'type'])
             })
-            .whereNotNull('posts.published_at')
-            .andWhere('posts.plan_id', 1)
-            .andWhere('posts.sold', '<>', true)
+            .with('address.localidad.municipio.provincia')
+            .with('images', (builder) => {
+                builder.where('default', true)
+            })
+            .whereNotNull('posts.publishedAt')
+            .where('posts.closedAt', '>=', new Date())
+            .where('posts.plan_id', 1)
+            .whereNull('soldAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
-            .orderBy(`posts.opdo`, 'DESC')
+            .orderBy('posts.planId', 'ASC')
+            .orderBy('posts.opdo', 'DESC')
             .limit(limit)
+            .fetch();
 
         const posts = await query;
         return posts;

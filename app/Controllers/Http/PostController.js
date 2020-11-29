@@ -173,11 +173,11 @@ class PostController {
         }
     }
 
-    async getFeaturedPosts({request, response, auth}) {
+    async getFeaturedPosts({request, response}) {
         try {
             const page = request.input('page');
             const limit = request.input('limit');
-            const posts = await Post.getFeaturedPosts(page, limit, auth);
+            const posts = await Post.getFeaturedPosts(page, limit);
             return response.json(posts);
         } catch (e) {
             return response.status(400).json({message: e.message})
