@@ -345,7 +345,7 @@ class Post extends Model {
             })
             .whereNotNull('posts.publishedAt')
             .where('posts.closedAt', '>=', new Date())
-            .where('posts.plan_id', 1)
+            .where('posts.planId', 1)
             .whereNull('soldAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
             .orderBy('posts.planId', 'ASC')
@@ -474,7 +474,7 @@ class Post extends Model {
                 },
                 {
                     absolutePosition: {x: 413, y: 63},
-                    text: !post.plan_id ? 'Tasación de inmueble' : '',
+                    text: !post.planId ? 'Tasación de inmueble' : '',
                     fontSize: 11,
                     color: '#FFFFFF'
                 }
@@ -539,8 +539,8 @@ class Post extends Model {
                                     text: this.parsePrice(post.price),
                                     border: [false, false, false, true],
                                     alignment: 'right',
-                                    fontSize: post.plan_id ? 12 : 14,
-                                    bold: !post.plan_id
+                                    fontSize: post.planId ? 12 : 14,
+                                    bold: !post.planId
                                 },
                                 '',
                                 {
