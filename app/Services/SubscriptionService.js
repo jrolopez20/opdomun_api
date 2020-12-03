@@ -1,8 +1,7 @@
 'use strict'
 
+const Database = use('Database');
 const Subscription = use('App/Models/Subscription');
-const Post = use('App/Models/Post');
-const NotificationService = use('App/Services/NotificationService')
 
 class SubscriptionService {
 
@@ -15,45 +14,43 @@ class SubscriptionService {
         }
     }
 
-    static async addSubscription({provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms}, user) {
-        const subscription = new Subscription();
+    static async addSubscription({provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner}, user) {
+        // Begin Transaction to save a Subscription
+        const trx = await Database.beginTransaction()
+        try {
+            // Store subscription
+            const subscription = new Subscription();
+            subscription.userId = user.id;
+            subscription.provinciaId = provincia.id;
+            subscription.municipios = municipios;
+            subscription.homeTypes = homeTypes;
+            subscription.minPrice = minPrice;
+            subscription.maxPrice = maxPrice;
+            subscription.bedrooms = bedrooms;
+            subscription.bathrooms = bathrooms;
+            await subscription.save(trx);
 
-        subscription.userId = user.id;
-        subscription.provinciaId = provincia.id;
-        subscription.municipios = municipios;
-        subscription.homeTypes = homeTypes;
-        subscription.minPrice = minPrice;
-        subscription.maxPrice = maxPrice;
-        subscription.bedrooms = bedrooms;
-        subscription.bathrooms = bathrooms;
+            // Store owner
+            await subscription.owner().create({
+                fullname: owner.fullname,
+                email: owner.email,
+                telephone: owner.telephone,
+                userId: user.id
+            }, trx);
 
-        await subscription.save();
+            // End transaction
+            await trx.commit();
 
-        // // Get all posts that match to subscription attribute
-        // const posts = await Post.getMatchedPremiumPost({
-        //     provinciaId, municipios, minPrice, maxPrice, homeTypes
-        // });
-        // for (const post of posts) {
-        //     // Notify owner about matched subscriptions
-        //     await NotificationService.dispatchCustomerNotification({
-        //         id: post.id,
-        //         price: post.price,
-        //         bedrooms: post.bedrooms,
-        //         bathrooms: post.bathrooms,
-        //         owner: {
-        //             fullname: post.fullname,
-        //             email: post.email,
-        //             telephone: post.telephone
-        //         }
-        //     }, subscription);
-        // }
-
-        return await Subscription.find(subscription.id);
+            return await Subscription.getSubscription(subscription.id);
+        } catch (e) {
+            trx.rollback();
+            throw new Error(e.message)
+        }
     }
 
     static async setSubscription(subscriptionId, request) {
         const {
-            provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+            provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner
         } = request.all();
 
         const subscription = await Subscription.findOrFail(subscriptionId);
@@ -68,7 +65,17 @@ class SubscriptionService {
 
         await subscription.save();
 
-        return await Subscription.find(subscriptionId);
+        // Edit Owner
+        if (owner) {
+            await subscription.load('owner');
+            const ownerObj = await subscription.getRelated('owner');
+            ownerObj.fullname = owner.fullname;
+            ownerObj.telephone = owner.telephone;
+            ownerObj.email = owner.email;
+            await ownerObj.save()
+        }
+
+        return await Subscription.getSubscription(subscriptionId);
     }
 
 }

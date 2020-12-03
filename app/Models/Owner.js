@@ -10,11 +10,15 @@ class Owner extends Model {
     }
 
     static get hidden() {
-        return ['createdAt', 'updatedAt'];
+        return ['createdAt', 'updatedAt', 'postId', 'subscriptionId', 'userId'];
     }
 
     post() {
         return this.belongsTo('App/Models/Post')
+    }
+
+    subscription() {
+        return this.belongsTo('App/Models/Subscription')
     }
 
     user() {

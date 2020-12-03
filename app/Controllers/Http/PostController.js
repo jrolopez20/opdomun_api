@@ -1,6 +1,7 @@
 'use strict'
 
 const PDF = use('PDF');
+const Event = use('Event')
 const Post = use('App/Models/Post');
 const PostService = use('App/Services/PostService');
 const PaginatedResponse = use('App/Util/PaginatedResponse');
@@ -217,6 +218,8 @@ class PostController {
             const post = await PostService.addFreePost({
                 address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner, images
             }, auth);
+
+            Event.emit('new::post', {post})
 
             return response.status(201).json(post)
         } catch (e) {

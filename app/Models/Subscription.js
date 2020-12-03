@@ -12,6 +12,10 @@ class Subscription extends Model {
         this.addTrait('CastDate')
     }
 
+    static get hidden() {
+        return ['createdAt', 'updatedAt', 'provinciaId', 'userId'];
+    }
+
     setMunicipios (municipios) {
         return JSON.stringify(municipios)
     }
@@ -114,43 +118,49 @@ class Subscription extends Model {
         return subscriptions.toJSON();
     }
 
-    static async getMatchedSubscriptions({provinciaId, municipioId, price, homeType, bedrooms, bathrooms}) {
-        const subscriptions = Database
-            .from('subscriptions')
-            .select(
-                'subscriptions.id', 'users.email', 'users.telephone', 'users.fullname', 'subscriptions.municipios'
-            )
-            .innerJoin('users', 'users.id', 'subscriptions.user_id');
+    static async getMatchedSubscriptions({provinciaId, municipioId, homeTypeId, price, bedrooms, bathrooms}) {
+        const query = Subscription
+            .query()
+            .with('provincia')
+            .with('user')
+            .fetch();
+
+        if (auth.user.role !== User.roles().ADMIN) {
+            query.where('userId', auth.user.id);
+        }
 
         if (provinciaId) {
-            subscriptions.where('provincia_id', provinciaId);
+            query.andWhere('provinciaId', provinciaId)
         }
-
         if (municipioId) {
-            subscriptions.whereRaw(`${municipioId} = ANY (regexp_split_to_array(municipios, ',')::int[])`);
+            query.whereRaw('municipios @> ?', `[{"id":${municipioId}}]`);
         }
-
+        if (homeTypeId) {
+            query.whereRaw('home_types @> ?', `[{"id":${homeTypeId}}]`);
+        }
+        if (bedrooms) {
+            query.andWhere('bedrooms', bedrooms);
+        }
+        if (bathrooms) {
+            query.andWhere('bathrooms', bathrooms);
+        }
         if (price) {
-            subscriptions.andWhere('min_price', '<=', price);
-            subscriptions.andWhere('max_price', '>=', price);
+            query.where('minPrice', '<=', price);
+            query.where('maxPrice', '>=', price);
         }
 
-        if (homeType) {
-            subscriptions.whereRaw(`${homeType} = ANY (regexp_split_to_array(home_types, ',')::int[])`);
-        }
-
-        return await subscriptions;
+        const subscriptions = await query;
+        return subscriptions.toJSON();
     }
 
     static async getSubscription(id) {
         let query = Subscription
             .query()
             .with('provincia')
+            .with('owner')
             .where('id', id);
 
-        const subscription = await query.firstOrFail();
-
-        return subscription;
+        return await query.firstOrFail();
     }
 
     static async getTotalSubscriptions(startAt, endAt) {
@@ -169,6 +179,10 @@ class Subscription extends Model {
 
     user() {
         return this.belongsTo('App/Models/User', 'userId', 'id');
+    }
+
+    owner() {
+        return this.hasOne('App/Models/Owner', 'id', 'subscriptionId')
     }
 }
 

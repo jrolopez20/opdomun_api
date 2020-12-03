@@ -150,5 +150,10 @@ Factory.blueprint('App/Models/Subscription', async (faker, i, data) => {
         },
         bedrooms: faker.integer({min: 1, max: 5}),
         bathrooms: faker.integer({min: 1, max: 3}),
+        owner: {
+            fullname: faker.name(),
+            email: faker.email(),
+            telephone: faker.phone({formatted: false})
+        }
     }
 });

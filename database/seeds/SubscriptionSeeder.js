@@ -19,7 +19,8 @@ class SubscriptionSeeder {
                 ...subscriptionObject,
                 provincia: {id: subscriptionObject.provinciaId},
                 municipios: JSON.parse(subscription.municipios),
-                homeTypes: JSON.parse(subscription.homeTypes)
+                homeTypes: JSON.parse(subscription.homeTypes),
+                owner: subscriptionObject.owner
             }, user);
         }
     }

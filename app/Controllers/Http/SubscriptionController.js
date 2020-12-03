@@ -1,5 +1,6 @@
 'use strict'
 
+const Event = use('Event')
 const Subscription = use('App/Models/Subscription');
 const SubscriptionService = use('App/Services/SubscriptionService');
 const PaginatedResponse = use('App/Util/PaginatedResponse');
@@ -62,12 +63,15 @@ class SubscriptionController {
     async store({request, response, auth}) {
         try {
             const {
-                provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+                provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner
             } = request.all();
 
             const subscription = await SubscriptionService.addSubscription({
-                provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms
+                provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner
             }, auth.user);
+
+            Event.emit('new::subscription', {subscription})
+
             return response.status(201).json(subscription)
         } catch (e) {
             return response.status(400).json({message: e.message})

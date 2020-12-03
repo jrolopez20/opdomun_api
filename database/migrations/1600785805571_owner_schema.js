@@ -7,7 +7,8 @@ class OwnerSchema extends Schema {
   up () {
     this.create('owners', (table) => {
       table.increments()
-      table.integer('post_id').unsigned().notNullable().references('id').inTable('posts').onDelete('CASCADE')
+      table.integer('post_id').unsigned().references('id').inTable('posts').onDelete('CASCADE')
+      table.integer('subscription_id').unsigned().references('id').inTable('subscriptions').onDelete('CASCADE')
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.string('fullname', 50).notNullable()
       table.string('telephone', 15).notNullable()

@@ -12,6 +12,7 @@ const Riesgo = use('App/Models/Riesgo')
 const VarConforEficiencia = use('App/Models/VarConforEficiencia')
 const VarMenaje = use('App/Models/VarMenaje')
 const User = use('App/Models/User')
+const Plan = use('App/Models/Plan')
 const Address = use('App/Models/Address')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const CurrencyService = use('App/Services/CurrencyService')
@@ -1063,40 +1064,58 @@ class Post extends Model {
         }
     }
 
-    static async getMatchedPremiumPost({provinciaId, municipio, minPrice, maxPrice, homeType}) {
+    static async getMatchedPosts({provinciaId, municipios, homeTypes, minPrice, maxPrice}) {
         const posts = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms', 'posts.home_type_id as homeTypeId',
-                'posts.municipio_id as municipioId', 'municipios.provincia_id as provinciaId', 'owners.fullname',
-                'owners.email', 'owners.telephone'
+                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms',
+                'home_types.id as homeTypeId', 'home_types.title as homeType',
+                'addresses.description as addressDescription',
+                'localidads.id as localidadId', 'localidads.title as localidad',
+                'municipios.id as municipioId', 'municipios.title as municipio',
+                'provincias.id as provinciaId','provincias.title as provincia',
+                'owners.fullname', 'owners.email', 'owners.telephone',
+                'users.notifications_consent as notificationsConsent'
             )
-            .innerJoin('municipios', 'municipios.id', 'posts.municipio_id')
+            .innerJoin('plans', 'plans.id', 'posts.plan_id')
+            .innerJoin('home_types', 'home_types.id', 'posts.home_type_id')
+            .innerJoin('addresses', 'addresses.id', 'posts.address_id')
+            .innerJoin('localidads', 'localidads.id', 'addresses.localidad_id')
+            .innerJoin('municipios', 'municipios.id', 'localidads.municipio_id')
+            .innerJoin('provincias', 'provincias.id', 'municipios.provincia_id')
             .innerJoin('owners', 'posts.id', 'owners.post_id')
+            .innerJoin('users', 'users.id', 'owners.user_id')
             .whereNotNull('posts.published_at')
-            .whereNotNull('owners.email')
             .whereRaw('posts.closed_at >= now()')
-            .andWhere('posts.plan_id', 1)
-            .andWhere('posts.sold', '<>', true);
+            .whereNull('posts.sold_at');
 
         if (provinciaId) {
             posts.andWhere('municipios.provincia_id', provinciaId);
         }
 
-        if (municipio) {
-            posts.whereIn('posts.municipio_id', municipio.split(','))
+        if (municipios) {
+            const ids = []
+            municipios.forEach(m => {
+                ids.push(m.id)
+            })
+            posts.whereIn('municipios.id', ids)
         }
 
-        if (homeType) {
-            posts.whereIn('posts.home_type_id', homeType.split(','))
+        if (homeTypes) {
+            const ids = []
+            homeTypes.forEach(h => {
+                ids.push(h.id)
+            })
+            posts.whereIn('posts.home_type_id', ids)
         }
 
-        if (minPrice) {
-            posts.andWhere('posts.price', '>=', minPrice);
+        if (minPrice && minPrice.value) {
+            console.log(minPrice)
+            posts.andWhere('posts.price', '>=', minPrice.value);
         }
 
         if (maxPrice) {
-            posts.andWhere('posts.price', '<=', maxPrice);
+            posts.andWhere('posts.price', '<=', maxPrice.value);
         }
 
         return await posts;
