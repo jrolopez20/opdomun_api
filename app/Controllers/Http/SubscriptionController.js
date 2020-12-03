@@ -16,7 +16,8 @@ class SubscriptionController {
      *
      * @param request
      * @param response
-     * @returns {Promise<*|Promise<any>>}
+     * @param auth
+     * @returns {Promise<void>}
      */
     async index({request, response, auth}) {
         const page = request.input('page');

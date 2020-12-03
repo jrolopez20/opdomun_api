@@ -84,7 +84,8 @@ class Post extends Model {
 
         try {
             const user = await auth.getUser();
-            post = CurrencyService.formatPostPrice(post.toJSON(), user)
+            return post.toJSON(user)
+            // post = CurrencyService.formatPostPrice(post.toJSON(), user)
         } finally {
             return post
         }
@@ -137,7 +138,7 @@ class Post extends Model {
         }
     }
 
-    static async getPosts(planId = null, page = 1, limit = 20, filter, user) {
+    static async getPosts(planId = null, page = 1, limit = 20, filter, auth) {
         const query = Post
             .query()
             .setVisible(['id', 'price', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold'])
@@ -151,34 +152,34 @@ class Post extends Model {
             })
             .orderBy('updatedAt', 'DESC')
 
-        if (user.role === User.roles().MANAGER) {
+        if (auth.user.role === User.roles().MANAGER) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN users ON users.id = posts.managed_by_id WHERE users.office_id = ${user.officeId}) OR
+                INNER JOIN users ON users.id = posts.managed_by_id WHERE users.office_id = ${auth.user.officeId}) OR
                 posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${auth.user.id})`
             );
         }
 
-        if (user.role === User.roles().AGENT) {
+        if (auth.user.role === User.roles().AGENT) {
             query.whereRaw(
-                `posts.managed_by_id = ${user.id} OR
+                `posts.managed_by_id = ${auth.user.id} OR
                 posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${auth.user.id})`
             );
         }
 
-        if (user.role === User.roles().CLIENT) {
+        if (auth.user.role === User.roles().CLIENT) {
             query.whereRaw(
                 `posts.id IN (SELECT posts.id FROM posts 
-                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${auth.user.id})`
             );
         }
 
         if (strToBool(filter.myPosts)) {
             query.whereRaw(
-                `posts.managed_by_id = ${user.id} OR posts.id IN (SELECT posts.id FROM posts
-                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${user.id})`
+                `posts.managed_by_id = ${auth.user.id} OR posts.id IN (SELECT posts.id FROM posts
+                INNER JOIN owners ON owners.post_id = posts.id WHERE owners.user_id = ${auth.user.id})`
             );
         }
 
@@ -201,14 +202,14 @@ class Post extends Model {
         }
         if (filter.minPrice) {
             // Get the current currency
-            const currentCurrency = user ? user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
+            const currentCurrency = auth.user ? auth.user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
             // Transform price to base currency
             const value = CurrencyService.transform(filter.minPrice, currentCurrency, CurrencyService.BASE_CURRENCY())
             query.andWhere('posts.price', '>=', value);
         }
         if (filter.maxPrice) {
             // Get the current currency
-            const currentCurrency = user ? user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
+            const currentCurrency = auth.user ? auth.user.preferredCurrency : CurrencyService.DEFAULT_CURRENCY()
             // Transform price to base currency
             const value = CurrencyService.transform(filter.maxPrice, currentCurrency, CurrencyService.BASE_CURRENCY())
             query.andWhere('posts.price', '<=', value);
@@ -238,11 +239,15 @@ class Post extends Model {
             );
         }
 
-        const posts = (await query.paginate(page, limit)).toJSON();
+        const posts = (await query.paginate(page, limit)).toJSON(auth);
 
         try {
-            posts.data.map(post => CurrencyService.formatPostPrice(post, user))
-        } finally {
+            // posts.data.map(post => CurrencyService.formatPostPrice(post, auth.user))
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
             return posts
         }
     }

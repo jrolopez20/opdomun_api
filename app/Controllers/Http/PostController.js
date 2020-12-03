@@ -28,7 +28,7 @@ class PostController {
             provinciaId, municipioId, localidadId, minPrice, maxPrice, bedrooms, bathrooms, homeTypeId, myPosts
         };
 
-        const result = await Post.getPosts(planId, page, limit, filter, auth.user);
+        const result = await Post.getPosts(planId, page, limit, filter, auth);
         return PaginatedResponse.parse(response, result)
     }
 

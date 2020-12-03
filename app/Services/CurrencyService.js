@@ -51,21 +51,41 @@ class CurrencyService {
         return value;
     }
 
+    // /**
+    //  * Format post price based on user preferences
+    //  * @param post
+    //  * @param user
+    //  */
+    // static formatPostPrice(post, user) {
+    //     if (user.preferredCurrency !== CurrencyService.DEFAULT_CURRENCY()) {
+    //         post.price.value = CurrencyService.transform(
+    //             post.price.value,
+    //             post.price.currency,
+    //             user.preferredCurrency
+    //         );
+    //         post.price.currency = user.preferredCurrency
+    //     }
+    //     return post;
+    // }
+
     /**
-     * Format post price based on user preferences
-     * @param post
+     * Format price based on user preferences
+     * @param price
      * @param user
+     * @returns {{currency, value: *}|*}
      */
-    static formatPostPrice(post, user) {
-        if (user.preferredCurrency !== CurrencyService.DEFAULT_CURRENCY()) {
-            post.price.value = CurrencyService.transform(
-                post.price.value,
-                post.price.currency,
-                user.preferredCurrency
-            );
-            post.price.currency = user.preferredCurrency
+    static formatPrice(price, user) {
+        if (price && user.preferredCurrency !== CurrencyService.DEFAULT_CURRENCY()) {
+            return {
+                value: CurrencyService.transform(
+                    price.value,
+                    price.currency,
+                    user.preferredCurrency
+                ),
+                currency: user.preferredCurrency
+            }
         }
-        return post;
+        return price;
     }
 }
 
