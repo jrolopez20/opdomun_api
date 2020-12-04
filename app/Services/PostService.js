@@ -259,11 +259,11 @@ class PostService {
             await this.setAu(post, postPlaces);
 
             await post.calculateOpdo();
-            post = await Post.getPost(post.id, auth);
 
             // End transaction
             await trx.commit();
 
+            post = await Post.getPost(post.id, auth);
             return post;
         } catch (e) {
             trx.rollback();
