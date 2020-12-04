@@ -64,6 +64,11 @@ Route.group(() => {
         ]))
         .apiOnly();
 
+    // Notifications
+    Route.resource('notifications', 'NotificationController')
+        .middleware(['auth'])
+        .apiOnly();
+
     // Articles
     Route.resource('articles', 'ArticleController')
         .validator(new Map([

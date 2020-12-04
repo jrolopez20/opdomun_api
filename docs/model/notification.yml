@@ -1,0 +1,26 @@
+definitions:
+  Notification:
+    type: object
+    properties:
+      id:
+        type: integer
+        readOnly: true
+      type:
+        type: string
+        value:  SALE | PURCHASE_TO_PREMIUM | PURCHASE_TO_FREE | SALE_AD_PREMIUM_RENEW | SALE_AD_FREE_EXPIRED | SALE_AD_VIEWS | SALE_AD_PREMIUM_CREATED
+      title:
+        type: string
+      description:
+        type: string
+      read:
+        type: boolean
+      user:
+        $ref: '#/definitions/User'
+      resource:
+        type: unknow
+        value: Post | Subscription
+    required:
+      - id
+      - type
+      - title
+      - description
