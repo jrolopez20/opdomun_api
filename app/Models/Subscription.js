@@ -56,6 +56,7 @@ class Subscription extends Model {
         const query = Subscription
             .query()
             .with('provincia')
+            .with('owner')
             .with('user');
 
         if (auth.user.role !== User.roles().ADMIN) {
@@ -94,6 +95,7 @@ class Subscription extends Model {
         const query = Subscription
             .query()
             .with('provincia')
+            .with('owner')
             .with('user');
 
         if (filter) {
@@ -166,6 +168,7 @@ class Subscription extends Model {
             .query()
             .with('provincia')
             .with('owner')
+            .with('user')
             .where('id', id);
 
         return await query.firstOrFail();
