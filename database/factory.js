@@ -17,6 +17,7 @@ const Office = use('App/Models/Office')
 const HomeType = use('App/Models/HomeType')
 const Localidad = use('App/Models/Localidad')
 const Municipio = use('App/Models/Municipio')
+const Notification = use('App/Models/Notification')
 const Hash = use('Hash')
 
 
@@ -102,7 +103,7 @@ Factory.blueprint('App/Models/Post', async (faker, i, data) => {
 
 Factory.blueprint('App/Models/Office', async (faker, i, data) => {
     return {
-        provinciaId: data.province.id
+        provinciaId: data.provincia.id
     }
 });
 
@@ -171,5 +172,15 @@ Factory.blueprint('App/Models/OurService', async (faker, i, data) => {
                 currency: 'USD'
             }
             : null
+    }
+});
+
+
+Factory.blueprint('App/Models/Notification', async (faker, i, data) => {
+    return {
+        title: faker.sentence({words: 6}),
+        description: faker.paragraph({sentences: 2}),
+        read: faker.bool({likelihood: 80}),
+        type: data.type || Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE
     }
 });

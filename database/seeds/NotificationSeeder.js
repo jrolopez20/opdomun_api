@@ -1,22 +1,26 @@
 'use strict'
 
 const Factory = use('Factory')
-const Provincia = use('App/Models/Provincia')
-const Office = use('App/Models/Office')
+const Notification = use('App/Models/Notification')
 
-class OfficeSeeder {
+class NotificationSeeder {
 
     async run() {
-        // Remove existing offices
-        await Office.query().delete();
+        // Remove existing notifications
+        await Notification.query().delete();
 
-        const provincias = await Provincia.all();
 
-        for (const province of provincias.toJSON()) {
-            const office = await Factory.model('App/Models/Office')
-                .create({province})
+        for (let notificationType in Notification.NOTIFICATION_TYPES()) {
+            await Factory.model('App/Models/Notification')
+                .create({
+                    type: notificationType
+                })
+        }
+        for (let i = 0; i < 10; i++) {
+            await Factory.model('App/Models/Notification')
+                .create()
         }
     }
 }
 
-module.exports = OfficeSeeder
+module.exports = NotificationSeeder

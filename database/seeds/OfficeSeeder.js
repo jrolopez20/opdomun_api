@@ -12,9 +12,9 @@ class OfficeSeeder {
 
         const provincias = await Provincia.all();
 
-        for (const province of provincias.toJSON()) {
+        for (let provincia of provincias.toJSON()) {
             const office = await Factory.model('App/Models/Office')
-                .create({province})
+                .create({provincia})
         }
     }
 }

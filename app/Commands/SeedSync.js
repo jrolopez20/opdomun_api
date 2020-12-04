@@ -11,6 +11,7 @@ const defaultSeedOrder = [
   'PostSeeder.js',
   'SubscriptionSeeder.js',
   'OurServiceSeeder.js',
+  'NotificationSeeder.js',
 ]
 
 class SeedSync extends Command {
