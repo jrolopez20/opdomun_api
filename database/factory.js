@@ -121,7 +121,9 @@ Factory.blueprint('App/Models/Subscription', async (faker, i, data) => {
     const secondIndex = faker.integer({min: 3, max: 4});
 
     return {
-        provinciaId: provinciaId,
+        provincia: {
+            id: provinciaId
+        },
         municipios: [
             {
                 id: municipios[municipioIndex - 1].id,
@@ -155,5 +157,19 @@ Factory.blueprint('App/Models/Subscription', async (faker, i, data) => {
             email: faker.email(),
             telephone: faker.phone({formatted: false})
         }
+    }
+});
+
+Factory.blueprint('App/Models/OurService', async (faker, i, data) => {
+    return {
+        type: data.type,
+        title: data.type.replace('_', ' '),
+        description: faker.paragraph(),
+        price: faker.bool()
+            ? {
+                value: faker.integer({min: 20, max: 120}),
+                currency: 'USD'
+            }
+            : null
     }
 });

@@ -110,6 +110,20 @@
                 id:
                   required: true
                   type: number
+            owner:
+              required: true
+              type: object
+              description: Owner info
+              properties:
+                fullname:
+                  required: true
+                  type: string
+                email:
+                  required: true
+                  type: string
+                telephone:
+                  required: true
+                  type: string
             municipios:
               type: array
               items:
@@ -128,8 +142,7 @@
               type: integer
           required:
             - provincia
-            - municipios
-            - homeTypes
+            - owner
             - maxPrice
     responses:
       201:
@@ -189,6 +202,20 @@
                 id:
                   required: true
                   type: number
+            owner:
+              required: true
+              type: object
+              description: Owner info
+              properties:
+                fullname:
+                  required: true
+                  type: string
+                email:
+                  required: true
+                  type: string
+                telephone:
+                  required: true
+                  type: string
             municipios:
               type: array
               items:
@@ -207,8 +234,7 @@
               type: integer
           required:
             - provincia
-            - municipios
-            - homeTypes
+            - owner
             - maxPrice
     responses:
       200:

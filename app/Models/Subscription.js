@@ -9,7 +9,13 @@ class Subscription extends Model {
 
     static boot() {
         super.boot()
+        this.addTrait('@provider:SerializerExtender')
         this.addTrait('CastDate')
+        this.addTrait('Auth')
+    }
+
+    static get Serializer() {
+        return 'App/Models/Serializers/SubscriptionSerializer'
     }
 
     static get hidden() {
@@ -81,10 +87,10 @@ class Subscription extends Model {
         }
 
         const subscriptions = await query.paginate(page, limit);
-        return subscriptions.toJSON();
+        return subscriptions.toJSON(auth.user)
     }
 
-    static async getPublishedSubscriptions(page = 1, limit = 20, filter) {
+    static async getPublishedSubscriptions(page = 1, limit = 20, filter, auth) {
         const query = Subscription
             .query()
             .with('provincia')
@@ -114,8 +120,10 @@ class Subscription extends Model {
             }
         }
 
-        const subscriptions = await query.paginate(page, limit);
-        return subscriptions.toJSON();
+        const subscriptions = await query.paginate(page, limit)
+
+        const user = await this.authUser(auth)
+        return subscriptions.toJSON(user ? user.toJSON() : null)
     }
 
     static async getMatchedSubscriptions({provinciaId, municipioId, homeTypeId, price, bedrooms, bathrooms}) {

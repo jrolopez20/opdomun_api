@@ -75,7 +75,7 @@ class CurrencyService {
      * @returns {{currency, value: *}|*}
      */
     static formatPrice(price, user) {
-        if (price && user.preferredCurrency !== CurrencyService.DEFAULT_CURRENCY()) {
+        if (price && user && user.preferredCurrency !== CurrencyService.DEFAULT_CURRENCY()) {
             return {
                 value: CurrencyService.transform(
                     price.value,

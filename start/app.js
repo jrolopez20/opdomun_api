@@ -22,7 +22,8 @@ const providers = [
     '@adonisjs/mail/providers/MailProvider',
     '@adonisjs/framework/providers/ViewProvider',
     'adonis-swagger/providers/SwaggerProvider',
-    'adonis-pdf/providers/PDFProvider'
+    'adonis-pdf/providers/PDFProvider',
+    'adonis-advanced-serializer'
 ]
 
 /*

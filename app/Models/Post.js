@@ -25,8 +25,14 @@ function strToBool(s) {
 class Post extends Model {
     static boot() {
         super.boot()
+        this.addTrait('@provider:SerializerExtender')
         this.addTrait('Opdo')
         this.addTrait('CastDate')
+        this.addTrait('Auth')
+    }
+
+    static get Serializer() {
+        return 'App/Models/Serializers/PostSerializer'
     }
 
     static get hidden() {
@@ -82,13 +88,8 @@ class Post extends Model {
             .where('id', id)
             .firstOrFail();
 
-        try {
-            const user = await auth.getUser();
-            return post.toJSON(user)
-            // post = CurrencyService.formatPostPrice(post.toJSON(), user)
-        } finally {
-            return post
-        }
+        const user = await this.authUser(auth)
+        return post.toJSON(user ? user.toJSON(): null)
     }
 
     static async getBestPosts() {
@@ -115,7 +116,7 @@ class Post extends Model {
         return posts;
     }
 
-    static async getFeaturedPosts(page = 1, limit = 3) {
+    static async getFeaturedPosts(page = 1, limit = 3, auth) {
         const query = Post
             .query()
             .with('managedBy')
@@ -129,13 +130,10 @@ class Post extends Model {
             .whereNull('soldAt')
             .orderBy('posts.opdo', 'desc');
 
-        const posts = (await query.paginate(page, limit)).toJSON();
+        let posts = await query.paginate(page, limit)
 
-        try {
-            posts.data.map(post => CurrencyService.formatPostPrice(post, user))
-        } finally {
-            return posts
-        }
+        const user = await this.authUser(auth)
+        return posts.toJSON(user ? user.toJSON() : null)
     }
 
     static async getPosts(planId = null, page = 1, limit = 20, filter, auth) {
@@ -239,15 +237,12 @@ class Post extends Model {
             );
         }
 
-        const posts = (await query.paginate(page, limit)).toJSON(auth);
+        let posts = await query.paginate(page, limit)
 
         try {
-            // posts.data.map(post => CurrencyService.formatPostPrice(post, auth.user))
-        }
-        catch (e) {
-            console.log(e)
-        }
-        finally {
+            const user = await auth.getUser();
+            posts = posts.toJSON(user.toJSON())
+        } finally {
             return posts
         }
     }
@@ -267,7 +262,6 @@ class Post extends Model {
             .andWhere('posts.closedAt', '>=', new Date())
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC');
-
 
         if (planId) {
             query.andWhere('posts.planId', planId);
@@ -328,18 +322,17 @@ class Post extends Model {
             );
         }
 
-        const posts = (await query.paginate(page, limit)).toJSON();
+        let posts = await query.paginate(page, limit)
 
-        try {
-            const user = await auth.getUser();
-            posts.data.map(post => CurrencyService.formatPostPrice(post, user))
-        } finally {
-            return posts
+        if (user) {
+            return posts.toJSON(user.toJSON())
+        } else {
+            return posts.toJSON()
         }
     }
 
-    static async getRecommendedPost(limit = 6) {
-        const query = Post
+    static async getRecommendedPost(limit = 6, auth) {
+        const posts = await Post
             .query()
             .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'sold'])
             .with('plan', (builder) => {
@@ -359,8 +352,8 @@ class Post extends Model {
             .limit(limit)
             .fetch();
 
-        const posts = await query;
-        return posts;
+        const user = await this.authUser(auth)
+        return posts.toJSON(user ? user.toJSON() : null)
     }
 
     static async getPostDetail(id) {
@@ -1078,7 +1071,7 @@ class Post extends Model {
                 'addresses.description as addressDescription',
                 'localidads.id as localidadId', 'localidads.title as localidad',
                 'municipios.id as municipioId', 'municipios.title as municipio',
-                'provincias.id as provinciaId','provincias.title as provincia',
+                'provincias.id as provinciaId', 'provincias.title as provincia',
                 'owners.fullname', 'owners.email', 'owners.telephone',
                 'users.notifications_consent as notificationsConsent'
             )

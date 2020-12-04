@@ -36,7 +36,7 @@ class SubscriptionController {
         return PaginatedResponse.parse(response, result)
     }
 
-    async publishedSubscriptions({request, response}) {
+    async publishedSubscriptions({request, response, auth}) {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = {
@@ -49,7 +49,7 @@ class SubscriptionController {
             homeTypes: request.input('homeTypes')
         };
 
-        const result = await Subscription.getPublishedSubscriptions(page, limit, filter);
+        const result = await Subscription.getPublishedSubscriptions(page, limit, filter, auth);
         return PaginatedResponse.parse(response, result)
     }
 

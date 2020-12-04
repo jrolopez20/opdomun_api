@@ -5,8 +5,6 @@ definitions:
       id:
         type: integer
         readOnly: true
-      post:
-        $ref: '#/definitions/Post'
       user:
         $ref: '#/definitions/User'
       fullname:

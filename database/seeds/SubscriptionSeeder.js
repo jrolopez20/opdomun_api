@@ -17,10 +17,8 @@ class SubscriptionSeeder {
             const subscriptionObject = subscription.toJSON();
             await SubscriptionService.addSubscription({
                 ...subscriptionObject,
-                provincia: {id: subscriptionObject.provinciaId},
                 municipios: JSON.parse(subscription.municipios),
-                homeTypes: JSON.parse(subscription.homeTypes),
-                owner: subscriptionObject.owner
+                homeTypes: JSON.parse(subscription.homeTypes)
             }, user);
         }
     }

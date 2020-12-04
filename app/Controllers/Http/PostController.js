@@ -174,21 +174,21 @@ class PostController {
         }
     }
 
-    async getFeaturedPosts({request, response}) {
+    async getFeaturedPosts({request, response, auth}) {
         try {
             const page = request.input('page');
             const limit = request.input('limit');
-            const posts = await Post.getFeaturedPosts(page, limit);
-            return response.json(posts);
+            const posts = await Post.getFeaturedPosts(page, limit, auth);
+            return PaginatedResponse.parse(response, posts)
         } catch (e) {
             return response.status(400).json({message: e.message})
         }
     }
 
-    async getRecommendedPosts({request, response}) {
+    async getRecommendedPosts({request, response, auth}) {
         try {
             const limit = request.input('limit');
-            const posts = await Post.getRecommendedPost(limit);
+            const posts = await Post.getRecommendedPost(limit, auth);
             return response.json(posts);
         } catch (e) {
             return response.status(400).json({message: e.message})
