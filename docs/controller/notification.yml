@@ -1,0 +1,83 @@
+/notifications:
+  get:
+    tags:
+      - Notification
+    description: List of notifications
+    produces:
+      - application/json
+    parameters:
+      - name: page
+        description: page
+        in: query
+        type: integer
+      - name: limit
+        description: limit
+        in: query
+        type: integer
+    responses:
+      200:
+        description: Success
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Notification'
+        headers:
+          $ref: '#/definitions/PaginationData'
+
+/notifications/{id}:
+  get:
+    tags:
+      - Notification
+    summary: Returns notification by ID
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      200:
+        description: Succes
+        schema:
+          $ref: '#/definitions/Notification'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  patch:
+    tags:
+      - Notification
+    summary: Update notification read status
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            read:
+              type: boolean
+          required:
+            - read
+    responses:
+      200:
+        description: Succes
+        schema:
+          $ref: '#/definitions/Notification'
+      404:
+        $ref: '#/responses/404NotFound'
+
+  delete:
+    tags:
+      - Notification
+    summary: Remove notification by ID
+    security:
+      - bearerAuth: []
+    produces:
+      - application/json
+    parameters:
+      - $ref: '#/parameters/id'
+    responses:
+      204:
+        description: Succes
+      404:
+        $ref: '#/responses/404NotFound'
