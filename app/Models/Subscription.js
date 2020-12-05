@@ -64,14 +64,14 @@ class Subscription extends Model {
         }
 
         if (filter) {
-            if (filter.provincia) {
-                query.andWhere('provinciaId', filter.provincia)
+            if (filter.provinciaId) {
+                query.andWhere('provinciaId', filter.provinciaId)
             }
-            if (filter.municipio) {
-                query.whereRaw('municipios @> ?', `[{"id":${filter.municipio}}]`);
+            if (filter.municipioId) {
+                query.whereRaw('municipios @> ?', `[{"id":${filter.municipioId}}]`);
             }
-            if (filter.homeType) {
-                query.whereRaw('home_types @> ?', `[{"id":${filter.homeType}}]`);
+            if (filter.homeTypeId) {
+                query.whereRaw('home_types @> ?', `[{"id":${filter.homeTypeId}}]`);
             }
             if (filter.bedrooms) {
                 query.andWhere('bedrooms', filter.bedrooms);

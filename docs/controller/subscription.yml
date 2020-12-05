@@ -12,13 +12,13 @@
       - name: limit
         in: query
         type: integer
-      - name: provincia
+      - name: provinciaId
         in: query
         type: integer
-      - name: municipio
+      - name: municipioId
         in: query
         type: integer
-      - name: homeType
+      - name: homeTypeId
         in: query
         type: integer
       - name: minPrice
@@ -59,13 +59,13 @@
       - name: limit
         in: query
         type: integer
-      - name: provincia
+      - name: provinciaId
         in: query
         type: integer
-      - name: municipio
+      - name: municipioId
         in: query
         type: integer
-      - name: homeType
+      - name: homeTypeId
         in: query
         type: integer
       - name: minPrice
