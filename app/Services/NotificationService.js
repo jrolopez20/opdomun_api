@@ -2,9 +2,39 @@
 
 const Post = use('App/Models/Post');
 const Subscription = use('App/Models/Subscription');
-const MailNotification = use('App/Notifications/MailNotification');
+const Notification = use('App/Models/Notification');
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
 
 class NotificationService {
+
+    static async setNotification(id, auth, {read}) {
+        const notification = await Notification.findBy({
+            id,
+            userId: auth.user.id
+        });
+
+        if (!notification) {
+            throw new ResourceNotFoundException();
+        }
+
+        notification.read = read;
+        await notification.save();
+
+        return await Notification.getNotification(id, auth);
+    }
+
+    static async destroyNotification(id, auth) {
+        const notification = await Notification.findBy({
+            id,
+            userId: auth.user.id
+        });
+
+        if (!notification) {
+            throw new ResourceNotFoundException();
+        }
+
+        await notification.delete();
+    }
 
     static async dispatchPostOwnerNotification(subscription) {
         const posts = await Post.getMatchedPosts(subscription);

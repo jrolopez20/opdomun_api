@@ -1108,7 +1108,6 @@ class Post extends Model {
         }
 
         if (minPrice && minPrice.value) {
-            console.log(minPrice)
             posts.andWhere('posts.price', '>=', minPrice.value);
         }
 

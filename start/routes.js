@@ -67,7 +67,7 @@ Route.group(() => {
     // Notifications
     Route.resource('notifications', 'NotificationController')
         .middleware(['auth'])
-        .apiOnly();
+        .only(['index', 'show', 'update', 'destroy']);
 
     // Articles
     Route.resource('articles', 'ArticleController')

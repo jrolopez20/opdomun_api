@@ -38,7 +38,7 @@ class OfficeController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async show({params, request, response}) {
+    async show({params, response}) {
         try {
             const office = await Office.getOffice(params.id)
             return response.json(office)

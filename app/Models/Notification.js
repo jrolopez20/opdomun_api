@@ -14,6 +14,34 @@ class Notification extends Model {
             SALE_AD_PREMIUM_CREATED: 'SALE_AD_PREMIUM_CREATED', //Notificación que se le envía a un vendedor, indicándole que su anuncio de venta premium ya está disponible
         }
     }
+
+    static async getNotifications (page, limit, auth) {
+        const query = Notification
+            .query()
+            .with('user');
+
+        if (auth) {
+            query.where('userId', auth.user.id)
+        }
+
+        const notifications = await query.paginate(page, limit);
+        return notifications.toJSON();
+    }
+
+    static async getNotification(id, auth) {
+        const query = Notification
+            .query()
+            .with('user')
+            .where('id', id)
+            .where('userId', auth.user.id)
+            .firstOrFail();
+
+        return await query;
+    }
+
+    user() {
+        return this.belongsTo('App/Models/User', 'userId', 'id');
+    }
 }
 
 module.exports = Notification
