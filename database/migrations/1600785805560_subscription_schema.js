@@ -26,7 +26,8 @@ class SubscriptionSchema extends Schema {
     down() {
         this.raw('DROP INDEX subscriptions_home_type_gin_idx;')
         this.raw('DROP INDEX subscriptions_municipio_gin_idx;')
-        this.drop('subscriptions')
+        this.raw("drop table subscriptions CASCADE")
+
     }
 }
 
