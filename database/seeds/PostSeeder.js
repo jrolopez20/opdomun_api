@@ -23,7 +23,7 @@ class PostSeeder {
         for (const agent of agents.toJSON()) {
             let post = await Factory.model('App/Models/Post').make({plan: premiumPlan})
             post = await PostService.addPost(post.toJSON(), {user: agent});
-            await PostService.publishPost(post.id)
+            await PostService.publishPost(post.id, {user: agent})
 
             const appraisalObj = await Factory.model('App/Models/Post').make()
             const appraisal = appraisalObj.toJSON()
