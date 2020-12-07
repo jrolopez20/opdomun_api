@@ -11,6 +11,7 @@ const Plan = use('App/Models/Plan')
 const Address = use('App/Models/Address')
 const AddressService = use('App/Services/AddressService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+const InvalidAccessException = use('App/Exceptions/InvalidAccessException')
 
 class PostService {
 
@@ -25,13 +26,12 @@ class PostService {
             homeType,
             summary,
             postPlaces,
-            owner,
-            activeMonths
+            owner
         },
         auth) {
         const addressObj = await AddressService.addAddress(address)
         let post = new Post();
-
+        const ACTIVE_MONTHS = 1;
         post = Object.assign(post, {
             managedById: auth.user.id,
             addressId: addressObj.id,
@@ -54,9 +54,9 @@ class PostService {
             telephone: owner.telephone
         });
 
-        if (plan && activeMonths) {
+        if (plan) {
             // Add expiration date to post
-            await this.setExpirationDate(post.id, activeMonths);
+            await this.setExpirationDate(post.id, ACTIVE_MONTHS);
         }
 
         await this.initPostVariable(post);
@@ -84,7 +84,7 @@ class PostService {
         auth
     ) {
         const freePlan = await Plan.findBy('type', Plan.TYPES().FREE)
-        const activeMonths = 1;
+        const ACTIVE_MONTHS = 1;
 
         //Begin Transaction to save a Post
         const trx = await Database.beginTransaction()
@@ -132,7 +132,7 @@ class PostService {
             await trx.commit();
 
             // Define post close date
-            await this.setExpirationDate(post.id, activeMonths);
+            await this.setExpirationDate(post.id, ACTIVE_MONTHS);
 
             await this.initPostVariable(post);
             if (postPlaces) {
@@ -235,8 +235,7 @@ class PostService {
                     // Validate only one image by default
                     if (defaultFlag) {
                         img.default = false
-                    }
-                    else if (img.default) {
+                    } else if (img.default) {
                         defaultFlag = true
                     }
 
@@ -418,6 +417,26 @@ class PostService {
         return await Post.getPost(postId);
     }
 
+    static async renew(id, auth) {
+        const post = await Post.find(id);
+        if (!post) {
+            throw new ResourceNotFoundException()
+        }
+
+        await post.load('plan');
+        const plan = await post.getRelated('plan');
+        if (!plan || plan.type !== Plan.TYPES().PREMIUM) {
+            throw new InvalidAccessException()
+        }
+
+        if (post.closedAt) {
+            post.closedAt = null
+            await post.save()
+        }
+
+
+        return await Post.getPost(post.id, auth)
+    }
 }
 
 module.exports = PostService

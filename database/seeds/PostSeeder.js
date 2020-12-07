@@ -22,7 +22,6 @@ class PostSeeder {
         const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
         for (const agent of agents.toJSON()) {
             let post = await Factory.model('App/Models/Post').make({plan: premiumPlan})
-            post.activeMonths = 3;
             post = await PostService.addPost(post.toJSON(), {user: agent});
             await PostService.publishPost(post.id)
 

@@ -101,6 +101,10 @@ class User extends Model {
         return this.hasMany('App/Models/Token', 'id', 'userId')
     }
 
+    hisPosts() {
+        return this.hasMany('App/Models/HisPost', 'id', 'userId')
+    }
+
     address() {
         return this.belongsTo('App/Models/Address', 'addressId', 'id');
     }

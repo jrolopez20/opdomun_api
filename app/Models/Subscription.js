@@ -133,30 +133,31 @@ class Subscription extends Model {
             .query()
             .with('provincia')
             .with('user')
-            .fetch();
+            .whereRaw('closed_at >= now()')
+            .fetch()
 
         if (auth.user.role !== User.roles().ADMIN) {
-            query.where('userId', auth.user.id);
+            query.where('userId', auth.user.id)
         }
 
         if (provinciaId) {
-            query.andWhere('provinciaId', provinciaId)
+            query.where('provinciaId', provinciaId)
         }
         if (municipioId) {
-            query.whereRaw('municipios @> ?', `[{"id":${municipioId}}]`);
+            query.whereRaw('municipios @> ?', `[{"id":${municipioId}}]`)
         }
         if (homeTypeId) {
-            query.whereRaw('home_types @> ?', `[{"id":${homeTypeId}}]`);
+            query.whereRaw('home_types @> ?', `[{"id":${homeTypeId}}]`)
         }
         if (bedrooms) {
-            query.andWhere('bedrooms', bedrooms);
+            query.where('bedrooms', bedrooms)
         }
         if (bathrooms) {
-            query.andWhere('bathrooms', bathrooms);
+            query.where('bathrooms', bathrooms)
         }
         if (price) {
-            query.where('minPrice', '<=', price);
-            query.where('maxPrice', '>=', price);
+            query.where('minPrice', '<=', price)
+            query.where('maxPrice', '>=', price)
         }
 
         const subscriptions = await query;

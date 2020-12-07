@@ -16,6 +16,7 @@ class SubscriptionSchema extends Schema {
             table.integer('bedrooms')
             table.integer('bathrooms')
             table.timestamps(true, true)
+            table.timestamp('closed_at', true)
         })
 
         this.raw('CREATE INDEX subscriptions_home_type_gin_idx ON subscriptions USING gin (home_types jsonb_path_ops);')

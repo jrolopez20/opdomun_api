@@ -141,8 +141,9 @@ Route.group(() => {
         .middleware(['auth', 'access:ADMIN,MANAGER,AGENT'])
         .validator('PublishPost');
 
-    Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth']);
-    Route.get('published_posts', 'PostController.publishedPosts');
+    Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
+    Route.patch('posts/:id/renew', 'PostController.renew').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
+    Route.get('published_posts', 'PostController.publishedPosts').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
 
     Route.get('appraisals', 'AppraisalController.index').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
     Route.post('free_post', 'PostController.addFreePost')

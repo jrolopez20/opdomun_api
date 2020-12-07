@@ -41,6 +41,9 @@ class SubscriptionService {
             // End transaction
             await trx.commit();
 
+            // Define subscription expiration date
+            await this.setExpirationDate(subscription.id)
+
             return await Subscription.getSubscription(subscription.id);
         } catch (e) {
             trx.rollback();
@@ -78,6 +81,11 @@ class SubscriptionService {
         return await Subscription.getSubscription(subscriptionId);
     }
 
+    static async setExpirationDate(subscriptionId, months = 6) {
+        await Database
+            .raw(`UPDATE subscriptions SET closed_at = (now() + interval '${months} month') WHERE id = ?`,
+                [subscriptionId]);
+    }
 }
 
 module.exports = SubscriptionService;

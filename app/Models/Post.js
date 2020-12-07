@@ -1172,6 +1172,10 @@ class Post extends Model {
         return this.hasMany('App/Models/PostPlace', 'id', 'postId')
     }
 
+    hisPosts() {
+        return this.hasMany('App/Models/HisPost', 'id', 'postId')
+    }
+
     varFlexibilidad() {
         return this.hasOne('App/Models/VarFlexibilidad', 'id', 'postId')
     }

@@ -73,8 +73,7 @@ class PostController {
                 homeType,
                 summary,
                 postPlaces,
-                owner,
-                activeMonths
+                owner
             } = request.all();
 
             const post = await PostService.addPost({
@@ -87,8 +86,7 @@ class PostController {
                 homeType,
                 summary,
                 postPlaces,
-                owner,
-                activeMonths
+                owner
             }, auth);
 
             return response.status(201).json(post)
@@ -253,6 +251,11 @@ class PostController {
         } catch (e) {
             return response.status(400).json({message: e.message})
         }
+    }
+
+    async renew({params, response, auth}) {
+        const post = await PostService.renew(params.id, auth);
+        return response.json(post);
     }
 }
 
