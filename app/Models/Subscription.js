@@ -1,12 +1,10 @@
 'use strict'
 
-const Database = use('Database')
 const Model = use('Model')
 const CurrencyService = use('App/Services/CurrencyService')
 const User = use('App/Models/User')
 
 class Subscription extends Model {
-
     static boot() {
         super.boot()
         this.addTrait('@provider:SerializerExtender')
@@ -22,11 +20,11 @@ class Subscription extends Model {
         return ['createdAt', 'updatedAt', 'provinciaId', 'userId'];
     }
 
-    setMunicipios (municipios) {
+    setMunicipios(municipios) {
         return JSON.stringify(municipios)
     }
 
-    setHomeTypes (homeTypes) {
+    setHomeTypes(homeTypes) {
         return JSON.stringify(homeTypes)
     }
 
@@ -96,7 +94,8 @@ class Subscription extends Model {
             .query()
             .with('provincia')
             .with('owner')
-            .with('user');
+            .with('user')
+            .whereRaw('closed_at > now()');
 
         if (filter) {
             if (filter.provincia) {
@@ -133,7 +132,7 @@ class Subscription extends Model {
             .query()
             .with('provincia')
             .with('user')
-            .whereRaw('closed_at >= now()')
+            .whereRaw('closed_at > now()')
             .fetch()
 
         if (auth.user.role !== User.roles().ADMIN) {
@@ -180,7 +179,9 @@ class Subscription extends Model {
             .query()
             .where('createdAt', '>=', startAt)
             .where('createdAt', '<=', endAt)
+            .whereRaw('closed_at > now()')
             .getCount()
+
         const r = await query
         return r || 0;
     }

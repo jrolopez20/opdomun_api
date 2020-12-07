@@ -159,14 +159,10 @@ class PostController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async destroy({params, response}) {
+    async destroy({params, response, auth}) {
         try {
-            const res = await PostService.destroyPost(params.id);
-            if (res) {
-                return response.status(204).json(null);
-            } else {
-                return response.status(400).json('Cannot delete post');
-            }
+            await PostService.destroyPost(params.id, auth);
+            return response.status(204).json(null);
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

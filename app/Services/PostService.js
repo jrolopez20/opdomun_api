@@ -9,6 +9,7 @@ const PostPlace = use('App/Models/PostPlace')
 const Owner = use('App/Models/Owner')
 const Plan = use('App/Models/Plan')
 const Address = use('App/Models/Address')
+const HisPost = use('App/Models/HisPost')
 const AddressService = use('App/Services/AddressService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const InvalidAccessException = use('App/Exceptions/InvalidAccessException')
@@ -317,14 +318,24 @@ class PostService {
         return post;
     }
 
-    static async destroyPost(postId) {
+    static async destroyPost(postId, auth) {
         const post = await Post.find(postId);
         if (post) {
-            await Image.removeAllImgOnDrive(post.id);
-            // This destroy the address and automatically destroy in cascade the post
-            return await AddressService.destroyAddress(post.addressId)
+            if (post.publishedAt) {
+                post.closedAt = new Date()
+                post.hisPosts().create({
+                    userId: auth.user.id,
+                    state: HisPost.STATES().CLOSED
+                })
+                await post.save()
+            } else {
+                // If post is not published yet then destroy it fisically
+                await Image.removeAllImgOnDrive(post.id);
+                // This destroy the address and automatically destroy in cascade the post and its dependencies
+                return await AddressService.destroyAddress(post.addressId)
+            }
         } else {
-            throw new Error('Post not found');
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -360,20 +371,23 @@ class PostService {
         await PostVariable.calculateAu(post.id, post.bedrooms, post.bathrooms, postPlaces);
     }
 
-    static async publishPost(postId) {
+    static async publishPost(postId, auth) {
         const post = await Post.find(postId);
         if (!post) {
             throw new Error('Post not found');
         }
 
         post.publishedAt = new Date();
+        post.hisPosts().create({
+            userId: auth.user.id,
+            state: HisPost.STATES().PUBLISHED
+        })
 
         if (!post.planId) {
-            // Case when is an appraisal set plan to premium
+            // If it's an appraisal then set to premium plan
             const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
             post.planId = premiumPlan.id;
-            const activeMonths = 3;
-            await this.setExpirationDate(post.id, activeMonths);
+            await this.setExpirationDate(post.id, 1);
         }
         await post.save();
 
@@ -431,9 +445,12 @@ class PostService {
 
         if (post.closedAt) {
             post.closedAt = null
+            post.hisPosts().create({
+                userId: auth.user.id,
+                state: HisPost.STATES().RENEW
+            })
             await post.save()
         }
-
 
         return await Post.getPost(post.id, auth)
     }

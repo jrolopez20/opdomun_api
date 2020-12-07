@@ -134,7 +134,7 @@ Route.group(() => {
     Route.get('posts/:id/report', 'PostController.report');
 
     Route.put('posts/:id/publish', 'PostController.publishPost')
-        .middleware(['auth'])
+        .middleware(['auth', 'access:ADMIN,MANAGER,AGENT'])
         .validator('PublishPost');
 
     Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice')
@@ -143,7 +143,7 @@ Route.group(() => {
 
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
     Route.patch('posts/:id/renew', 'PostController.renew').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
-    Route.get('published_posts', 'PostController.publishedPosts').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
+    Route.get('published_posts', 'PostController.publishedPosts');
 
     Route.get('appraisals', 'AppraisalController.index').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
     Route.post('free_post', 'PostController.addFreePost')

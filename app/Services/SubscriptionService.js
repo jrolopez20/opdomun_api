@@ -8,7 +8,8 @@ class SubscriptionService {
     static async destroySubscription(postId) {
         let subscription = await Subscription.find(postId);
         if (subscription) {
-            return await subscription.delete();
+            subscription.closedAt = new Date();
+            await subscription.save()
         } else {
             throw new Error('Subscription not found');
         }

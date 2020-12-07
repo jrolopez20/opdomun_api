@@ -16,6 +16,7 @@ const Plan = use('App/Models/Plan')
 const Address = use('App/Models/Address')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const CurrencyService = use('App/Services/CurrencyService')
+const moment = require('moment') // moment (RUN NPM INSTALL MOMENT)
 
 function strToBool(s) {
     const regex = /^\s*(true|1)\s*$/i
@@ -36,7 +37,16 @@ class Post extends Model {
     }
 
     static get hidden() {
-        return ['planId', 'homeTypeId', 'addressId', 'managedById', 'updatedAt'];
+        return ['planId', 'homeTypeId', 'addressId', 'managedById', 'updatedAt', 'expired'];
+    }
+
+    static get computed () {
+        return ['expired']
+    }
+
+    getExpired ({ closedAt }) {
+        const now = moment();
+        return closedAt && moment(closedAt).isBefore(now) ?  true : false
     }
 
     static BUILD_STATUS_TYPES() {
@@ -108,6 +118,7 @@ class Post extends Model {
                     .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
+            .whereRaw('posts.closed_at > now()')
             .where('plans.id', 1)
             .where('posts.sold', '<>', true)
             .orderBy('posts.opdo', 'desc')
@@ -126,7 +137,7 @@ class Post extends Model {
             })
             .where('planId', 1)
             .whereNotNull('publishedAt')
-            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at >= now()')
+            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at > now()')
             .whereNull('soldAt')
             .orderBy('posts.opdo', 'desc');
 
@@ -139,7 +150,7 @@ class Post extends Model {
     static async getPosts(planId = null, page = 1, limit = 20, filter, auth) {
         const query = Post
             .query()
-            .setVisible(['id', 'price', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold'])
+            .setVisible(['id', 'price', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold', 'expired'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'type'])
             })
@@ -259,7 +270,7 @@ class Post extends Model {
                 builder.where('default', true)
             })
             .whereNotNull('posts.publishedAt')
-            .andWhere('posts.closedAt', '>=', new Date())
+            .whereRaw('closed_at > now()')
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC');
 
@@ -347,6 +358,7 @@ class Post extends Model {
             .where('posts.planId', 1)
             .whereNull('soldAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
+            .whereRaw('closed_at > now()')
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC')
             .limit(limit)
@@ -1084,7 +1096,7 @@ class Post extends Model {
             .innerJoin('owners', 'posts.id', 'owners.post_id')
             .innerJoin('users', 'users.id', 'owners.user_id')
             .whereNotNull('posts.published_at')
-            .whereRaw('posts.closed_at >= now()')
+            .whereRaw('posts.closed_at > now()')
             .whereNull('posts.sold_at');
 
         if (provinciaId) {

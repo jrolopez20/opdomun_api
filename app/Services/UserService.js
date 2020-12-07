@@ -51,7 +51,6 @@ class UserService {
 
             return user;
         } catch (e) {
-            console.log(e)
             trx.rollback();
             throw new Error(e.message)
         }
@@ -117,7 +116,6 @@ class UserService {
 
             return await User.getUser(user.id);
         } catch (e) {
-            console.log(e)
             trx.rollback();
             throw new Error(e.message)
         }
@@ -175,7 +173,6 @@ class UserService {
 
             return await User.getUser(user.id);
         } catch (e) {
-            console.log(e)
             trx.rollback();
             throw new Error(e.message)
         }
