@@ -12,10 +12,10 @@ class NotificationSchema extends Schema {
             table.enu(
                 'type',
                 [
-                    Notification.NOTIFICATION_TYPES().SALE,
-                    Notification.NOTIFICATION_TYPES().PURCHASE_TO_PREMIUM,
-                    Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE,
-                    Notification.NOTIFICATION_TYPES().SALE_AD_PREMIUM_RENEW,
+                    Notification.NOTIFICATION_TYPES().SALE_TO_BUYER,
+                    Notification.NOTIFICATION_TYPES().PURCHASE_TO_PREMIUM_SELLER,
+                    Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER,
+                    Notification.NOTIFICATION_TYPES().SALE_AD_PREMIUM_EXPIRED,
                     Notification.NOTIFICATION_TYPES().SALE_AD_FREE_EXPIRED,
                     Notification.NOTIFICATION_TYPES().SALE_AD_VIEWS,
                     Notification.NOTIFICATION_TYPES().SALE_AD_PREMIUM_CREATED,
