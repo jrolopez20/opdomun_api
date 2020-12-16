@@ -1,6 +1,8 @@
 'use strict'
 
 const Model = use('Model')
+const Database = use('Database')
+const moment = require('moment')
 
 class Notification extends Model {
     static NOTIFICATION_TYPES() {
@@ -15,6 +17,19 @@ class Notification extends Model {
         }
     }
 
+    static get hidden() {
+        return ['userId', 'updatedAt'];
+    }
+
+    static get computed () {
+        return ['expired']
+    }
+
+    getExpired ({ closedAt }) {
+        const now = moment();
+        return closedAt && moment(closedAt).isBefore(now) ?  true : false
+    }
+
     static async getNotifications(page, limit, auth) {
         const query = Notification
             .query()
@@ -26,6 +41,16 @@ class Notification extends Model {
 
         const notifications = await query.paginate(page, limit);
         return notifications.toJSON();
+    }
+
+    static async getNotificationsCount(auth) {
+        const result = await Database
+            .count('id as total')
+            .from('notifications')
+            .where('user_id', auth.user.id)
+            .first()
+
+        return result;
     }
 
     static async getNotification(id, auth) {

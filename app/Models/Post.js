@@ -16,7 +16,7 @@ const Plan = use('App/Models/Plan')
 const Address = use('App/Models/Address')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const CurrencyService = use('App/Services/CurrencyService')
-const moment = require('moment') // moment (RUN NPM INSTALL MOMENT)
+const moment = require('moment')
 
 function strToBool(s) {
     const regex = /^\s*(true|1)\s*$/i

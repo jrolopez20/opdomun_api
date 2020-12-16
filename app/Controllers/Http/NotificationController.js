@@ -82,6 +82,19 @@ class NotificationController {
             return response.status(400).json({message: e.message})
         }
     }
+
+    /**
+     * Return total of notifications.
+     * GET notifications/count
+     *
+     * @param response
+     * @param auth
+     * @returns {Promise<*|Promise<any>>}
+     */
+    async count({response, auth}) {
+        const count = await Notification.getNotificationsCount(auth)
+        return response.json(count)
+    }
 }
 
 module.exports = NotificationController

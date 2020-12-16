@@ -14,6 +14,10 @@ definitions:
         type: string
       read:
         type: boolean
+      expired:
+        type: boolean
+      createdAt:
+        type: datetime
       user:
         $ref: '#/definitions/User'
       resource:
