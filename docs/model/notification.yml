@@ -21,8 +21,7 @@ definitions:
       user:
         $ref: '#/definitions/User'
       resource:
-        type: unknow
-        value: Post | Subscription
+        type: object
     required:
       - id
       - type

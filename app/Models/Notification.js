@@ -30,6 +30,10 @@ class Notification extends Model {
         return closedAt && moment(closedAt).isBefore(now) ?  true : false
     }
 
+    setResource(resource) {
+        return JSON.stringify(resource)
+    }
+
     static async getNotifications(page, limit, auth) {
         const query = Notification
             .query()

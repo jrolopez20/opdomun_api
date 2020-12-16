@@ -24,7 +24,7 @@ class NotificationSchema extends Schema {
             ).notNullable()
             table.boolean('read')
             table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
-            table.integer('resource')
+            table.jsonb('resource')
             table.timestamps()
         })
     }
