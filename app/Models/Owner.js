@@ -22,7 +22,7 @@ class Owner extends Model {
     }
 
     user() {
-        return this.belongsTo('App/Models/User')
+        return this.belongsTo('App/Models/User', 'userId', 'id')
     }
 
     static async addOwner({postId, userId, fullname, telephone, email}) {

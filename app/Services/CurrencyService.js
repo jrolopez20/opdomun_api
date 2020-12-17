@@ -37,14 +37,15 @@ class CurrencyService {
     static transform(value, from, to) {
         from = from.toUpperCase();
         to = to.toUpperCase();
-        if(from === CurrencyService.CURRENCIES().CUP && to === CurrencyService.CURRENCIES().USD) {
-            value = value / 24;
-        }
-        else {
-            value = value * 24;
+        if (from === to) {
+            return value
+        } else if (from === CurrencyService.CURRENCIES().CUP && to === CurrencyService.CURRENCIES().USD) {
+            value = value / 24
+        } else {
+            value = value * 24
         }
 
-        return value;
+        return value
     }
 
     /**

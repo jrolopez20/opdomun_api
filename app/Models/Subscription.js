@@ -133,11 +133,6 @@ class Subscription extends Model {
             .with('provincia')
             .with('user')
             .whereRaw('closed_at > now()')
-            .fetch()
-
-        if (auth.user.role !== User.roles().ADMIN) {
-            query.where('userId', auth.user.id)
-        }
 
         if (provinciaId) {
             query.where('provinciaId', provinciaId)
@@ -155,11 +150,12 @@ class Subscription extends Model {
             query.where('bathrooms', bathrooms)
         }
         if (price) {
-            query.where('minPrice', '<=', price)
-            query.where('maxPrice', '>=', price)
+            const basePrice = CurrencyService.transform(price.value, price.currency, CurrencyService.BASE_CURRENCY())
+            query.where('minPrice', '<=', basePrice)
+            query.where('maxPrice', '>=', basePrice)
         }
 
-        const subscriptions = await query;
+        const subscriptions = await query.fetch();
         return subscriptions.toJSON();
     }
 

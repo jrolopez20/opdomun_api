@@ -189,9 +189,12 @@ class PostController {
         }
     }
 
-    async publishPost({params, response}) {
+    async publishPost({params, response, auth}) {
         try {
-            const post = await PostService.publishPost(params.id);
+            const post = await PostService.publishPost(params.id, auth);
+
+            Event.emit('new::post', {post})
+
             return response.json(post);
         } catch (e) {
             return response.status(400).json({message: e.message})
@@ -212,8 +215,6 @@ class PostController {
             const post = await PostService.addFreePost({
                 address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner, images
             }, auth);
-
-            Event.emit('new::post', {post})
 
             return response.status(201).json(post)
         } catch (e) {
@@ -251,6 +252,9 @@ class PostController {
 
     async renew({params, response, auth}) {
         const post = await PostService.renew(params.id, auth);
+
+        Event.emit('new::post', {post})
+
         return response.json(post);
     }
 }

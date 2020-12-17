@@ -391,11 +391,7 @@ class PostService {
         }
         await post.save();
 
-        const publishedPost = await Post.getPost(postId);
-
-        // TODO dispatch event to notify subscriptors about the new created post
-
-        return publishedPost;
+        return await Post.getPost(postId);
     }
 
     static async setExpirationDate(postId, months) {

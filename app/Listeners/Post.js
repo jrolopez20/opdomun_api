@@ -1,8 +1,15 @@
 'use strict'
 
+const NotificationService = use('App/Services/NotificationService');
+
 const Post = exports = module.exports = {}
 
 Post.created = async ({post}) => {
-    // TODO
-    // console.log('listen registered post', post.id)
+    await NotificationService.notifyBuyers(post);
+}
+
+Post.visited = async ({post}) => {
+    if (post.postVisit.total === 50 || post.postVisit.total === 100) {
+        await NotificationService.notifyNumberOfVisits(post);
+    }
 }

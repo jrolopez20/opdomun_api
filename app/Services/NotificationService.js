@@ -80,17 +80,58 @@ class NotificationService {
             provinciaId: post.address.localidad.municipio.provinciaId,
             municipioId: post.address.localidad.municipioId,
             homeTypeId: post.homeTypeId,
-            price: post.price.value,
+            price: post.price,
         });
-
         if (subscriptions) {
             for (let subscription of subscriptions) {
                 // Check if the user has accepted the notification consent
                 if (subscription.user.notificationsConsent) {
-                    // TODO Send notification
+                    // Create notification
+                    const notification = new Notification()
+                    notification.title = 'Inmueble en venta'
+                    notification.description = `${post.owner.fullname} vende un inmueble como el que usted está comprando. Revise los detalles de su oferta.`
+                    notification.type = Notification.NOTIFICATION_TYPES().SALE_TO_BUYER
+                    notification.user_id = subscription.user.id
+                    notification.resource = {id: subscription.id}
+                    await notification.save();
+
+                    const message = {
+                        headings: {'es': notification.title},
+                        contents: {'es': notification.description},
+                        include_external_user_ids: [subscription.user.email],
+                        data: {
+                            id: notification.id, // Notification Id
+                            type: notification.type, // Notification type
+                            resource: {id: subscription.id}, // Resource Id
+                        }
+                    }
+                    await NotificationService.dispatch(message)
                 }
             }
         }
+    }
+
+    static async notifyNumberOfVisits(post) {
+        // Create notification
+        const notification = new Notification()
+        notification.title = 'Tu oferta es popular'
+        notification.description = 'Tu oferta está siendo vista cada vez por más personas. Échale un vistazo al número de visitas que ha tenido hasta este momento.'
+        notification.type = Notification.NOTIFICATION_TYPES().SALE_AD_VIEWS
+        notification.user_id = post.owner.user.id
+        notification.resource = {id: post.id}
+        await notification.save();
+
+        const message = {
+            headings: {'es': notification.title},
+            contents: {'es': notification.description},
+            include_external_user_ids: [post.owner.user.email],
+            data: {
+                id: notification.id, // Notification Id
+                type: notification.type, // Notification type
+                resource: {id: post.id}, // Resource Id
+            }
+        }
+        await NotificationService.dispatch(message)
     }
 
     /**
