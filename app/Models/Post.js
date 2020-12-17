@@ -40,13 +40,13 @@ class Post extends Model {
         return ['planId', 'homeTypeId', 'addressId', 'managedById', 'updatedAt', 'expired'];
     }
 
-    static get computed () {
+    static get computed() {
         return ['expired']
     }
 
-    getExpired ({ closedAt }) {
+    getExpired({closedAt}) {
         const now = moment();
-        return closedAt && moment(closedAt).isBefore(now) ?  true : false
+        return closedAt && moment(closedAt).isBefore(now) ? true : false
     }
 
     static BUILD_STATUS_TYPES() {
@@ -99,7 +99,7 @@ class Post extends Model {
             .firstOrFail();
 
         const user = await this.authUser(auth)
-        return post.toJSON(user ? user.toJSON(): null)
+        return post.toJSON(user ? user.toJSON() : null)
     }
 
     static async getBestPosts() {
@@ -1078,14 +1078,15 @@ class Post extends Model {
         const posts = Database
             .from('posts')
             .select(
-                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms',
+                'posts.id', 'posts.price', 'posts.bedrooms', 'posts.bathrooms', 'plans.type as plantType',
                 'home_types.id as homeTypeId', 'home_types.title as homeType',
                 'addresses.description as addressDescription',
                 'localidads.id as localidadId', 'localidads.title as localidad',
                 'municipios.id as municipioId', 'municipios.title as municipio',
                 'provincias.id as provinciaId', 'provincias.title as provincia',
-                'owners.fullname', 'owners.email', 'owners.telephone',
-                'users.notifications_consent as notificationsConsent'
+                'owners.user_id as userId', 'owners.fullname as ownerFullname', 'owners.email as ownerEmail',
+                'owners.telephone as ownerTelephone',
+                'users.email', 'users.notifications_consent as notificationsConsent'
             )
             .innerJoin('plans', 'plans.id', 'posts.plan_id')
             .innerJoin('home_types', 'home_types.id', 'posts.home_type_id')

@@ -121,7 +121,7 @@ class Opdo {
         Model.parsePrice = function (value) {
             if (value) {
                 value = value.toString();
-                let price = ' CUC';
+                let price = '';
                 let miles = 0;
                 for (let i = value.length - 1; i >= 0; i--) {
                     if (miles % 3 == 0 && miles !== 0) {
