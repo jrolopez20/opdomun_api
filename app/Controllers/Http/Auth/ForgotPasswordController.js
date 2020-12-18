@@ -57,8 +57,6 @@ class ForgotPasswordController {
             throw new UnauthorizedException('Old token provided or token already used.');
         }
 
-        // TODO, Check if token is still valid
-
         // Saving new password
         user.password = newPassword
 

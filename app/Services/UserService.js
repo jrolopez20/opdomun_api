@@ -122,6 +122,7 @@ class UserService {
     }
 
     static async setProfile(auth, request) {
+        const numid = request.input('numid')
         const fullname = request.input('fullname')
         const telephone = request.input('telephone')
         const address = request.input('address')
@@ -133,6 +134,7 @@ class UserService {
         try {
             let user = await auth.getUser();
             user.fullname = fullname;
+            user.numid = numid;
             user.telephone = telephone;
             user.notificationsConsent = notificationsConsent;
 
