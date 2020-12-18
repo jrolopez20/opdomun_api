@@ -63,9 +63,9 @@ class NotificationService {
                         contents: {'es': notification.description},
                         include_external_user_ids: [post.email],
                         data: {
-                            id: notification.id, // Notification Id
-                            type: notification.type, // Notification type
-                            resource: {id: post.id}, // Resource Id
+                            id: notification.id,
+                            type: notification.type,
+                            resource: {id: post.id},
                         }
                     }
                     await NotificationService.dispatch(message)
@@ -100,9 +100,9 @@ class NotificationService {
                         contents: {'es': notification.description},
                         include_external_user_ids: [subscription.user.email],
                         data: {
-                            id: notification.id, // Notification Id
-                            type: notification.type, // Notification type
-                            resource: {id: subscription.id}, // Resource Id
+                            id: notification.id,
+                            type: notification.type,
+                            resource: {id: subscription.id},
                         }
                     }
                     await NotificationService.dispatch(message)
@@ -126,9 +126,32 @@ class NotificationService {
             contents: {'es': notification.description},
             include_external_user_ids: [post.owner.user.email],
             data: {
-                id: notification.id, // Notification Id
-                type: notification.type, // Notification type
-                resource: {id: post.id}, // Resource Id
+                id: notification.id,
+                type: notification.type,
+                resource: {id: post.id},
+            }
+        }
+        await NotificationService.dispatch(message)
+    }
+
+    static async notifyPostPremiumOwner(post) {
+        // Create notification
+        const notification = new Notification()
+        notification.title = 'Servicio Premium creado'
+        notification.description = 'Ya está listo su Servicio Premium, a partir de ahora usted recibirá notificaciones con información de posibles compradores interesados en su propiedad.'
+        notification.type = Notification.NOTIFICATION_TYPES().SALE_AD_PREMIUM_CREATED
+        notification.user_id = post.owner.user.id
+        notification.resource = {id: post.id}
+        await notification.save();
+
+        const message = {
+            headings: {'es': notification.title},
+            contents: {'es': notification.description},
+            include_external_user_ids: [post.owner.user.email],
+            data: {
+                id: notification.id,
+                type: notification.type,
+                resource: {id: post.id},
             }
         }
         await NotificationService.dispatch(message)
