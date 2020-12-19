@@ -49,7 +49,7 @@ class PostService {
 
         await Owner.addOwner({
             postId: post.id,
-            userId: auth.user.id,
+            userId: owner.userId,
             email: owner.email,
             fullname: owner.fullname,
             telephone: owner.telephone
@@ -299,6 +299,7 @@ class PostService {
         await post.load('owner');
 
         const ownerObj = await post.getRelated('owner');
+        ownerObj.userId = owner.userId;
         ownerObj.fullname = owner.fullname;
         ownerObj.telephone = owner.telephone;
         ownerObj.email = owner.email;

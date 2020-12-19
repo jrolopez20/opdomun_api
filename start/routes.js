@@ -140,8 +140,7 @@ Route.group(() => {
         .validator('PublishPost');
 
     Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice')
-        .middleware(['auth', 'access:ADMIN,MANAGER,AGENT'])
-        .validator('PublishPost');
+        .middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
 
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
     Route.patch('posts/:id/renew', 'PostController.renew').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
