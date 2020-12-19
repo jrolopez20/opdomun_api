@@ -10,7 +10,7 @@ Post.created = async ({post}) => {
 }
 
 Post.visited = async ({post}) => {
-    if (post.postVisit.total === 50 || post.postVisit.total === 100) {
+    if (post.postVisit.total === 20 || post.postVisit.total === 50 || post.postVisit.total === 100) {
         await NotificationService.notifyNumberOfVisits(post);
     }
 }

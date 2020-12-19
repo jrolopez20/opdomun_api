@@ -59,8 +59,14 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
-                        headings: {'es': notification.title},
-                        contents: {'es': notification.description},
+                        headings: {
+                            'en': notification.title,
+                            'es': notification.title
+                        },
+                        contents: {
+                            'en': notification.description,
+                            'es': notification.description
+                        },
                         include_external_user_ids: [post.email],
                         data: {
                             id: notification.id,
@@ -96,8 +102,14 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
-                        headings: {'es': notification.title},
-                        contents: {'es': notification.description},
+                        headings: {
+                            'en': notification.title,
+                            'es': notification.title
+                        },
+                        contents: {
+                            'en': notification.description,
+                            'es': notification.description
+                        },
                         include_external_user_ids: [subscription.user.email],
                         data: {
                             id: notification.id,
@@ -122,8 +134,14 @@ class NotificationService {
         await notification.save();
 
         const message = {
-            headings: {'es': notification.title},
-            contents: {'es': notification.description},
+            headings: {
+                'en': notification.title,
+                'es': notification.title
+            },
+            contents: {
+                'en': notification.description,
+                'es': notification.description
+            },
             include_external_user_ids: [post.owner.user.email],
             data: {
                 id: notification.id,
@@ -145,8 +163,14 @@ class NotificationService {
         await notification.save();
 
         const message = {
-            headings: {'es': notification.title},
-            contents: {'es': notification.description},
+            headings: {
+                'en': notification.title,
+                'es': notification.title
+            },
+            contents: {
+                'en': notification.description,
+                'es': notification.description
+            },
             include_external_user_ids: [post.owner.user.email],
             data: {
                 id: notification.id,
@@ -165,13 +189,49 @@ class NotificationService {
     static async dispatch(message) {
         const client = new OneSignal.Client(Env.get('ONESIGNAL_APP_ID'), Env.get('ONESIGNAL_API_KEY'))
         try {
-            const response = await client.createNotification(message);
+            await client.createNotification(message);
         } catch (e) {
             if (e instanceof OneSignal.HTTPError) {
                 throw new BadRequestException(e.body);
             }
         }
 
+        // const appID = Env.get('ONESIGNAL_APP_ID')
+        // const restKey = Env.get('ONESIGNAL_API_KEY')
+        //
+        // const headers = {
+        //     "Authorization": `Basic ${restKey}`,
+        //     "Content-Type": "application/json; charset=utf-8",
+        // };
+        //
+        // const options = {
+        //     host: "onesignal.com",
+        //     port: 443,
+        //     path: "/api/v1/notifications",
+        //     method: "POST",
+        //     headers: headers
+        // };
+        //
+        // const req = https.request(options, function (res) {
+        //     res.on('data', function (data) {
+        //         console.log("Response:");
+        //         console.log(JSON.parse(data));
+        //     });
+        // });
+        //
+        // req.on('error', function (e) {
+        //     console.log("ERROR:");
+        //     console.log(e);
+        // });
+        //
+        // const msg = {
+        //     app_id: appID,
+        //     contents: {"en": "English Message"},
+        //     included_segments: ["All"]
+        // };
+        // message.app_id = appID
+        // req.write(JSON.stringify(message));
+        // req.end();
     }
 
 }
