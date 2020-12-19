@@ -181,6 +181,54 @@ class NotificationService {
         await NotificationService.dispatch(message)
     }
 
+    static async notifyExpiredPost() {
+        const posts = (await Post.getExpiredPost()).toJSON()
+        if (posts) {
+            for (let post of posts) {
+                // Check if the user has accepted the notification consent
+                if (post.owner.user.notificationsConsent) {
+                    const serviceName = post.plan.type === Plan.TYPES().PREMIUM ? 'Premium' : 'Gratis'
+                    let description = ''
+                    if (post.plan.type === Plan.TYPES().PREMIUM) {
+                        description = 'Renueve su Servicio Premium cuanto antes para seguir obteniendo información de posibles compradores.'
+                    } else {
+                        description = 'Renueve su servicio convirtiéndolo a Premium! y aprobeche todas las ventajas que provee este servicio.'
+                    }
+
+                    // Create notification
+                    const notification = new Notification()
+                    notification.title = `Servicio ${serviceName} expirado`
+                    notification.description = description
+                    notification.type = post.plan.type === Plan.TYPES().PREMIUM
+                        ? Notification.NOTIFICATION_TYPES().SALE_AD_PREMIUM_EXPIRED
+                        : Notification.NOTIFICATION_TYPES().SALE_AD_FREE_EXPIRED
+                    notification.user_id = post.owner.user.id
+                    notification.resource = {id: post.id}
+                    await notification.save();
+
+                    const message = {
+                        headings: {
+                            'en': notification.title,
+                            'es': notification.title
+                        },
+                        contents: {
+                            'en': notification.description,
+                            'es': notification.description
+                        },
+                        include_external_user_ids: [post.owner.user.email],
+                        data: {
+                            id: notification.id,
+                            type: notification.type,
+                            resource: {id: post.id},
+                        }
+                    }
+                    console.log(message)
+                    await NotificationService.dispatch(message)
+                }
+            }
+        }
+    }
+
     /**
      * Wrapper function to push notification
      * @param message

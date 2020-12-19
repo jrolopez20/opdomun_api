@@ -1131,6 +1131,17 @@ class Post extends Model {
         return await posts;
     }
 
+    static async getExpiredPost() {
+        return await Post
+            .query()
+            .setVisible(['id', 'price'])
+            .with('owner.user')
+            .with('plan')
+            .whereNotNull('posts.publishedAt')
+            .whereRaw(`now()::date = closed_at::date`)
+            .fetch();
+    }
+
     async calculatePrice() {
         const address = await Address
             .query()

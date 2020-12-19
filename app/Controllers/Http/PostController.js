@@ -4,6 +4,7 @@ const PDF = use('PDF');
 const Event = use('Event')
 const Post = use('App/Models/Post');
 const PostService = use('App/Services/PostService');
+const NotificationService = use('App/Services/NotificationService');
 const PaginatedResponse = use('App/Util/PaginatedResponse');
 const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
@@ -256,6 +257,15 @@ class PostController {
         Event.emit('new::post', {post})
 
         return response.json(post);
+    }
+
+    async notifyExpiredPost({request, response, auth}) {
+        const secret = request.input('secret');
+
+        if (secret === 'NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj') {
+            await NotificationService.notifyExpiredPost();
+            return response.json('ok');
+        }
     }
 }
 
