@@ -59,6 +59,7 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
+                        large_icon: post.owner.user.picture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -102,6 +103,7 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
+                        large_icon: subscription.user.picture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -134,6 +136,7 @@ class NotificationService {
         await notification.save();
 
         const message = {
+            large_icon: post.owner.user.picture,
             headings: {
                 'en': notification.title,
                 'es': notification.title
@@ -163,6 +166,7 @@ class NotificationService {
         await notification.save();
 
         const message = {
+            large_icon: post.owner.user.picture,
             headings: {
                 'en': notification.title,
                 'es': notification.title
@@ -207,6 +211,7 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
+                        large_icon: post.owner.user.picture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -237,49 +242,13 @@ class NotificationService {
     static async dispatch(message) {
         const client = new OneSignal.Client(Env.get('ONESIGNAL_APP_ID'), Env.get('ONESIGNAL_API_KEY'))
         try {
+            message.android_channel_id ='ac30d3c7-b234-4189-bb21-5b92ae4e49bf'
             await client.createNotification(message);
         } catch (e) {
             if (e instanceof OneSignal.HTTPError) {
                 throw new BadRequestException(e.body);
             }
         }
-
-        // const appID = Env.get('ONESIGNAL_APP_ID')
-        // const restKey = Env.get('ONESIGNAL_API_KEY')
-        //
-        // const headers = {
-        //     "Authorization": `Basic ${restKey}`,
-        //     "Content-Type": "application/json; charset=utf-8",
-        // };
-        //
-        // const options = {
-        //     host: "onesignal.com",
-        //     port: 443,
-        //     path: "/api/v1/notifications",
-        //     method: "POST",
-        //     headers: headers
-        // };
-        //
-        // const req = https.request(options, function (res) {
-        //     res.on('data', function (data) {
-        //         console.log("Response:");
-        //         console.log(JSON.parse(data));
-        //     });
-        // });
-        //
-        // req.on('error', function (e) {
-        //     console.log("ERROR:");
-        //     console.log(e);
-        // });
-        //
-        // const msg = {
-        //     app_id: appID,
-        //     contents: {"en": "English Message"},
-        //     included_segments: ["All"]
-        // };
-        // message.app_id = appID
-        // req.write(JSON.stringify(message));
-        // req.end();
     }
 
 }
