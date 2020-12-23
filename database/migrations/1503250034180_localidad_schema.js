@@ -8,6 +8,7 @@ class LocalidadSchema extends Schema {
     this.create('localidads', (table) => {
       table.increments()
       table.integer('municipio_id').unsigned().references('id').inTable('municipios').onDelete('CASCADE')
+      table.integer('location_category_id').unsigned().notNullable().references('id').inTable('location_categories').onDelete('RESTRICT')
       table.string('title', 120).notNullable()
       table.timestamps(true, true)
     })

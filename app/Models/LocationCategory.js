@@ -20,8 +20,8 @@ class LocationCategory extends Model {
         return this.hasMany('App/Models/BenchmarkPrice', 'id', 'locationCategoryId')
     }
 
-    municipios() {
-        return this.hasMany('App/Models/Municipio', 'id', 'locationCategoryId')
+    localidads() {
+        return this.hasMany('App/Models/Localidad', 'id', 'locationCategoryId')
     }
 }
 

@@ -27,10 +27,6 @@ class Municipio extends Model {
     localidads() {
         return this.hasMany('App/Models/Localidad', 'id', 'municipioId')
     }
-
-    locationCategory() {
-        return this.belongsTo('App/Models/LocationCategory', 'locationCategoryId', 'id');
-    }
 }
 
 module.exports = Municipio

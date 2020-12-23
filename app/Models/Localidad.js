@@ -26,6 +26,10 @@ class Localidad extends Model {
     addresses() {
         return this.hasMany('App/Models/Address', 'id', 'localidadId')
     }
+
+    locationCategory() {
+        return this.belongsTo('App/Models/LocationCategory', 'locationCategoryId', 'id');
+    }
 }
 
 module.exports = Localidad
