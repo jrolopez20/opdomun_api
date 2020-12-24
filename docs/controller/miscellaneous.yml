@@ -1,0 +1,23 @@
+/documents:
+  get:
+    tags:
+      - Documents
+    summary: List of documents
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        schema:
+          type: object
+          properties:
+            evaluationForm:
+              type: string
+            technicalManual:
+              type: string
+            gazetteMinimumReferencialValue:
+              type: string
+          required:
+            - evaluationForm
+            - technicalManual
+            - gazetteMinimumReferencialValue
