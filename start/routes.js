@@ -195,6 +195,8 @@ Route.group(() => {
     Route.get('moviliario_options', 'VariableMhController.getMoviliarioOptions').middleware(['auth']);
     Route.get('electrodomestico_options', 'VariableMhController.getElectrodomesticoOptions').middleware(['auth']);
 
+    Route.get('documents', 'MiscellaneousController.documents');
+
 }).prefix('api');
 
 // Authentication routes

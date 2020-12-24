@@ -37,7 +37,7 @@ class BenchmarkPriceService {
             .where('rooms', (rooms < 4 ? rooms : 4))
             .where('garage', strToBool(garage))
 
-        if (architecturalTypologyId !== 4) {
+        if (parseInt(architecturalTypologyId) !== 4) {
             if (strToBool(garden)) {
                 query.where('garden', true)
             } else {
@@ -74,6 +74,7 @@ class BenchmarkPriceService {
                 }
             }
         } catch (e) {
+            console.log(e)
             throw new BadRequestException('No se pudo calcular el precio referencial. Por favor verifique los datos de entrada');
         }
     }
