@@ -7,6 +7,7 @@ const Post = exports = module.exports = {}
 Post.created = async ({post}) => {
     await NotificationService.notifyBuyers(post);
     await NotificationService.notifyPostPremiumOwner(post);
+    await NotificationService.notifyPostPremiumOwnerAboutOlderSubscription(post);
 }
 
 Post.visited = async ({post}) => {

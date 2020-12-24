@@ -54,7 +54,7 @@ class NotificationService {
                     notification.type = post.plantType === Plan.TYPES().PREMIUM
                         ? Notification.NOTIFICATION_TYPES().PURCHASE_TO_PREMIUM_SELLER
                         : Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER
-                    notification.user_id = post.userId
+                    notification.user_id = post.owner.user.id
                     notification.resource = {id: post.id}
                     await notification.save();
 
@@ -103,7 +103,7 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
-                        large_icon: subscription.user.picture,
+                        large_icon: post.owner.user.picture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -183,6 +183,49 @@ class NotificationService {
             }
         }
         await NotificationService.dispatch(message)
+    }
+
+    static async notifyPostPremiumOwnerAboutOlderSubscription(post) {
+        // Find all subscriptions that match to post's attribute
+        const subscriptions = await Subscription.getMatchedSubscriptions({
+            provinciaId: post.address.localidad.municipio.provinciaId,
+            municipioId: post.address.localidad.municipioId,
+            homeTypeId: post.homeTypeId,
+            price: post.price,
+        });
+        if (subscriptions) {
+            for (let subscription of subscriptions) {
+                // Create notification
+                const notification = new Notification()
+                notification.title = 'Comprador interesado'
+                notification.description = `${subscription.user.fullname} está interesado(a) en tu oferta de inmueble en venta publicado mediante el Servicio ${serviceName}`
+                notification.type = post.plantType === Plan.TYPES().PREMIUM
+                    ? Notification.NOTIFICATION_TYPES().PURCHASE_TO_PREMIUM_SELLER
+                    : Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER
+                notification.user_id = post.owner.user.id
+                notification.resource = {id: post.id}
+                await notification.save();
+
+                const message = {
+                    large_icon: subscription.user.picture,
+                    headings: {
+                        'en': notification.title,
+                        'es': notification.title
+                    },
+                    contents: {
+                        'en': notification.description,
+                        'es': notification.description
+                    },
+                    include_external_user_ids: [post.owner.user.email],
+                    data: {
+                        id: notification.id,
+                        type: notification.type,
+                        resource: {id: post.id},
+                    }
+                }
+                await NotificationService.dispatch(message)
+            }
+        }
     }
 
     static async notifyExpiredPost() {
