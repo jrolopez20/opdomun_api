@@ -15,10 +15,10 @@ class BenchmarkPriceController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async index({request, response}) {
+    async index({request, response, auth}) {
         const {locationCategoryId, architecturalTypologyId, rooms, garage, garden} = request.all();
 
-        const result = await BenchmarkPriceService.calculate(locationCategoryId, architecturalTypologyId, rooms, garage, garden);
+        const result = await BenchmarkPriceService.calculate(locationCategoryId, architecturalTypologyId, rooms, garage, garden, auth);
 
         return response.json(result);
     }
