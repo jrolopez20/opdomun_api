@@ -13,7 +13,6 @@ class Municipio extends Model {
             .query()
             .setVisible(['id', 'title', 'prospUrbana'])
             .with('provincia')
-            .with('locationCategory')
             .where('provincia_id', provinciaId)
             .fetch();
 

@@ -12,6 +12,7 @@ class Localidad extends Model {
         const localidades = await Localidad
             .query()
             .setVisible(['id', 'title'])
+            .with('locationCategory')
             .with('municipio.provincia')
             .where('municipioId', municipioId)
             .fetch();
