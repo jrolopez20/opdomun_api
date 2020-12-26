@@ -41,12 +41,6 @@ definitions:
       errors:
         $ref: '#/definitions/Errors'
 
-  Total:
-    type: object
-    properties:
-      total:
-        type: number
-
   Price:
     type: object
     properties:

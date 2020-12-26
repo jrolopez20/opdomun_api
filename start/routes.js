@@ -65,7 +65,7 @@ Route.group(() => {
         .apiOnly();
 
     // Notifications
-    Route.get('notifications/count', 'NotificationController.count').middleware(['auth']);
+    Route.get('notifications/unreadCount', 'NotificationController.unreadCount').middleware(['auth']);
     Route.resource('notifications', 'NotificationController')
         .middleware(['auth'])
         .only(['index', 'show', 'update', 'destroy']);

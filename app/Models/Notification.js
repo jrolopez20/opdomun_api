@@ -47,14 +47,15 @@ class Notification extends Model {
         return notifications.toJSON();
     }
 
-    static async getNotificationsCount(auth) {
+    static async getUnreadCount(auth) {
         const result = await Database
             .count('id as total')
             .from('notifications')
             .where('user_id', auth.user.id)
+            .where('read', false)
             .first()
 
-        return result;
+        return result.total;
     }
 
     static async getNotification(id, auth) {

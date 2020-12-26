@@ -8,11 +8,11 @@ class Rd {
     const options = Object.assign(defaultOptions, customOptions)
 
     /**
-     *
      * @param tcResult Puntos de la solucion tecnico constructiva
      * @param ecResult Puntos del estado de conservacion de la vivienda
      * @param riskZone
-     * @returns {Promise.<void>}
+     * @param riskType
+     * @returns {Promise<void>}
      */
     Model.prototype.calculateRd = async function (tcResult, ecResult, riskZone, riskType) {
       let result = (parseFloat(tcResult) + parseFloat(ecResult) + parseInt(riskZone)) / 3;

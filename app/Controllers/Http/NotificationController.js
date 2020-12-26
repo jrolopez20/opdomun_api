@@ -84,15 +84,15 @@ class NotificationController {
     }
 
     /**
-     * Return total of notifications.
+     * Return total of unread notifications.
      * GET notifications/count
      *
      * @param response
      * @param auth
      * @returns {Promise<*|Promise<any>>}
      */
-    async count({response, auth}) {
-        const count = await Notification.getNotificationsCount(auth)
+    async unreadCount({response, auth}) {
+        const count = await Notification.getUnreadCount(auth)
         return response.json(count)
     }
 }

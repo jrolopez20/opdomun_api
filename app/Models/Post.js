@@ -941,7 +941,7 @@ class Post extends Model {
                     riskText = 'La vivienda NO se encuentra ubicada en una zona de riesgo de desastres.'
                 } else {
                     const riskTypes = Riesgo.getRiskTypes();
-                    riskText = 'La vivienda se encuentra ubicada en ' + riskTypes[riesgo.type] + '.';
+                    riskText = 'La vivienda se encuentra ubicada en ' + riskTypes[riesgo.type-1] + '.';
                 }
                 body.push([
                         {
