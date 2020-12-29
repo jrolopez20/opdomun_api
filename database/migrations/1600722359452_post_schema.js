@@ -12,7 +12,7 @@ class PostSchema extends Schema {
             table.integer('address_id').unsigned().notNullable().references('id').inTable('addresses').onDelete('CASCADE')
             table.integer('home_type_id').unsigned().notNullable().references('id').inTable('home_types').onDelete('RESTRICT')
             table.integer('plan_id').unsigned().references('id').inTable('plans').onDelete('RESTRICT')
-            table.float('price')
+            table.decimal('price', null, null)
             table.float('area').notNullable()
             table.integer('bedrooms').notNullable()
             table.integer('bathrooms').notNullable()
