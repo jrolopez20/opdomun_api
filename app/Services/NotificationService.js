@@ -110,6 +110,7 @@ class NotificationService {
 
                     const message = {
                         large_icon: post.owner.user.picture,
+                        big_picture: post.images ? post.images[0].url : null,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -142,6 +143,7 @@ class NotificationService {
         await notification.save();
 
         const message = {
+            big_picture: post.images ? post.images[0].url : null,
             headings: {
                 'en': notification.title,
                 'es': notification.title
@@ -171,6 +173,7 @@ class NotificationService {
         await notification.save();
 
         const message = {
+            big_picture: post.images ? post.images[0].url : null,
             headings: {
                 'en': notification.title,
                 'es': notification.title
@@ -262,6 +265,7 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
+                        big_picture: post.images ? post.images[0].url : null,
                         headings: {
                             'en': notification.title,
                             'es': notification.title

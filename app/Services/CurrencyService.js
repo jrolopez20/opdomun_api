@@ -57,11 +57,11 @@ class CurrencyService {
     static formatPrice(price, user) {
         if (price && user && user.preferredCurrency !== CurrencyService.DEFAULT_CURRENCY()) {
             return {
-                value: CurrencyService.transform(
+                value: Math.round(CurrencyService.transform(
                     price.value,
                     price.currency,
                     user.preferredCurrency
-                ),
+                )),
                 currency: user.preferredCurrency
             }
         }
