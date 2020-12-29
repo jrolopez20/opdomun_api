@@ -22,8 +22,8 @@ class NotificationSchema extends Schema {
                 ],
                 {useNative: true, enumName: 'notification_type'},
             ).notNullable()
-            table.boolean('read')
-            table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+            table.boolean('read').notNullable().defaultTo(false)
+            table.integer('user_id').notNullable().unsigned().references('id').inTable('users').onDelete('CASCADE')
             table.jsonb('resource')
             table.jsonb('client')
             table.timestamps()

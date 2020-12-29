@@ -42,7 +42,7 @@ class Notification extends Model {
         const query = Notification
             .query()
             .with('user')
-            .orderBy('read', 'DESC')
+            .orderBy('read', 'ASC')
             .orderBy('createdAt', 'DESC')
 
 

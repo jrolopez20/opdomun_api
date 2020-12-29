@@ -10,16 +10,11 @@ class NotificationSeeder {
         // Remove existing notifications
         await Notification.query().delete();
 
+        const user = await User.findBy('email', 'admin@opdomun.com');
         for (let notificationType in Notification.NOTIFICATION_TYPES()) {
             await Factory.model('App/Models/Notification')
                 .create({
-                    type: notificationType
-                })
-        }
-        const user = await User.findBy('email', 'admin@opdomun.com');
-        for (let i = 0; i < 10; i++) {
-            await Factory.model('App/Models/Notification')
-                .create({
+                    type: notificationType,
                     user
                 })
         }

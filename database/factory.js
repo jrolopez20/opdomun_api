@@ -180,7 +180,6 @@ Factory.blueprint('App/Models/Notification', async (faker, i, data) => {
     return {
         title: faker.sentence({words: 6}),
         description: faker.paragraph({sentences: 2}),
-        read: faker.bool({likelihood: 80}),
         type: data.type || Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER,
         userId: data.user ? data.user.id : null
     }
