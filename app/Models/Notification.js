@@ -34,10 +34,17 @@ class Notification extends Model {
         return JSON.stringify(resource)
     }
 
+    setClient(client) {
+        return JSON.stringify(client)
+    }
+
     static async getNotifications(page, limit, auth) {
         const query = Notification
             .query()
-            .with('user');
+            .with('user')
+            .orderBy('read', 'DESC')
+            .orderBy('createdAt', 'DESC')
+
 
         if (auth) {
             query.where('userId', auth.user.id)

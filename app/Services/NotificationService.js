@@ -56,6 +56,9 @@ class NotificationService {
                         : Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER
                     notification.user_id = post.owner.user.id
                     notification.resource = {id: post.id}
+                    notification.client = {
+                        picture: subscription.user.picture
+                    }
                     await notification.save();
 
                     const message = {
@@ -100,6 +103,9 @@ class NotificationService {
                     notification.type = Notification.NOTIFICATION_TYPES().SALE_TO_BUYER
                     notification.user_id = subscription.user.id
                     notification.resource = {id: subscription.id}
+                    notification.client = {
+                        picture: post.owner.user.picture
+                    }
                     await notification.save();
 
                     const message = {
@@ -195,6 +201,7 @@ class NotificationService {
         });
         if (subscriptions) {
             for (let subscription of subscriptions) {
+                const serviceName = post.plantType === Plan.TYPES().PREMIUM ? 'Premium' : 'Gratis'
                 // Create notification
                 const notification = new Notification()
                 notification.title = 'Comprador interesado'
@@ -204,6 +211,9 @@ class NotificationService {
                     : Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER
                 notification.user_id = post.owner.user.id
                 notification.resource = {id: post.id}
+                notification.client = {
+                    picture: subscription.user.picture
+                }
                 await notification.save();
 
                 const message = {
@@ -285,7 +295,7 @@ class NotificationService {
     static async dispatch(message) {
         const client = new OneSignal.Client(Env.get('ONESIGNAL_APP_ID'), Env.get('ONESIGNAL_API_KEY'))
         try {
-            message.android_channel_id ='ac30d3c7-b234-4189-bb21-5b92ae4e49bf'
+            message.android_channel_id = 'ac30d3c7-b234-4189-bb21-5b92ae4e49bf'
             await client.createNotification(message);
         } catch (e) {
             if (e instanceof OneSignal.HTTPError) {

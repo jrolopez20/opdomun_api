@@ -137,7 +137,7 @@ Route.group(() => {
 
     Route.put('posts/:id/publish', 'PostController.publishPost')
         .middleware(['auth', 'access:ADMIN,MANAGER,AGENT'])
-        .validator('PublishPost');
+        // .validator('PublishPost') //Uncoment this line
 
     Route.post('notify_expired_post', 'PostController.notifyExpiredPost')
 

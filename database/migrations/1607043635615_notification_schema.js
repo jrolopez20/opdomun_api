@@ -25,6 +25,7 @@ class NotificationSchema extends Schema {
             table.boolean('read')
             table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
             table.jsonb('resource')
+            table.jsonb('client')
             table.timestamps()
         })
     }
