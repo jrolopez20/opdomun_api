@@ -75,7 +75,7 @@ class NotificationService {
                         data: {
                             id: notification.id,
                             type: notification.type,
-                            resource: {id: post.id},
+                            resource: {id: subscription.id},
                         }
                     }
                     await NotificationService.dispatch(message)
@@ -122,7 +122,7 @@ class NotificationService {
                         data: {
                             id: notification.id,
                             type: notification.type,
-                            resource: {id: subscription.id},
+                            resource: {id: post.id}
                         }
                     }
                     await NotificationService.dispatch(message)
@@ -142,7 +142,6 @@ class NotificationService {
         await notification.save();
 
         const message = {
-            large_icon: post.owner.user.picture,
             headings: {
                 'en': notification.title,
                 'es': notification.title
@@ -172,7 +171,6 @@ class NotificationService {
         await notification.save();
 
         const message = {
-            large_icon: post.owner.user.picture,
             headings: {
                 'en': notification.title,
                 'es': notification.title
@@ -230,7 +228,7 @@ class NotificationService {
                     data: {
                         id: notification.id,
                         type: notification.type,
-                        resource: {id: post.id},
+                        resource: {id: subscription.id},
                     }
                 }
                 await NotificationService.dispatch(message)
@@ -264,7 +262,6 @@ class NotificationService {
                     await notification.save();
 
                     const message = {
-                        large_icon: post.owner.user.picture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
