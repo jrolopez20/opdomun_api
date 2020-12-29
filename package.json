@@ -30,6 +30,7 @@
     "adonis-advanced-serializer": "^0.1.4",
     "adonis-pdf": "0.0.22",
     "adonis-swagger": "^1.2.9",
+    "cloudinary": "^1.23.0",
     "knex-stringcase": "^1.4.3",
     "mysql": "^2.18.1",
     "onesignal-node": "^3.2.0",
