@@ -150,7 +150,7 @@ class Post extends Model {
     static async getPosts(planId = null, page = 1, limit = 20, filter, auth) {
         const query = Post
             .query()
-            .setVisible(['id', 'price', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold', 'expired'])
+            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold', 'expired'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'type'])
             })
@@ -159,6 +159,7 @@ class Post extends Model {
             .with('images', (builder) => {
                 builder.where('default', true)
             })
+            .whereNull('removedAt')
             .orderBy('updatedAt', 'DESC')
 
         if (auth.user.role === User.roles().MANAGER) {
@@ -261,7 +262,7 @@ class Post extends Model {
     static async getPublishedPosts(planId = null, page = 1, limit = 20, filter, auth) {
         const query = Post
             .query()
-            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'sold'])
+            .setVisible(['id', 'price', 'opdo', 'area', 'bedrooms', 'bathrooms', 'publishedAt', 'closedAt', 'sold', 'expired'])
             .with('plan', (builder) => {
                 builder.setVisible(['id', 'type'])
             })
@@ -270,6 +271,7 @@ class Post extends Model {
                 builder.where('default', true)
             })
             .whereNotNull('posts.publishedAt')
+            .whereNull('removedAt')
             .whereRaw('closed_at > now()')
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC');
@@ -941,7 +943,7 @@ class Post extends Model {
                     riskText = 'La vivienda NO se encuentra ubicada en una zona de riesgo de desastres.'
                 } else {
                     const riskTypes = Riesgo.getRiskTypes();
-                    riskText = 'La vivienda se encuentra ubicada en ' + riskTypes[riesgo.type-1] + '.';
+                    riskText = 'La vivienda se encuentra ubicada en ' + riskTypes[riesgo.type - 1] + '.';
                 }
                 body.push([
                         {

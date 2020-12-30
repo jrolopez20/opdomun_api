@@ -323,6 +323,7 @@ class PostService {
         const post = await Post.find(postId);
         if (post) {
             if (post.publishedAt) {
+                post.removedAt = new Date()
                 post.closedAt = new Date()
                 post.hisPosts().create({
                     userId: auth.user.id,

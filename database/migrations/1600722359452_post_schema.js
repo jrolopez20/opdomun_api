@@ -20,6 +20,7 @@ class PostSchema extends Schema {
             table.timestamps(true, true)
             table.timestamp('closed_at', true)
             table.timestamp('published_at', true)
+            table.timestamp('removed_at', true)
             table.float('evi')
             table.float('opdo')
             table.integer('built_year')
