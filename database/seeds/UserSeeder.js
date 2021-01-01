@@ -8,11 +8,7 @@ class UserSeeder {
 
     async run() {
         // Remove existing users
-        await User.query().delete();
-
-        // Create ADMIN user
-        const admin = await Factory.model('App/Models/User')
-            .create({email: 'admin@opdomun.com', role: User.roles().ADMIN})
+        await User.query().where('email', '<>', 'admin@opdomun.com').delete();
 
         const offices = await Office.all();
         for (const office of offices.toJSON()) {

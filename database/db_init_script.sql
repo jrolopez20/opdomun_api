@@ -13,6 +13,7 @@
 * 9- Nom_seg_ciudadanas
 * 10- Architectural_typologies
 * 11- Benchmark_prices
+* 12- Admin user
 *
 */
 
@@ -2177,3 +2178,8 @@ INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_i
 INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (276, 5, 4, 2, false, NULL, 36000);
 INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (278, 5, 4, 3, false, NULL, 54000);
 INSERT INTO benchmark_prices (id, location_category_id, architectural_typology_id, rooms, garage, garden, reference_value) VALUES (280, 5, 4, 4, false, NULL, 72000);
+
+
+/* 4- Data for the `users` table  (Records 1 - 1) */
+
+INSERT INTO users (email, password, role, enabled, fullname, telephone, notifications_consent, preferred_currency) VALUES ('admin@opdomun.com', '$2a$10$HMbJ2UxL7aZ.q.T5ZD23tu2g8plau7GHMVG8yPdsZTkjm1qRrS/DW', 'ADMIN', true, 'Winifred McLaughlin', '+5354171247', true, 'CUP');
