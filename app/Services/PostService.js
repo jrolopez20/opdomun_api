@@ -321,7 +321,10 @@ class PostService {
 
     static async destroyPost(postId, auth) {
         const post = await Post.find(postId);
+
         if (post) {
+            await Image.removeAllImgOnDrive(post.id);
+
             if (post.publishedAt) {
                 post.removedAt = new Date()
                 post.closedAt = new Date()
@@ -331,8 +334,6 @@ class PostService {
                 })
                 await post.save()
             } else {
-                // If post is not published yet then destroy it fisically
-                await Image.removeAllImgOnDrive(post.id);
                 // This destroy the address and automatically destroy in cascade the post and its dependencies
                 return await AddressService.destroyAddress(post.addressId)
             }

@@ -5,6 +5,7 @@ const Model = use('Model')
 const Drive = use('Drive')
 const Database = use('Database')
 const Env = use('Env')
+const CloudinaryService = use('App/Services/CloudinaryService')
 
 const PostPictureFolder = 'images/post_pictures/'
 
@@ -41,15 +42,33 @@ class Image extends Model {
             .fetch();
 
         const tmpImgs = images.toJSON();
+        const publicIds = []
         for (let i = 0; i < tmpImgs.length; i++) {
             const picPath = Helpers.publicPath(Image.getPostPictureFolder()) + tmpImgs[i].url;
-            await Drive.delete(picPath)
+
+            if (picPath.toString().indexOf('cloudinary.com') !== -1) {
+                publicIds.push(Image.extractPublicId(picPath))
+            } else {
+                await Drive.delete(picPath)
+            }
+        }
+
+        // Remove images from cloudinary
+        if (publicIds.length) {
+            await CloudinaryService.removeImages(publicIds)
         }
 
         await Image
             .query()
             .where('postId', postId)
             .delete();
+    }
+
+    static extractPublicId(url) {
+        const i = url.toString().lastIndexOf('/opdomun/')
+        const fullName = url.toString().slice(i + 1)
+        console.log(fullName)
+        return fullName.slice(0, fullName.indexOf('.'))
     }
 
     static async getImages(postId, page, limit) {
