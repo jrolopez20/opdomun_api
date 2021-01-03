@@ -83,23 +83,27 @@ class Post extends Model {
     }
 
     static async getPost(id, auth) {
-        let post = await Post
-            .query()
-            .with('plan')
-            .with('managedBy')
-            .with('address.localidad.municipio.provincia')
-            .with('homeType')
-            .with('postPlaces')
-            .with('owner.user')
-            .with('images', (builder) => {
-                builder.orderBy('default', 'DESC')
-            })
-            .with('postVisit')
-            .where('id', id)
-            .firstOrFail();
+        try {
+            let post = await Post
+                .query()
+                .with('plan')
+                .with('managedBy')
+                .with('address.localidad.municipio.provincia')
+                .with('homeType')
+                .with('postPlaces')
+                .with('owner.user')
+                .with('images', (builder) => {
+                    builder.orderBy('default', 'DESC')
+                })
+                .with('postVisit')
+                .where('id', id)
+                .firstOrFail();
 
-        const user = await this.authUser(auth)
-        return post.toJSON(user ? user.toJSON() : null)
+            const user = await this.authUser(auth)
+            return post.toJSON(user ? user.toJSON() : null)
+        } catch (e) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     static async getBestPosts() {
