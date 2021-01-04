@@ -54,15 +54,15 @@ class NotificationService {
                     notification.type = post.plantType === Plan.TYPES().PREMIUM
                         ? Notification.NOTIFICATION_TYPES().PURCHASE_TO_PREMIUM_SELLER
                         : Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER
-                    notification.user_id = post.owner.user.id
-                    notification.resource = {id: post.id}
+                    notification.user_id = post.userId
+                    notification.resource = {id: subscription.id}
                     notification.client = {
                         picture: subscription.user.picture
                     }
                     await notification.save();
 
                     const message = {
-                        large_icon: post.owner.user.picture,
+                        large_icon: subscription.user.picture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -102,7 +102,7 @@ class NotificationService {
                     notification.description = `${post.owner.fullname} vende un inmueble como el que usted está comprando. Revise los detalles de su oferta.`
                     notification.type = Notification.NOTIFICATION_TYPES().SALE_TO_BUYER
                     notification.user_id = subscription.user.id
-                    notification.resource = {id: subscription.id}
+                    notification.resource = {id: post.id}
                     notification.client = {
                         picture: post.owner.user.picture
                     }
@@ -202,16 +202,16 @@ class NotificationService {
         });
         if (subscriptions) {
             for (let subscription of subscriptions) {
-                const serviceName = post.plantType === Plan.TYPES().PREMIUM ? 'Premium' : 'Gratis'
+                const serviceName = post.plan.type === Plan.TYPES().PREMIUM ? 'Premium' : 'Gratis'
                 // Create notification
                 const notification = new Notification()
                 notification.title = 'Comprador interesado'
                 notification.description = `${subscription.user.fullname} está interesado(a) en tu oferta de inmueble en venta publicado mediante el Servicio ${serviceName}`
-                notification.type = post.plantType === Plan.TYPES().PREMIUM
+                notification.type = post.plan.type === Plan.TYPES().PREMIUM
                     ? Notification.NOTIFICATION_TYPES().PURCHASE_TO_PREMIUM_SELLER
                     : Notification.NOTIFICATION_TYPES().PURCHASE_TO_FREE_SELLER
                 notification.user_id = post.owner.user.id
-                notification.resource = {id: post.id}
+                notification.resource = {id: subscription.id}
                 notification.client = {
                     picture: subscription.user.picture
                 }
@@ -281,7 +281,6 @@ class NotificationService {
                             resource: {id: post.id},
                         }
                     }
-                    console.log(message)
                     await NotificationService.dispatch(message)
                 }
             }
