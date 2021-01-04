@@ -10,11 +10,7 @@ const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException'
 
 class UserService {
 
-    static async addUser(request) {
-        const {
-            email, password, fullname, telephone, address, office, role, picture, notificationsConsent
-        } = request.all()
-
+    static async addUser({email, password, fullname, telephone, address, office, role, picture, notificationsConsent, enabled}) {
         const givenUser = await User.query().where('email', email).first();
 
         if (givenUser) {
@@ -30,6 +26,7 @@ class UserService {
             user.telephone = telephone;
             user.picture = picture;
             user.notificationsConsent = notificationsConsent;
+            user.enabled = enabled;
             if (office) {
                 user.officeId = office.id;
             }

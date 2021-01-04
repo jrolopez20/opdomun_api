@@ -42,7 +42,12 @@ class UserController {
      */
     async store({request, response}) {
         try {
-            const user = await UserService.addUser(request);
+            const {
+                email, password, fullname, telephone, address, office, role, picture, notificationsConsent
+            } = request.all()
+
+            const user = await UserService.addUser({email, password, fullname, telephone, address, office, role, picture, notificationsConsent, enabled: true});
+
             return response.status(201).json(user)
         } catch (e) {
             return response.status(400).json({message: e.message})
