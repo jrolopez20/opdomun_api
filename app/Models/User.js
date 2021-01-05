@@ -87,6 +87,21 @@ class User extends Model {
         return user;
     }
 
+    static async getUserWithOutAddress(id) {
+        const query = User
+            .query()
+            .setVisible([
+                'id','email','role','enabled','fullname','numid','telephone','picture',
+                'notificationsConsent','preferredCurrency','hasPremiumPost'
+            ])
+            .with('office.provincia')
+            .where('id', id)
+
+        const user = (await query.first()).toJSON()
+        user.hasPremiumPost = await user.hasPremiumPost
+        return user;
+    }
+
     /**
      * A relationship on tokens is required for auth to
      * work. Since features like `refreshTokens` or

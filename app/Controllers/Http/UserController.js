@@ -133,7 +133,7 @@ class UserController {
     }
 
     async getAuthenticatedUser({response, auth}) {
-        const user = await User.getUser(auth.user.id);
+        const user = await User.getUserWithOutAddress(auth.user.id);
         return response.json(user)
     }
 

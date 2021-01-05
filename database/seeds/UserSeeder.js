@@ -18,7 +18,7 @@ class UserSeeder {
 
             // Create three agents per each office
             const agents = await Factory.model('App/Models/User')
-                .createMany(3, {role: User.roles().AGENT, office})
+                .createMany(5, {role: User.roles().AGENT, office})
         }
 
         // Create Users

@@ -18,7 +18,7 @@ class PostSeeder {
         }
 
         // Create PREMIUM dummy posts and Appraisals
-        const agents = await User.query().where('role', User.roles().AGENT).limit(5).fetch();
+        const agents = await User.query().where('role', User.roles().AGENT).limit(30).fetch();
         const premiumPlan = await Plan.findBy('type', Plan.TYPES().PREMIUM)
         for (const agent of agents.toJSON()) {
             let post = await Factory.model('App/Models/Post').make({plan: premiumPlan})
