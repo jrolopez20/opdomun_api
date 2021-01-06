@@ -78,7 +78,7 @@ class Subscription extends Model {
                 query.andWhere('bathrooms', filter.bathrooms);
             }
             if (filter.minPrice) {
-                query.andWhere('minPrice', '>=', filter.minPrice);
+                query.andWhere('minPrice', '<=', filter.minPrice);
             }
             if (filter.maxPrice) {
                 query.andWhere('maxPrice', '<=', filter.maxPrice);
@@ -98,14 +98,14 @@ class Subscription extends Model {
             .whereRaw('closed_at > now()');
 
         if (filter) {
-            if (filter.provincia) {
-                query.andWhere('provinciaId', filter.provincia)
+            if (filter.provinciaId) {
+                query.andWhere('provinciaId', filter.provinciaId)
             }
-            if (filter.municipio) {
-                query.whereRaw('municipios @> ?', `[{"id":${filter.municipio}}]`);
+            if (filter.municipioId) {
+                query.whereRaw('municipios @> ?', `[{"id":${filter.municipioId}}]`);
             }
-            if (filter.homeType) {
-                query.whereRaw('home_types @> ?', `[{"id":${filter.homeType}}]`);
+            if (filter.homeTypeId) {
+                query.whereRaw('home_types @> ?', `[{"id":${filter.homeTypeId}}]`);
             }
             if (filter.bedrooms) {
                 query.andWhere('bedrooms', filter.bedrooms);
@@ -114,7 +114,7 @@ class Subscription extends Model {
                 query.andWhere('bathrooms', filter.bathrooms);
             }
             if (filter.minPrice) {
-                query.andWhere('minPrice', '>=', filter.minPrice);
+                query.andWhere('minPrice', '<=', filter.minPrice);
             }
             if (filter.maxPrice) {
                 query.andWhere('maxPrice', '<=', filter.maxPrice);

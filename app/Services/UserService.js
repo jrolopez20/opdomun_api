@@ -56,6 +56,7 @@ class UserService {
     static async setUser(userId, request) {
         const fullname = request.input('fullname')
         const telephone = request.input('telephone')
+        const numid = request.input('numid')
         const address = request.input('address')
         const picture = request.input('picture')
         const office = request.input('office')
@@ -67,6 +68,7 @@ class UserService {
             let user = await User.find(userId)
             user.fullname = fullname;
             user.telephone = telephone;
+            user.numid = numid;
 
             if (picture) {
                 user.picture = picture;

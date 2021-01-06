@@ -40,13 +40,13 @@ class SubscriptionController {
         const page = request.input('page');
         const limit = request.input('limit');
         const filter = {
-            provincia: request.input('provincia'),
-            municipios: request.input('municipios'),
+            provinciaId: request.input('provinciaId'),
+            municipioId: request.input('municipioId'),
             minPrice: request.input('minPrice'),
             maxPrice: request.input('maxPrice'),
             bedrooms: request.input('bedrooms'),
             bathrooms: request.input('bathrooms'),
-            homeTypes: request.input('homeTypes')
+            homeTypeId: request.input('homeTypeId')
         };
 
         const result = await Subscription.getPublishedSubscriptions(page, limit, filter, auth);
