@@ -56,7 +56,6 @@ class StatisticsService {
             })
         }
 
-
         return services;
     }
 

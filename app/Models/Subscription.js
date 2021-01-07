@@ -1,6 +1,7 @@
 'use strict'
 
 const Model = use('Model')
+const Database = use('Database')
 const CurrencyService = use('App/Services/CurrencyService')
 const User = use('App/Models/User')
 
@@ -174,16 +175,16 @@ class Subscription extends Model {
     }
 
     static async getTotalSubscriptions(startAt, endAt) {
-        const query = Subscription
-            .query()
+        const result = await Database
+            .count('id as total')
+            .from('subscriptions')
             .whereNull('removedAt')
             .where('createdAt', '>=', startAt)
             .where('createdAt', '<=', endAt)
             .whereRaw('closed_at > now()')
-            .getCount()
+            .first()
 
-        const r = await query
-        return r || 0;
+        return parseInt(result.total);
     }
 
     provincia() {
