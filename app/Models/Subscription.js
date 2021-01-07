@@ -55,7 +55,8 @@ class Subscription extends Model {
             .query()
             .with('provincia')
             .with('owner')
-            .with('user');
+            .with('user')
+            .whereNull('removedAt')
 
         if (auth.user.role !== User.roles().ADMIN) {
             query.where('userId', auth.user.id);
@@ -95,6 +96,7 @@ class Subscription extends Model {
             .with('provincia')
             .with('owner')
             .with('user')
+            .whereNull('removedAt')
             .whereRaw('closed_at > now()');
 
         if (filter) {
@@ -132,6 +134,7 @@ class Subscription extends Model {
             .query()
             .with('provincia')
             .with('user')
+            .whereNull('removedAt')
             .whereRaw('closed_at > now()')
 
         if (provinciaId) {
@@ -173,6 +176,7 @@ class Subscription extends Model {
     static async getTotalSubscriptions(startAt, endAt) {
         const query = Subscription
             .query()
+            .whereNull('removedAt')
             .where('createdAt', '>=', startAt)
             .where('createdAt', '<=', endAt)
             .whereRaw('closed_at > now()')

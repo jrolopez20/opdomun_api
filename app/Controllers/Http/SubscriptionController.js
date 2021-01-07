@@ -123,12 +123,8 @@ class SubscriptionController {
      */
     async destroy({params, response}) {
         try {
-            const res = await SubscriptionService.destroySubscription(params.id);
-            if (res) {
-                return response.status(204).json(null);
-            } else {
-                return response.status(400).json('Cannot delete subscription');
-            }
+            await SubscriptionService.destroySubscription(params.id);
+            return response.status(204).json(null);
         } catch (e) {
             return response.status(400).json({message: e.message})
         }

@@ -9,6 +9,7 @@ class SubscriptionService {
         let subscription = await Subscription.find(postId);
         if (subscription) {
             subscription.closedAt = new Date();
+            subscription.removedAt = new Date();
             await subscription.save()
         } else {
             throw new Error('Subscription not found');
