@@ -24,7 +24,7 @@ class CurrencyService {
      * @constructor
      */
     static BASE_CURRENCY() {
-        return CurrencyService.CURRENCIES().USD
+        return CurrencyService.CURRENCIES().CUP
     }
 
     /**
