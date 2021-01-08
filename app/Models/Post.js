@@ -68,7 +68,7 @@ class Post extends Model {
      */
     getPrice(price) {
         return {
-            value: CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY()),
+            value: Number(CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY())),
             currency: CurrencyService.DEFAULT_CURRENCY(),
         }
     }

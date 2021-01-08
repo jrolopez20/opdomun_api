@@ -31,7 +31,7 @@ class Subscription extends Model {
 
     getMinPrice(price) {
         return {
-            value: CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY()),
+            value: Number(CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY())),
             currency: CurrencyService.DEFAULT_CURRENCY(),
         }
     }
@@ -42,7 +42,7 @@ class Subscription extends Model {
 
     getMaxPrice(price) {
         return {
-            value: CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY()),
+            value: Number(CurrencyService.transform(price, CurrencyService.BASE_CURRENCY(), CurrencyService.DEFAULT_CURRENCY())),
             currency: CurrencyService.DEFAULT_CURRENCY(),
         }
     }
