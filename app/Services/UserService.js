@@ -14,7 +14,7 @@ class UserService {
         const givenUser = await User.query().where('email', email).first();
 
         if (givenUser) {
-            throw new BadRequestException('There is an user with the same email address.');
+            throw new BadRequestException('Ya existe un usuario con el mismo email.');
         }
 
         const trx = await Database.beginTransaction()

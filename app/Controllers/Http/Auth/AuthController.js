@@ -36,7 +36,7 @@ class AuthController {
 
             await MailNotification.registerUserConfirmation(user, token)
             return response.status(201).json({
-                message: 'We have send you an email with the instructions to verify your account'
+                message: 'Le hemos enviado un email con las instrucciones para que verifique su cuenta.'
             })
         } catch (e) {
             return response.status(400).json({message: e.message})
