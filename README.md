@@ -1,5 +1,7 @@
 # Opdomun API application
 
+![Opdomun Api CI/CD](https://github.com/jrolopez20/opdomun_api/workflows/Opdomun%20Api%20CI/CD/badge.svg?branch=master&event=push)
+
 ### Instalation
 
 Run the following command `npm install` or`yarn install`.
