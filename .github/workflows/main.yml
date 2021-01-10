@@ -27,4 +27,3 @@ jobs:
           script: |
             cd public_html/api.opdomun.com
             git pull "https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}.git"
-            adonis migration:run
