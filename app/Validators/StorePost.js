@@ -14,6 +14,7 @@ class StorePost {
             homeType: 'required|object',
             owner: 'required|object',
             plan: 'object',
+            summary: 'required|max:1200',
         }
     }
 
@@ -31,7 +32,9 @@ class StorePost {
             'homeType.required': 'You must provide a homeType.',
             'homeType.object': 'The field homeType must be a valid homeType object',
             'builtYear.number': 'The field builtYear must be a number',
-            'plan.object': 'The field plan must be a valid plan object'
+            'plan.object': 'The field plan must be a valid plan object',
+            'summary.required': 'El campo resumen es requerido',
+            'summary.max': 'El campo resumen ha excedido la cantidad máxima de 1200 caracteres'
         }
     }
 

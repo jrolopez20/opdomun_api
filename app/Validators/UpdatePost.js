@@ -11,7 +11,8 @@ class UpdatePost {
             bedrooms: 'required|number',
             bathrooms: 'required|number',
             homeType: 'required|object',
-            sold: 'number'
+            sold: 'number',
+            summary: 'required|max:1200'
         }
     }
 
@@ -29,7 +30,9 @@ class UpdatePost {
             'homeType.required': 'You must provide a homeType.',
             'homeType.object': 'The field homeType must be a valid homeType object',
             'builtYear.number': 'The field homeTypeId must be a number',
-            'sold.number': 'The field sold must be a number'
+            'sold.number': 'The field sold must be a number',
+            'summary.required': 'El campo resumen es requerido',
+            'summary.max': 'El campo resumen ha excedido la cantidad máxima de 1200 caracteres'
         }
     }
 

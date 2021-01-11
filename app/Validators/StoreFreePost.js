@@ -15,6 +15,7 @@ class StoreFreePost {
             bedrooms: 'required|number',
             bathrooms: 'required|number',
             homeType: 'required|object',
+            summary: 'required|max:1200'
         }
     }
 
@@ -35,6 +36,8 @@ class StoreFreePost {
             'bathrooms.number': 'The field bathrooms must be a number',
             'homeType.required': 'You must provide a homeTypeId.',
             'homeType.object': 'The field homeType must be a valid homeType object',
+            'summary.required': 'El campo resumen es requerido',
+            'summary.max': 'El campo resumen ha excedido la cantidad máxima de 1200 caracteres'
         }
     }
 
