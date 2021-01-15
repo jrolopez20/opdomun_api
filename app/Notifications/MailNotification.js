@@ -17,8 +17,8 @@ class MailNotification {
 
         await Mail.send('emails.register_confirmation', {user, confirmationUrl}, (message) => {
             message
-                .to(user.email)
                 .from(sender, appName)
+                .to(user.email)
                 .subject('Active su cuenta de Opdomun')
                 .embed(MailNotification.logoPatch(), 'logo')
         })
@@ -32,8 +32,8 @@ class MailNotification {
 
         await Mail.send('emails.password_recover', {user, recoverUrl}, (message) => {
             message
-                .to(user.email)
                 .from(sender, appName)
+                .to(user.email)
                 .subject('Recupere su contraseña de Opdomun')
                 .embed(MailNotification.logoPatch(), 'logo')
         });
