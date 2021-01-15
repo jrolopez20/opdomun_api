@@ -217,6 +217,8 @@ class PostController {
                 address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner, images
             }, auth);
 
+            Event.emit('new::post', {post})
+
             return response.status(201).json(post)
         } catch (e) {
             return response.status(400).json({message: e.message})
@@ -232,6 +234,8 @@ class PostController {
             const post = await PostService.setFreePost(params.id, {
                 address, price, area, bedrooms, bathrooms, homeType, summary, postPlaces, owner, images
             }, auth);
+
+            Event.emit('new::post', {post})
 
             return response.status(200).json(post)
         } catch (e) {
