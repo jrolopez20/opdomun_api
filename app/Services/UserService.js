@@ -205,6 +205,7 @@ class UserService {
 
     static async toggleEnable(userId) {
         let user = await User.find(userId);
+        user.enabled = !user.enabled
         user.closedAt = user.closedAt === null ? new Date() : null;
         await user.save();
 
