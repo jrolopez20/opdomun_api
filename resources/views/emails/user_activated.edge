@@ -1,0 +1,28 @@
+@layout('emails.layout')
+
+@section('content')
+<div style="text-align: left;">
+    <div style="margin-bottom:30px;">
+        <div style="font-size:22px;margin-bottom:10px;text-align:center;">
+            Cuenta activada!!!
+        </div>
+        <p>
+            Enhorabuena {{ user.fullname }}, su cuenta en <strong>Opdomun</strong> ha sido activada, ahora puede disfrutar de
+            todos nuestros servicios.
+        </p>
+    </div>
+
+    <div style="text-align:center;">
+        <a href="https://opdomun.com" target="_blank"
+           style="display:inline-block;text-align:center;background:#008FFC;padding:12px 20px;color:#fff;text-decoration:none;border-radius:5px;">
+            Visitar Opdomun
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('footer')
+<p>
+    Si usted no se ha registrado en Opdomun o nunca ha oído hablar de él simplemente ignore este correo.
+</p>
+@endsection

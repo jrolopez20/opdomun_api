@@ -9,6 +9,19 @@ class MailNotification {
         return Helpers.publicPath('images/logo_large.png');
     }
 
+    static async userActivated(user) {
+        const sender = Env.getOrFail('MAIL_USERNAME');
+        const appName = Env.getOrFail('APP_NAME');
+
+        await Mail.send('emails.user_activated', {user}, (message) => {
+            message
+                .from(sender, appName)
+                .to(user.email)
+                .subject('Cuenta en Opdomun activada.')
+                .embed(MailNotification.logoPatch(), 'logo')
+        })
+    }
+
     static async registerUserConfirmation(user, token) {
         const sender = Env.getOrFail('MAIL_USERNAME');
         const appName = Env.getOrFail('APP_NAME');

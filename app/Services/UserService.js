@@ -7,6 +7,7 @@ const Drive = use('Drive');
 const Helpers = use('Helpers');
 const BadRequestException = use('App/Exceptions/BadRequestException');
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException');
+const MailNotification = use('App/Notifications/MailNotification');
 
 class UserService {
 
@@ -208,6 +209,10 @@ class UserService {
         user.enabled = !user.enabled
         user.closedAt = user.closedAt === null ? new Date() : null;
         await user.save();
+
+        if (user.enabled) {
+            await MailNotification.userActivated(user);
+        }
 
         return user;
     }
