@@ -413,6 +413,7 @@ class Post extends Model {
      */
     static async getPostContent(id) {
         const post = await this.getPostDetail(id)
+
         if (!post) {
             throw new ResourceNotFoundException();
         }
@@ -484,17 +485,17 @@ class Post extends Model {
                     color: '#1070af'
                 },
                 {
-                    absolutePosition: {x: 380, y: 42},
-                    text: 'INFORME DETALLADO',
-                    fontSize: 16,
-                    color: '#FFFFFF'
-                },
-                {
-                    absolutePosition: {x: 413, y: 63},
-                    text: !post.planId ? 'Tasación de inmueble' : '',
-                    fontSize: 11,
+                    absolutePosition: {x: 360, y: 39},
+                    text: !post.planId ? 'INFORME DE TASACIÓN' : 'INFORME DETALLADO',
+                    fontSize: 18,
                     color: '#FFFFFF'
                 }
+                // {
+                //     absolutePosition: {x: 413, y: 63},
+                //     text: !post.planId ? 'Tasación de inmueble' : '',
+                //     fontSize: 14,
+                //     color: '#FFFFFF'
+                // }
             ]
             const footer = [
                 {
@@ -510,7 +511,7 @@ class Post extends Model {
                     fontSize: 11,
                 },
                 {
-                    text: 'Agente: ' + (post.managed_by_id ? post.agent_name : '(No tiene)'),
+                    text: 'Agente: ' + (post.managedById ? post.agentName : '(No tiene)'),
                     absolutePosition: {x: 45, y: 770},
                     fontSize: 11,
                 },
