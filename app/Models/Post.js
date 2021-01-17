@@ -1149,13 +1149,15 @@ class Post extends Model {
     }
 
     async calculatePrice() {
-        const address = await Address
+        let address = await Address
             .query()
             .with('localidad.municipio')
             .where('id', this.addressId)
             .first();
+        address = address.toJSON();
 
         this.opdo = await this.getAvgOpdo(address.localidad.municipioId, address.localidad.municipio.provinciaId);
+
         await this.load('postVariables');
         let postVariables = await this.getRelated('postVariables');
         postVariables = postVariables.toJSON();
@@ -1166,7 +1168,10 @@ class Post extends Model {
             }
         }
         if (x === postVariables.length) {
-            this.price = Math.round(this.evi / this.opdo);
+            this.price = {
+                value: Math.round(this.evi / this.opdo),
+                currency: CurrencyService.BASE_CURRENCY()
+            }
             await this.save();
             return this.price;
         } else {
