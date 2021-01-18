@@ -162,11 +162,13 @@ class NotificationService {
         await NotificationService.dispatch(message)
     }
 
-    static async notifyPostPremiumOwner(post) {
+    static async notifyPostOwner(post) {
+        const serviceName = post.plan.type === Plan.TYPES().PREMIUM ? 'Premium' : 'Gratis'
+
         // Create notification
         const notification = new Notification()
-        notification.title = 'Servicio Premium creado'
-        notification.description = 'Ya está listo su Servicio Premium, a partir de ahora usted recibirá notificaciones con información de posibles compradores interesados en su propiedad.'
+        notification.title = `Servicio ${serviceName} creado`
+        notification.description = `Ya está listo su Servicio ${serviceName}, a partir de ahora usted recibirá notificaciones con información de posibles compradores interesados en su propiedad.`
         notification.type = Notification.NOTIFICATION_TYPES().SALE_AD_PREMIUM_CREATED
         notification.user_id = post.owner.user.id
         notification.resource = {id: post.id}
