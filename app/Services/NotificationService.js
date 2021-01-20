@@ -241,6 +241,47 @@ class NotificationService {
         }
     }
 
+    static async notifySubscriptionOwnerAboutOlderPost(subscription) {
+        if (subscription.user.notificationsConsent) {
+            const posts = await Post.getMatchedPosts(subscription);
+            if (posts) {
+                for (let post of posts) {
+                    // Create notification
+                    const notification = new Notification()
+                    notification.title = 'Inmueble en venta'
+                    notification.description = `${post.owner.fullname} vende un inmueble como el que usted está comprando. Revise los detalles de su oferta.`
+                    notification.type = Notification.NOTIFICATION_TYPES().SALE_TO_BUYER
+                    notification.user_id = subscription.user.id
+                    notification.resource = {id: post.id}
+                    notification.client = {
+                        picture: post.owner.user.picture
+                    }
+                    await notification.save();
+
+                    const message = {
+                        large_icon: post.owner.user.picture,
+                        big_picture: post.images ? post.images[0].url : null,
+                        headings: {
+                            'en': notification.title,
+                            'es': notification.title
+                        },
+                        contents: {
+                            'en': notification.description,
+                            'es': notification.description
+                        },
+                        include_external_user_ids: [subscription.user.email],
+                        data: {
+                            id: notification.id,
+                            type: notification.type,
+                            resource: {id: post.id}
+                        }
+                    }
+                    await NotificationService.dispatch(message)
+                }
+            }
+        }
+    }
+
     static async notifyExpiredPost() {
         const posts = (await Post.getExpiredPost()).toJSON()
         if (posts) {
