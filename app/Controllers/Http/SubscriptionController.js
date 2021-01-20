@@ -87,9 +87,9 @@ class SubscriptionController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async show({params, request, response}) {
+    async show({params, response, auth}) {
         try {
-            const subscription = await Subscription.getSubscription(params.id);
+            const subscription = await Subscription.getSubscription(params.id, auth);
             return response.json(subscription)
         } catch (e) {
             throw new ResourceNotFoundException();

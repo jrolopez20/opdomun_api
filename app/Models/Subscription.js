@@ -163,15 +163,17 @@ class Subscription extends Model {
         return subscriptions.toJSON();
     }
 
-    static async getSubscription(id) {
-        let query = Subscription
+    static async getSubscription(id, auth) {
+        let subscription = await Subscription
             .query()
             .with('provincia')
             .with('owner')
             .with('user')
-            .where('id', id);
+            .where('id', id)
+            .firstOrFail();
 
-        return await query.firstOrFail();
+        const user = await this.authUser(auth)
+        return subscription.toJSON(user ? user.toJSON() : null)
     }
 
     static async getTotalSubscriptions(startAt, endAt) {
