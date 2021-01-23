@@ -13,8 +13,9 @@ const Server = use('Server')
 |
 */
 const globalMiddleware = [
-  'Adonis/Middleware/BodyParser',
-  'App/Middleware/ConvertEmptyStringsToNull'
+    'Adonis/Middleware/BodyParser',
+    'App/Middleware/ConvertEmptyStringsToNull',
+    'App/Middleware/ApiVersionChecker'
 ]
 
 /*
@@ -35,10 +36,10 @@ const globalMiddleware = [
 |
 */
 const namedMiddleware = {
-  auth: 'Adonis/Middleware/Auth',
-  guest: 'Adonis/Middleware/AllowGuestOnly',
-  access: 'App/Middleware/RoleAuthotization',
-  visitors_count: 'App/Middleware/PostVisitorsCount'
+    auth: 'Adonis/Middleware/Auth',
+    guest: 'Adonis/Middleware/AllowGuestOnly',
+    access: 'App/Middleware/RoleAuthotization',
+    visitors_count: 'App/Middleware/PostVisitorsCount'
 }
 
 /*
@@ -52,11 +53,11 @@ const namedMiddleware = {
 |
 */
 const serverMiddleware = [
-  'Adonis/Middleware/Static',
-  'Adonis/Middleware/Cors'
+    'Adonis/Middleware/Static',
+    'Adonis/Middleware/Cors'
 ]
 
 Server
-  .registerGlobal(globalMiddleware)
-  .registerNamed(namedMiddleware)
-  .use(serverMiddleware)
+    .registerGlobal(globalMiddleware)
+    .registerNamed(namedMiddleware)
+    .use(serverMiddleware)
