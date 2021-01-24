@@ -122,7 +122,7 @@ class Post extends Model {
                     .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
-            .whereRaw('posts.closed_at > now()')
+            .whereRaw('posts.closed_at > now() or posts.closed_at is null')
             .where('plans.id', 1)
             .where('posts.sold', '<>', true)
             .orderBy('posts.opdo', 'desc')
@@ -141,7 +141,7 @@ class Post extends Model {
             })
             .where('planId', 1)
             .whereNotNull('publishedAt')
-            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND closed_at > now()')
+            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND (closed_at > now() or closed_at is null)')
             .whereNull('soldAt')
             .orderBy('posts.opdo', 'desc');
 
@@ -276,7 +276,7 @@ class Post extends Model {
             })
             .whereNotNull('posts.publishedAt')
             .whereNull('removedAt')
-            .whereRaw('closed_at > now()')
+            .whereRaw('closed_at > now() or closed_at is null')
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC');
 
@@ -360,11 +360,10 @@ class Post extends Model {
                 builder.where('default', true)
             })
             .whereNotNull('posts.publishedAt')
-            .where('posts.closedAt', '>=', new Date())
             .where('posts.planId', 1)
             .whereNull('soldAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
-            .whereRaw('closed_at > now()')
+            .whereRaw('closed_at > now() or closed_at is null')
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC')
             .limit(limit)
@@ -1104,7 +1103,7 @@ class Post extends Model {
             .innerJoin('owners', 'posts.id', 'owners.post_id')
             .innerJoin('users', 'users.id', 'owners.user_id')
             .whereNotNull('posts.published_at')
-            .whereRaw('posts.closed_at > now()')
+            .whereRaw('posts.closed_at > now() or posts.closed_at is null')
             .whereNull('posts.sold_at');
 
         if (provinciaId) {
