@@ -141,7 +141,11 @@ class Post extends Model {
             })
             .where('planId', 1)
             .whereNotNull('publishedAt')
-            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1) AND (closed_at > now() or closed_at is null)')
+            .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
+            .where((builder) => {
+                builder.where('closedAt', '>', 'now()')
+                builder.orWhere('closedAt', 'is', null)
+            })
             .whereNull('soldAt')
             .orderBy('posts.opdo', 'desc');
 
@@ -276,7 +280,10 @@ class Post extends Model {
             })
             .whereNotNull('posts.publishedAt')
             .whereNull('removedAt')
-            .whereRaw('closed_at > now() or closed_at is null')
+            .where((builder) => {
+                builder.where('closedAt', '>', 'now()')
+                builder.orWhere('closedAt', 'is', null)
+            })
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC');
 
@@ -363,7 +370,10 @@ class Post extends Model {
             .where('posts.planId', 1)
             .whereNull('soldAt')
             .whereRaw('EXTRACT(month FROM posts.published_at) in (EXTRACT(month FROM now()), EXTRACT(month FROM now())-1)')
-            .whereRaw('closed_at > now() or closed_at is null')
+            .where((builder) => {
+                builder.where('closedAt', '>', 'now()')
+                builder.orWhere('closedAt', 'is', null)
+            })
             .orderBy('posts.planId', 'ASC')
             .orderBy('posts.opdo', 'DESC')
             .limit(limit)
