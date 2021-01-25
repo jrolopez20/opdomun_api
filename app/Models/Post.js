@@ -279,6 +279,7 @@ class Post extends Model {
                 builder.where('default', true)
             })
             .whereNotNull('posts.publishedAt')
+            .whereNotNull('planId')
             .whereNull('removedAt')
             .where((builder) => {
                 builder.where('closedAt', '>', 'now()')
