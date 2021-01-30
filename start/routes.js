@@ -142,6 +142,7 @@ Route.group(() => {
     Route.post('notify_expired_post', 'PostController.notifyExpiredPost')
 
     Route.put('posts/:id/calculate_price', 'AppraisalController.calculatePrice')
+        .validator('CalculatePrice')
         .middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);
 
     Route.put('posts/:id/mark_as_sold', 'PostController.markAsSold').middleware(['auth', 'access:ADMIN,MANAGER,AGENT']);

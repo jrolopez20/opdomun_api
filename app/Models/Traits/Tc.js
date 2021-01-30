@@ -18,7 +18,7 @@ class Tc {
                 'cubierta': [
                     {value: '100', label: 'Hormigón'},
                     {value: '80', label: 'Vigueta y Bovedilla'},
-                    {value: '60', label: 'Cubierta Ligera (Cinc, Canelón, ect)'},
+                    {value: '60', label: 'Cubierta Ligera (Zinc galvanizado, Canelón, etc.)'},
                     {value: '40', label: 'Tablazón y tejas'},
                     {value: '15', label: 'Guano'}
                 ],
