@@ -20,3 +20,6 @@ public/images/article_pictures/
 .history
 .idea
 .DS_Store
+
+# Used by Mobile App
+.well-known
