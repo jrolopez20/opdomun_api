@@ -738,19 +738,19 @@ class Post extends Model {
                 const dicc = VarConforEficiencia.getDicc()
                 let windowsCategory = '';
                 dicc.windowsCategory.forEach(item => {
-                    if (item.value === confortAmbiental.windowCategory) {
+                    if (item.value == confortAmbiental.windowCategory) {
                         windowsCategory = item.text;
                     }
                 });
                 let puntal = '';
                 dicc.puntal.forEach(item => {
-                    if (item.value === confortAmbiental.puntal) {
+                    if (item.value == confortAmbiental.puntal) {
                         puntal = item.text;
                     }
                 });
                 let solarProtection = '';
                 dicc.solarProtection.forEach(item => {
-                    if (item.value === confortAmbiental.solarProtection) {
+                    if (item.value == confortAmbiental.solarProtection) {
                         solarProtection = item.text;
                     }
                 });
