@@ -1103,7 +1103,7 @@ class Post extends Model {
                 'provincias.id as provinciaId', 'provincias.title as provincia',
                 'owners.user_id as userId', 'owners.fullname as ownerFullname', 'owners.email as ownerEmail',
                 'owners.telephone as ownerTelephone',
-                'users.email', 'users.notifications_consent as notificationsConsent'
+                'users.email', 'users.picture as userPicture', 'users.notifications_consent as notificationsConsent'
             )
             .innerJoin('plans', 'plans.id', 'posts.plan_id')
             .innerJoin('home_types', 'home_types.id', 'posts.home_type_id')

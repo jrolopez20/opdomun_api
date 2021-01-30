@@ -58,7 +58,7 @@ class NotificationService {
                     notification.resource = {id: subscription.id}
                     notification.client = {
                         picture: subscription.user.picture
-                    }
+                    };
                     await notification.save();
 
                     const message = {
@@ -249,18 +249,17 @@ class NotificationService {
                     // Create notification
                     const notification = new Notification()
                     notification.title = 'Inmueble en venta'
-                    notification.description = `${post.owner.fullname} vende un inmueble como el que usted está comprando. Revise los detalles de su oferta.`
+                    notification.description = `${post.ownerFullname} vende un inmueble como el que usted está comprando. Revise los detalles de su oferta.`
                     notification.type = Notification.NOTIFICATION_TYPES().SALE_TO_BUYER
                     notification.user_id = subscription.user.id
                     notification.resource = {id: post.id}
                     notification.client = {
-                        picture: post.owner.user.picture
+                        picture: post.userPicture
                     }
                     await notification.save();
 
                     const message = {
-                        large_icon: post.owner.user.picture,
-                        big_picture: post.images ? post.images[0].url : null,
+                        large_icon: post.userPicture,
                         headings: {
                             'en': notification.title,
                             'es': notification.title
@@ -276,6 +275,7 @@ class NotificationService {
                             resource: {id: post.id}
                         }
                     }
+
                     await NotificationService.dispatch(message)
                 }
             }
