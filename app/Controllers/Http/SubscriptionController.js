@@ -69,7 +69,7 @@ class SubscriptionController {
 
             const subscription = await SubscriptionService.addSubscription({
                 provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner
-            }, auth.user);
+            }, auth);
 
             Event.emit('new::subscription', {subscription})
 
@@ -106,7 +106,7 @@ class SubscriptionController {
      */
     async update({params, request, response, auth}) {
         try {
-            const subscription = await SubscriptionService.setSubscription(params.id, request);
+            const subscription = await SubscriptionService.setSubscription(params.id, request, auth);
             return response.json(subscription);
         } catch (e) {
             throw new ResourceNotFoundException();

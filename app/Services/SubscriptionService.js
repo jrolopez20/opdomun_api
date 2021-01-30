@@ -16,13 +16,13 @@ class SubscriptionService {
         }
     }
 
-    static async addSubscription({provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner}, user) {
+    static async addSubscription({provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner}, auth) {
         // Begin Transaction to save a Subscription
         const trx = await Database.beginTransaction()
         try {
             // Store subscription
             const subscription = new Subscription();
-            subscription.userId = user.id;
+            subscription.userId = auth.user.id;
             subscription.provinciaId = provincia.id;
             subscription.municipios = municipios;
             subscription.homeTypes = homeTypes;
@@ -37,7 +37,7 @@ class SubscriptionService {
                 fullname: owner.fullname,
                 email: owner.email,
                 telephone: owner.telephone,
-                userId: user.id
+                userId: auth.user.id
             }, trx);
 
             // End transaction
@@ -46,14 +46,14 @@ class SubscriptionService {
             // Define subscription expiration date
             await this.setExpirationDate(subscription.id)
 
-            return await Subscription.getSubscription(subscription.id);
+            return await Subscription.getSubscription(subscription.id, auth);
         } catch (e) {
             trx.rollback();
             throw new Error(e.message)
         }
     }
 
-    static async setSubscription(subscriptionId, request) {
+    static async setSubscription(subscriptionId, request, auth) {
         const {
             provincia, municipios, homeTypes, minPrice, maxPrice, bedrooms, bathrooms, owner
         } = request.all();
@@ -80,7 +80,7 @@ class SubscriptionService {
             await ownerObj.save()
         }
 
-        return await Subscription.getSubscription(subscriptionId);
+        return await Subscription.getSubscription(subscriptionId, auth);
     }
 
     static async setExpirationDate(subscriptionId, months = 6) {
