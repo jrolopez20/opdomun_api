@@ -2,7 +2,6 @@
 const ResourceNotFoundException = use("App/Exceptions/ResourceNotFoundException");
 
 const PostVariable = use('App/Models/PostVariable')
-const ColindanciaPrivacidad = use('App/Models/ColindanciaPrivacidad')
 
 /**
  * Resourceful controller for interacting with posts

@@ -10,6 +10,7 @@ const EstConstructiva = use('App/Models/EstConstructiva')
 const ServPublico = use('App/Models/ServPublico')
 const Riesgo = use('App/Models/Riesgo')
 const VarConforEficiencia = use('App/Models/VarConforEficiencia')
+const ColindanciaPrivacidad = use('App/Models/ColindanciaPrivacidad')
 const VarMenaje = use('App/Models/VarMenaje')
 const User = use('App/Models/User')
 const Plan = use('App/Models/Plan')
@@ -435,6 +436,7 @@ class Post extends Model {
         const itemsServPublicos = await ServPublico.getServPublicos(id)
         const riesgo = await Riesgo.getRiesgoDesastre(id)
         const confortAmbiental = await VarConforEficiencia.getConfortAmbiental(id)
+        const colindanciaPrivacidad = await ColindanciaPrivacidad.getColindanciaPrivacidad(id)
         const menaje = await VarMenaje.getMenaje(id)
 
         try {
@@ -836,6 +838,140 @@ class Post extends Model {
                         ]
                     }
                 })
+            }
+
+            if(colindanciaPrivacidad) {
+                body.push({
+                    text: 'Colindancia, privacidad y relación con la calle:',
+                    bold: true,
+                    margin: [0, 15, 0, 0]
+                })
+                const dicc = ColindanciaPrivacidad.getDicc()
+                let relHor = dicc.relHorOptions.find(i => i.value === colindanciaPrivacidad.relHor).label;
+                let relVert = dicc.relVertOptions.find(i => i.value === colindanciaPrivacidad.relVert).label;
+                let tipoVia = dicc.tipoViaOptions.find(i => i.value === colindanciaPrivacidad.tipoVia).label;
+                let alturaCercPer = dicc.alturaCercPerOptions.find(i => i.value === colindanciaPrivacidad.alturaCercPer).label;
+                let permeabilidad = dicc.permeabilidadOptions.find(i => i.value === colindanciaPrivacidad.permeabilidad).label;
+                let altura = dicc.alturaOptions.find(i => i.value === colindanciaPrivacidad.altura).label;
+                let distancia = dicc.distanciaOptions.find(i => i.value === colindanciaPrivacidad.distancia).label;
+                const table = {
+                    layout: {
+                        defaultBorder: false,
+                        hLineColor: '#b4b4b4'
+                    },
+                    table: {
+                        widths: ['*', 120],
+                        body: [
+                            [
+                                {
+                                    text: 'Relación horizontal con las zonas de circulación',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: relHor,
+                                    border: [false, false, false, true]
+                                },
+                            ],
+                            [
+                                {
+                                    text: 'Relación vertical con las zonas de circulación',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: relVert,
+                                    border: [false, false, false, true]
+                                },
+                            ],
+                            [
+                                {
+                                    text: 'Tipo de vía urbana',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: tipoVia,
+                                    border: [false, false, false, true]
+                                },
+                            ]
+                        ]
+                    }
+                }
+                body.push(table)
+
+                body.push({
+                    text: 'Cercado perimetral (Relación entre la altura promedio y la permeabilidad):',
+                    bold: false,
+                    margin: [0, 10, 0, 5]
+                })
+                const tableCercadoPerimetral = {
+                    layout: {
+                        defaultBorder: false,
+                        hLineColor: '#b4b4b4'
+                    },
+                    table: {
+                        widths: ['*', 120],
+                        body: [
+                            [
+                                {
+                                    text: 'Altura del cercado perimetral',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: alturaCercPer,
+                                    border: [false, false, false, true]
+                                },
+                            ],
+                            [
+                                {
+                                    text: 'Permeabilidad',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: permeabilidad,
+                                    border: [false, false, false, true]
+                                },
+                            ]
+                        ]
+                    }
+                }
+                body.push(tableCercadoPerimetral)
+
+                body.push({
+                    text: 'Relación distancia / Altura de viviendas vecinas que pueden afectar la privacidad con visuales directas:',
+                    bold: false,
+                    margin: [0, 10, 0, 5]
+                })
+                const tableRelDistanciaAltura = {
+                    layout: {
+                        defaultBorder: false,
+                        hLineColor: '#b4b4b4'
+                    },
+                    table: {
+                        widths: ['*', 120],
+                        body: [
+                            [
+                                {
+                                    text: 'Altura',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: altura,
+                                    border: [false, false, false, true]
+                                },
+                            ],
+                            [
+                                {
+                                    text: 'Distancia',
+                                    border: [false, false, false, true]
+                                },
+                                {
+                                    text: distancia,
+                                    border: [false, false, false, true]
+                                },
+                            ]
+                        ]
+                    }
+                }
+                body.push(tableRelDistanciaAltura)
             }
 
             if (itemsServPublicos && itemsServPublicos.length > 0) {
