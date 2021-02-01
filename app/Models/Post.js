@@ -123,7 +123,7 @@ class Post extends Model {
                     .andOn('images.default', true)
             })
             .whereNotNull('posts.published_at')
-            .whereRaw('posts.closed_at > now() or posts.closed_at is null')
+            .whereRaw('posts.closed_at > now()')
             .where('plans.id', 1)
             .where('posts.sold', '<>', true)
             .orderBy('posts.opdo', 'desc')
@@ -1250,7 +1250,7 @@ class Post extends Model {
             .innerJoin('owners', 'posts.id', 'owners.post_id')
             .innerJoin('users', 'users.id', 'owners.user_id')
             .whereNotNull('posts.published_at')
-            .whereRaw('posts.closed_at > now() or posts.closed_at is null')
+            .whereRaw('posts.closed_at > now()')
             .whereNull('posts.sold_at');
 
         if (provinciaId) {

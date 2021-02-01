@@ -67,7 +67,6 @@ class Image extends Model {
     static extractPublicId(url) {
         const i = url.toString().lastIndexOf('/opdomun/')
         const fullName = url.toString().slice(i + 1)
-        console.log(fullName)
         return fullName.slice(0, fullName.indexOf('.'))
     }
 

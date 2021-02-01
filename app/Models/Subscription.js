@@ -18,7 +18,7 @@ class Subscription extends Model {
     }
 
     static get hidden() {
-        return ['createdAt', 'updatedAt', 'provinciaId', 'userId'];
+        return ['createdAt', 'updatedAt', 'userId'];
     }
 
     setMunicipios(municipios) {
