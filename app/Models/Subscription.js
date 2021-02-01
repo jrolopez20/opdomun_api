@@ -117,7 +117,7 @@ class Subscription extends Model {
                 query.andWhere('bathrooms', filter.bathrooms);
             }
             if (filter.minPrice) {
-                query.andWhere('minPrice', '<=', filter.minPrice);
+                query.andWhere('minPrice', '>=', filter.minPrice);
             }
             if (filter.maxPrice) {
                 query.andWhere('maxPrice', '<=', filter.maxPrice);
