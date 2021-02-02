@@ -46,7 +46,7 @@ class Opdo {
                 .innerJoin('municipios', 'municipios.id', 'localidads.municipio_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('plans.type', [Plan.TYPES().PREMIUM, Plan.TYPES().FREE])
+                .whereIn('plans.type', [Plan.TYPES().PREMIUM])
                 .andWhere('municipios.id', municipioId)
                 .orderBy('opdo', 'DESC')
                 .limit(5);
@@ -60,7 +60,7 @@ class Opdo {
                 .innerJoin('municipios', 'municipios.id', 'localidads.municipio_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('plans.type', [Plan.TYPES().PREMIUM, Plan.TYPES().FREE])
+                .whereIn('plans.type', [Plan.TYPES().PREMIUM])
                 .andWhere('municipios.provincia_id', provinciaId)
                 .orderBy('opdo', 'DESC')
                 .limit(5);
@@ -71,7 +71,7 @@ class Opdo {
                 .innerJoin('plans', 'plans.id', 'posts.plan_id')
                 .whereNotNull('posts.published_at')
                 .whereNotNull('posts.opdo')
-                .whereIn('plans.type', [Plan.TYPES().PREMIUM, Plan.TYPES().FREE])
+                .whereIn('plans.type', [Plan.TYPES().PREMIUM])
                 .orderBy('opdo', 'desc')
                 .limit(5);
 
@@ -85,7 +85,6 @@ class Opdo {
                 queryProvincia.andWhere('posts.area', '>', breakPointArea);
                 queryCountry.andWhere('posts.area', '>', breakPointArea);
             }
-
 
             let avg = 0;
             const postsByMunicipio = await queryMunicipio;
