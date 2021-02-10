@@ -25,6 +25,10 @@ class User extends Model {
         return ['hasPremiumPost']
     }
 
+    setAdditionalInfo(additionalInfo) {
+        return JSON.stringify(additionalInfo)
+    }
+
     async getHasPremiumPost({id}) {
         const result = await Database
             .count('posts.id as total')
@@ -76,7 +80,7 @@ class User extends Model {
             .query()
             .setVisible([
                 'id','email','role','enabled','fullname','numid','telephone','picture',
-                'notificationsConsent','preferredCurrency','hasPremiumPost'
+                'notificationsConsent','preferredCurrency', 'additionalInfo', 'hasPremiumPost'
             ])
             .with('address.localidad.municipio.provincia')
             .with('office.provincia')
@@ -92,7 +96,7 @@ class User extends Model {
             .query()
             .setVisible([
                 'id','email','role','enabled','fullname','numid','telephone','picture',
-                'notificationsConsent','preferredCurrency','hasPremiumPost'
+                'notificationsConsent','preferredCurrency','hasPremiumPost', 'additionalInfo'
             ])
             .with('office.provincia')
             .where('id', id)

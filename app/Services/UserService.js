@@ -11,7 +11,7 @@ const MailNotification = use('App/Notifications/MailNotification');
 
 class UserService {
 
-    static async addUser({email, password, fullname, telephone, address, office, role, picture, notificationsConsent, enabled}) {
+    static async addUser({email, password, fullname, telephone, address, office, role, picture, notificationsConsent, additionalInfo, enabled}) {
         const givenUser = await User.query().where('email', email).first();
 
         if (givenUser) {
@@ -28,6 +28,7 @@ class UserService {
             user.picture = picture;
             user.notificationsConsent = notificationsConsent;
             user.enabled = enabled;
+            user.additionalInfo = additionalInfo;
             if (office) {
                 user.officeId = office.id;
             }
@@ -47,7 +48,7 @@ class UserService {
             // End transaction
             await trx.commit();
 
-            return user;
+            return await User.find(user.id);
         } catch (e) {
             trx.rollback();
             throw new Error(e.message)
@@ -63,6 +64,7 @@ class UserService {
         const office = request.input('office')
         const preferredCurrency = request.input('preferredCurrency')
         const role = request.input('role')
+        const additionalInfo = request.input('additionalInfo')
 
         const trx = await Database.beginTransaction()
         try {
@@ -85,6 +87,10 @@ class UserService {
 
             if (role) {
                 user.role = role;
+            }
+
+            if (additionalInfo) {
+                user.additionalInfo = additionalInfo;
             }
 
             // Edit address
@@ -129,6 +135,7 @@ class UserService {
         const picture = request.input('picture')
         const notificationsConsent = request.input('notificationsConsent')
         const preferredCurrency = request.input('preferredCurrency')
+        const additionalInfo = request.input('additionalInfo')
 
         const trx = await Database.beginTransaction()
         try {
@@ -144,6 +151,10 @@ class UserService {
 
             if (preferredCurrency) {
                 user.preferredCurrency = preferredCurrency;
+            }
+
+            if (additionalInfo) {
+                user.additionalInfo = additionalInfo;
             }
 
             // Edit address

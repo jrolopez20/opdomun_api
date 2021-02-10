@@ -43,10 +43,10 @@ class UserController {
     async store({request, response}) {
         try {
             const {
-                email, password, fullname, telephone, address, office, role, picture, notificationsConsent
+                email, password, fullname, telephone, address, office, role, picture, notificationsConsent, additionalInfo
             } = request.all()
 
-            const user = await UserService.addUser({email, password, fullname, telephone, address, office, role, picture, notificationsConsent, enabled: true});
+            const user = await UserService.addUser({email, password, fullname, telephone, address, office, role, picture, notificationsConsent, additionalInfo, enabled: true});
 
             return response.status(201).json(user)
         } catch (e) {
