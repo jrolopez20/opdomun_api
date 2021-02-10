@@ -13,6 +13,10 @@ class Owner extends Model {
         return ['createdAt', 'updatedAt', 'postId', 'subscriptionId', 'userId'];
     }
 
+    setAdditionalInfo(additionalInfo) {
+        return JSON.stringify(additionalInfo)
+    }
+
     post() {
         return this.belongsTo('App/Models/Post')
     }
@@ -25,11 +29,14 @@ class Owner extends Model {
         return this.belongsTo('App/Models/User', 'userId', 'id')
     }
 
-    static async addOwner({postId, userId, fullname, telephone, email}) {
+    static async addOwner({postId, userId, fullname, telephone, email, additionalInfo}) {
         const owner = new Owner();
-        owner.fill({
-            postId, userId, fullname, telephone, email
-        })
+        owner.postId = postId;
+        owner.userId = userId;
+        owner.fullname = fullname;
+        owner.telephone = telephone;
+        owner.email = email;
+        owner.additionalInfo = additionalInfo;
         await owner.save();
 
         return owner;

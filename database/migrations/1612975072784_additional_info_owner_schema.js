@@ -3,20 +3,20 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class AdditionalInfoUserSchema extends Schema {
+class AdditionalInfoOwnerSchema extends Schema {
     up() {
-        this.table('users', (table) => {
+        this.table('owners', (table) => {
             // alter table
             table.jsonb('additional_info')
         })
     }
 
     down() {
-        this.table('users', (table) => {
+        this.table('owners', (table) => {
             // reverse alternations
             table.dropColumn('additional_info')
         })
     }
 }
 
-module.exports = AdditionalInfoUserSchema
+module.exports = AdditionalInfoOwnerSchema

@@ -28,6 +28,9 @@ definitions:
       hasPremiumPost:
         type: boolean
         description: Check if an user has a premium post or not
+      additionalInfo:
+        type: object
+        description: Useful for storing contact data
     required:
       - id
       - email
