@@ -36,7 +36,9 @@ class Owner extends Model {
         owner.fullname = fullname;
         owner.telephone = telephone;
         owner.email = email;
-        owner.additionalInfo = additionalInfo;
+        if (additionalInfo) {
+            owner.additionalInfo = additionalInfo;
+        }
         await owner.save();
 
         return owner;

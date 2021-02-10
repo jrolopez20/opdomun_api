@@ -52,7 +52,8 @@ class PostService {
             userId: owner.userId,
             email: owner.email,
             fullname: owner.fullname,
-            telephone: owner.telephone
+            telephone: owner.telephone,
+            additionalInfo: owner.additionalInfo
         });
 
         if (plan) {
@@ -112,10 +113,11 @@ class PostService {
 
             // Store owner
             await post.owner().create({
+                userId: auth.user.id,
                 fullname: owner.fullname,
                 email: owner.email,
                 telephone: owner.telephone,
-                userId: auth.user.id
+                additionalInfo: owner.additionalInfo
             }, trx);
 
             // Store images
@@ -186,6 +188,9 @@ class PostService {
                 ownerObj.fullname = owner.fullname;
                 ownerObj.telephone = owner.telephone;
                 ownerObj.email = owner.email;
+                if (owner.additionalInfo) {
+                    ownerObj.additionalInfo = owner.additionalInfo;
+                }
                 await ownerObj.save(trx)
             }
 
@@ -283,7 +288,7 @@ class PostService {
             summary,
             postPlaces,
             owner
-        }) {
+        }, auth) {
         let post = await Post.find(postId);
         if (!post) {
             throw new Error('Post not found');
@@ -303,6 +308,9 @@ class PostService {
         ownerObj.fullname = owner.fullname;
         ownerObj.telephone = owner.telephone;
         ownerObj.email = owner.email;
+        if (owner.additionalInfo) {
+            ownerObj.additionalInfo = owner.additionalInfo;
+        }
         await ownerObj.save()
 
         await post.load('address');
@@ -316,6 +324,8 @@ class PostService {
         await this.setAu(post, postPlaces);
 
         post = await post.calculateOpdo();
+
+        post = await Post.getPost(post.id, auth);
         return post;
     }
 

@@ -180,6 +180,8 @@
                 telephone:
                   required: true
                   type: string
+                additionalInfo:
+                  type: object
             price:
               $ref: '#/definitions/Price'
             area:
@@ -265,6 +267,8 @@
                 telephone:
                   required: true
                   type: string
+                additionalInfo:
+                  type: object
             price:
               $ref: '#/definitions/Price'
             area:

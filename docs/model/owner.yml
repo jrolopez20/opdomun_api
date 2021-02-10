@@ -13,6 +13,9 @@ definitions:
         type: string
       email:
         type: string
+      additionalInfo:
+        type: object
+
     required:
       - id
       - post

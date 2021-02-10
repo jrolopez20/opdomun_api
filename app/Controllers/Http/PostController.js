@@ -145,7 +145,7 @@ class PostController {
                 summary,
                 postPlaces,
                 owner
-            });
+            }, auth);
             return response.json(post);
         } catch (e) {
             return response.status(400).json({message: e.message})
