@@ -12,6 +12,9 @@ tmp
 database/*.sqlite
 
 # All images inside
+public/docs/
+
+# All images inside
 public/images/user_pictures/
 public/images/post_pictures/
 public/images/article_pictures/
